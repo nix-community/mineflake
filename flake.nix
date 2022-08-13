@@ -4,7 +4,5 @@
   inputs = { };
 
   outputs = { self }:
-    {
-      
-    };
+    { };
 }
