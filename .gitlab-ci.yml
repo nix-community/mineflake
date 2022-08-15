@@ -1,5 +1,5 @@
 lint:
-  image: cofob/nixfmt
+  image: ghcr.io/cofob/nixfmt
   stage: test
   script:
     - nixpkgs-fms --check .
