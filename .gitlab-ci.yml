@@ -1,6 +1,6 @@
 lint:
   image: cofob/nixfmt
-  stage: lint
+  stage: test
   script:
     - nixpkgs-fms --check .
   tags:
