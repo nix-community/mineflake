@@ -21,4 +21,5 @@ with pkgs; {
   redlib = callPackage ./plugins/redlib { };
   vault = callPackage ./plugins/vault { };
   authme = callPackage ./plugins/authme { };
+  chatty = callPackage ./plugins/chatty { };
 }

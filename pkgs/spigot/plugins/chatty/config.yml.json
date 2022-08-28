@@ -1,0 +1,304 @@
+{
+  "config-version": "2.0",
+  "general": {
+    "locale": "en",
+    "priority": "low",
+    "log": true,
+    "completely-cancel": false,
+    "keep-old-recipients": true,
+    "hide-vanished-recipients": true,
+    "uuid": false,
+    "bungeecord": false
+  },
+  "chats": {
+    "local": {
+      "enable": true,
+      "display-name": "Local",
+      "format": "&e[&6Local&e] &r{prefix}{player}{suffix}&8: &f{message}",
+      "range": 100,
+      "cooldown": -1,
+      "command": "localchat",
+      "aliases": [
+        "lchat"
+      ]
+    },
+    "global": {
+      "enable": true,
+      "display-name": "Global",
+      "format": "&e[&aGlobal&e] &r{prefix}{player}{suffix}&8: &f{message}",
+      "range": -1,
+      "symbol": "!",
+      "cooldown": -1,
+      "command": "globalchat",
+      "aliases": [
+        "gchat"
+      ]
+    },
+    "notify": {
+      "enable": true,
+      "format": "\n&7==========================================\n  &c{player}&8: &7{message}\n&7==========================================\n",
+      "range": -3,
+      "symbol": "$",
+      "cooldown": -1,
+      "sound": "CLICK",
+      "moderation": {
+        "caps": false,
+        "swear": false,
+        "advertisement": false
+      },
+      "spy": false
+    }
+  },
+  "pm": {
+    "enable": true,
+    "allow-console": false,
+    "allow-pm-vanished": false,
+    "format": {
+      "recipient": "&7{sender-prefix}{sender-name} &6-> &7{recipient-prefix}{recipient-name}: &f{message}",
+      "sender": "&7{sender-prefix}{sender-name} &6-> &7{recipient-prefix}{recipient-name}: &f{message}"
+    },
+    "sound": "CLICK",
+    "sound-volume": 1,
+    "sound-pitch": 1,
+    "commands": {
+      "msg": {
+        "enable": true,
+        "aliases": [
+          "message",
+          "pm",
+          "m",
+          "whisper",
+          "w",
+          "tell",
+          "t"
+        ]
+      },
+      "reply": {
+        "enable": true,
+        "aliases": [
+          "reply"
+        ]
+      },
+      "ignore": {
+        "enable": true,
+        "aliases": []
+      }
+    }
+  },
+  "spy": {
+    "enable": true,
+    "format": {
+      "chat": "&6[Spy] &r{format}",
+      "pm": "&6[Spy] &r{format}"
+    }
+  },
+  "json": {
+    "enable": false,
+    "command": "/home",
+    "suggest": "/msg {player} ",
+    "link": "https://google.com",
+    "tooltip": [
+      "&fPlayer &e{player}",
+      "&fThis tooltip supports",
+      "&fPlaceholderAPI placeholders!"
+    ],
+    "mentions": {
+      "enable": true,
+      "format": "&e&l@{player}",
+      "sound": "CLICK",
+      "sound-volume": 1,
+      "sound-pitch": 1,
+      "allow-vanished": false,
+      "command": "/home",
+      "suggest": "/msg {player} ",
+      "link": "https://example.com/players?name={player}",
+      "tooltip": [
+        "&fClick here to message &e{player}"
+      ]
+    },
+    "swears": {
+      "enable": true,
+      "tooltip": [
+        "&o{word}",
+        "",
+        "&eClick here to add word to whitelist."
+      ],
+      "suggest": "/swears add {word}"
+    },
+    "replacements": {
+      "Admin": {
+        "original": "&cAdmin",
+        "text": "&cAdmin",
+        "tooltip": [
+          "&cThis is admin.",
+          "&4&lBe afraid of him!",
+          "",
+          "&eClick here to see the server rules."
+        ],
+        "command": "/rules"
+      }
+    }
+  },
+  "notifications": {
+    "chat": {
+      "enable": true,
+      "lists": {
+        "default": {
+          "time": 60,
+          "prefix": "",
+          "messages": [
+            "&cThe server is using Chatty!\\n&aOur address: 127.0.0.1\\n&aVisit out site: example.com",
+            "&aThe server is using Chatty!"
+          ],
+          "permission": false,
+          "random": true
+        }
+      }
+    },
+    "actionbar": {
+      "enable": false,
+      "time": 60,
+      "prefix": "",
+      "messages": [
+        "&cThe server is using Chatty!",
+        "&aThe server is using Chatty!"
+      ],
+      "permission": false,
+      "random": true
+    },
+    "title": {
+      "enable": true,
+      "lists": {
+        "default": {
+          "time": 60,
+          "messages": [
+            "&cThe server is using Chatty!\n&eOur address: 127.0.0.1\n",
+            "&aThe server is using Chatty!"
+          ],
+          "permission": false,
+          "random": false
+        }
+      }
+    },
+    "advancements": {
+      "enable": false,
+      "lists": {
+        "default": {
+          "time": 60,
+          "messages": [
+            {
+              "icon": "minecraft:diamond",
+              "header": "&bChatty",
+              "footer": "&fThank you for using!"
+            },
+            {
+              "icon": "minecraft:gold_ingot",
+              "header": "&eChatty",
+              "footer": "&fThank you for using!"
+            }
+          ],
+          "permission": false,
+          "random": false
+        }
+      }
+    }
+  },
+  "moderation": {
+    "caps": {
+      "enable": true,
+      "length": 6,
+      "percent": 80,
+      "block": true
+    },
+    "advertisement": {
+      "enable": true,
+      "patterns": {
+        "ip": "\\b((\\d{1,2}|2(5[0-5]|[0-4]\\d))[._,)(-]+){3}(\\d{1,2}|2(5[0-5]|[0-4]\\d))(:\\d{2,7})?",
+        "web": "(?i)\\b(https?:\\/\\/)?[\\w\\.а-яА-Я-]+\\.([a-z]{2,4}|[рР][фФ]|[уУ][кК][рР])\\b(:\\d{2,7})?(\\/\\S+)?"
+      },
+      "block": true,
+      "replacement": "<advertisement>",
+      "whitelist": [
+        "example.com",
+        "vk.com",
+        "google.com",
+        "youtube.com",
+        "yandex.ru",
+        "192.168.1.1",
+        "127.0.0.1"
+      ]
+    },
+    "swear": {
+      "enable": false,
+      "block": true,
+      "replacement": "<swear>"
+    }
+  },
+  "miscellaneous": {
+    "commands": {
+      "chat": {
+        "enable": true,
+        "aliases": [
+          "chats",
+          "switchchat"
+        ]
+      },
+      "clearchat": {
+        "enable": true,
+        "aliases": [
+          "chatclear"
+        ]
+      },
+      "prefix": {
+        "enable": true,
+        "after-prefix": " ",
+        "length-limit": {
+          "min": 3,
+          "max": 16
+        },
+        "auto-nte": false
+      },
+      "suffix": {
+        "enable": true,
+        "before-suffix": " ",
+        "length-limit": {
+          "min": 3,
+          "max": 16
+        },
+        "auto-nte": false
+      }
+    },
+    "vanilla": {
+      "join": {
+        "enable": true,
+        "message": "&8> &e{prefix}{player}{suffix} &ejoined the server.",
+        "sound": "ORB_PICKUP",
+        "sound-volume": 1,
+        "sound-pitch": 1,
+        "permission": false,
+        "first-join": {
+          "message": "&8> &e{prefix}{player}{suffix} &6joined the server for the first time!",
+          "sound": "ORB_PICKUP",
+          "sound-volume": 1,
+          "sound-pitch": 1
+        }
+      },
+      "quit": {
+        "enable": true,
+        "message": "&8> &e{prefix}{player}{suffix} &eleft the server.",
+        "sound": "ORB_PICKUP",
+        "sound-volume": 1,
+        "sound-pitch": 1,
+        "permission": false
+      },
+      "death": {
+        "enable": true,
+        "message": "&8> &e{prefix}{player}{suffix} &edied.",
+        "sound": "BAT_DEATH",
+        "sound-volume": 1,
+        "sound-pitch": 1,
+        "permission": false
+      }
+    }
+  }
+}
