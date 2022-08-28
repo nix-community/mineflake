@@ -22,4 +22,5 @@ with pkgs; {
   vault = callPackage ./plugins/vault { };
   authme = callPackage ./plugins/authme { };
   chatty = callPackage ./plugins/chatty { };
+  negativity = callPackage ./plugins/negativity { };
 }
