@@ -61,6 +61,13 @@ in
               description = "Container address in the system in the same with minecraft.hostAddress subnet";
             };
 
+            nameservers = mkOption {
+              type = types.listOf types.str;
+              example = [ "1.1.1.1" "9.9.9.9" ];
+              default = [ "1.1.1.1" "8.8.8.8" "9.9.9.9" "94.140.14.14" ];
+              description = "List of DNS servers that will be useed inside container";
+            };
+
             datadir = mkOption {
               type = types.path;
               default = "/var/lib/minecraft";
@@ -380,6 +387,11 @@ in
                 };
 
                 networking.firewall.enable = false;
+
+                # Dirty hack, cause networking.nameserver dont work
+                environment.etc = {
+                  "resolv.conf".text = (concatStringsSep "\n" (map (nameserver: "nameserver ${nameserver}") server.nameservers));
+                };
 
                 system.stateVersion = "22.05";
               };
