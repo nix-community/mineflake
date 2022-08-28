@@ -1,4 +1,3 @@
-# .woodpecker.yml
 pipeline:
   lint:
     image: cofob/nixfmt
