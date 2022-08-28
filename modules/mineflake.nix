@@ -1,14 +1,16 @@
 { lib, pkgs, config, ... }:
 
 with lib; let
-  utils = import ./utils.nix { inherit lib; inherit spigot; };
-  default_args = { inherit lib; inherit spigot; inherit utils; };
+  utils = import ./utils.nix { inherit lib; inherit spigot; inherit bungee; };
+  default_args = { inherit lib; inherit spigot; inherit bungee; inherit utils; };
   properties = import ./properties.nix default_args;
   permissions = import ./permissions.nix default_args;
+  bungeecord = import ./bungeecord.nix default_args;
 
   cfg = config.minecraft;
 
   spigot = pkgs.callPackage ../pkgs/spigot { };
+  bungee = pkgs.callPackage ../pkgs/bungee { };
 
   eula-file = utils.mkConfigFile {
     type = "raw";
@@ -167,6 +169,12 @@ in
               description = "server.properties settings";
             };
 
+            bungeecord = mkOption {
+              type = bungeecord.submodule;
+              default = { };
+              description = "Bungeecord settings";
+            };
+
             disable-bstats = mkEnableOption "Disable bStats statistics collection";
 
             jre = mkOption {
@@ -245,6 +253,7 @@ in
               # Generators
               (permissions.generator server.permissions)
               (properties.generator server.properties)
+              (bungeecord.generator server.bungeecord)
               # User configs (highest priority)
               server.configs
             ];

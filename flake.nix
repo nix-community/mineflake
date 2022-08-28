@@ -12,6 +12,10 @@
           pkgs = prev;
           lib = prev.lib;
         };
+        bungee = import ./pkgs/bungee {
+          pkgs = prev;
+          lib = prev.lib;
+        };
       };
     };
 }

@@ -1,0 +1,23 @@
+{
+  "server_connect_timeout": 5000,
+  "enforce_secure_profile": false,
+  "remote_ping_cache": -1,
+  "forge_support": false,
+  "player_limit": -1,
+  "permissions": {},
+  "timeout": 30000,
+  "log_commands": false,
+  "network_compression_threshold": 256,
+  "online_mode": true,
+  "disabled_commands": [],
+  "servers": {},
+  "listeners": [],
+  "ip_forward": false,
+  "remote_ping_timeout": 5000,
+  "prevent_proxy_connections": false,
+  "groups": {},
+  "connection_throttle": 4000,
+  "stats": "00000000-0000-0000-0000-000000000000",
+  "connection_throttle_limit": 3,
+  "log_pings": true
+}
