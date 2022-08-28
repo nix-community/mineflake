@@ -20,4 +20,5 @@ with pkgs; {
   essentialsx-xmpp = callPackage ./plugins/essentialsx/xmpp.nix { };
   redlib = callPackage ./plugins/redlib { };
   vault = callPackage ./plugins/vault { };
+  authme = callPackage ./plugins/authme { };
 }
