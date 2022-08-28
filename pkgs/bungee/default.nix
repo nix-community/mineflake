@@ -7,4 +7,5 @@ with pkgs; {
 
   # Plugins
   authme = callPackage ./plugins/authme { };
+  cleanmotd = callPackage ./plugins/cleanmotd { };
 }

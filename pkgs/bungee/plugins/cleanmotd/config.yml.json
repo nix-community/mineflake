@@ -1,0 +1,30 @@
+{
+  "motd": {
+    "enabled": true,
+    "motds": [
+      "&b&lCleanMoTD &f&lDefault &b&lMoTD\n&7There are &a%onlineplayers%&7 players online!",
+      "&aCleanMoTD Default MoTD &c[Optimized]\n&d&lCome and enjoy our brand new games!"
+    ]
+  },
+  "sample": {
+    "enabled": true,
+    "samples": [
+      "&b&lCleanMoTD &f&lDefault &b&lSample\n&7Online: &a%onlineplayers%&8/&a%maxplayers%",
+      "&aCleanMoTD Default Sample &c[Optimized]\n&d&lNew Sample feature!"
+    ]
+  },
+  "protocol": {
+    "enabled": true,
+    "name": "FlameCord 1.7-1.16.5"
+  },
+  "maxplayers": {
+    "enabled": true,
+    "maxplayers": 1400,
+    "justonemore": true
+  },
+  "fakeplayers": {
+    "enabled": false,
+    "amount": 3,
+    "mode": "DIVISION"
+  }
+}
