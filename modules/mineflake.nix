@@ -92,6 +92,13 @@ in
               description = "List of parameters that will be passed to the systemd-nspawn command";
             };
 
+            forwardPorts = mkOption {
+              type = types.listOf (types.oneOf [ types.str types.port ]);
+              default = [ ];
+              example = [ 25565 "2000:3000" ];
+              description = "List of port that will be visible outside of container";
+            };
+
             opts = mkOption {
               type = types.listOf types.str;
               default = [ ];
@@ -265,7 +272,8 @@ in
               privateNetwork = true;
               hostAddress = cfg.hostAddress;
               localAddress = server.localAddress;
-              extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (if server.secretsFile != null then [ server.secretsFile ] else [ ]))) ++
+              extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) [ server.secretsFile ]))) ++
+                (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
                 (map (path: "--bind=${path}") server.binds) ++ server.extraFlags;
               config = { config, pkgs, ... }: {
                 systemd.services.minecraft = {
