@@ -1,0 +1,26 @@
+<book xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      version="5.0"
+      xml:id="book-mineflake-manual">
+ <info>
+  <title>Mineflake Manual</title>
+ </info>
+ <preface>
+  <title>Preface</title>
+  <para>
+   This manual describes all Mineflake options.
+  </para>
+  <para>
+   If you encounter problems then please reach out on the Matrix channel
+   <link xlink:href="https://lshort.deta.dev/mineflake">#mineflake:matrix.org</link>.
+   If your problem is caused by a bug in Mineflake then it should
+   be reported on the
+   <link xlink:href="https://git.frsqr.xyz/firesquare/mineflake/issues">Mineflake issue tracker</link>.
+  </para>
+ </preface>
+ <appendix xml:id="ch-options">
+  <title>Configuration Options</title>
+  <xi:include href="./nmd-result/mineflake-options.xml" />
+ </appendix>
+</book>

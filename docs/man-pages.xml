@@ -1,0 +1,11 @@
+<reference xmlns="http://docbook.org/ns/docbook"
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>NMD man-stub</title>
+  <info>
+    <author><personname>smth</personname></author>
+    <copyright><year>2022-3022</year><holder>smth</holder>
+    </copyright>
+  </info>
+  <xi:include href="man-some.xml" />
+</reference>
