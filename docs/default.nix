@@ -51,7 +51,8 @@ let
     '';
   };
 
-in {
+in
+{
   inherit nmdSrc;
   manual = { inherit (docs) html htmlOpenTool; };
 }

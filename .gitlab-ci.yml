@@ -1,7 +1,0 @@
-lint:
-  image: cofob/nixfmt
-  stage: test
-  script:
-    - nixpkgs-fmt --check .
-  tags:
-    - docker

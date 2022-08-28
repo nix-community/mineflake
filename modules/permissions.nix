@@ -84,19 +84,21 @@ with lib; with utils; {
 
   generator = permissions: with permissions;
     optionalAttrs enable
-      (let obj = builtins.mapAttrs (name: group: { name = "plugins/LuckPerms/json-storage/groups/${name}.json"; value = (mkConfig "json" group // { inherit name; }); }) groups;
-      in
-      builtins.listToAttrs (map (key: getAttr key obj) (attrNames obj)) //
-      {
-        "plugins/LuckPerms/config.yml" = mkConfig "yaml" {
-          "server" = name;
-          "storage-method" = "h2";
-          "split-storage" = {
-            "enabled" = true;
-            "methods" = {
-              "group" = "json";
+      (
+        let obj = builtins.mapAttrs (name: group: { name = "plugins/LuckPerms/json-storage/groups/${name}.json"; value = (mkConfig "json" group // { inherit name; }); }) groups;
+        in
+        builtins.listToAttrs (map (key: getAttr key obj) (attrNames obj)) //
+        {
+          "plugins/LuckPerms/config.yml" = mkConfig "yaml" {
+            "server" = name;
+            "storage-method" = "h2";
+            "split-storage" = {
+              "enabled" = true;
+              "methods" = {
+                "group" = "json";
+              };
             };
           };
-        };
-      });
+        }
+      );
 }

@@ -103,7 +103,7 @@ with lib; with utils; {
 
             forced_hosts = mkOption {
               type = types.attrsOf types.str;
-              default = {};
+              default = { };
             };
 
             motd = mkOption {
@@ -118,7 +118,7 @@ with lib; with utils; {
 
             priorities = mkOption {
               type = types.listOf types.str;
-              default = [];
+              default = [ ];
             };
 
             host = mkOption {

@@ -170,16 +170,22 @@ in
                 enable = true;
                 groups.default = {
                   permissions = [
-                    { permission = "some.permission";
-                      value = true; }
+                    {
+                      permission = "some.permission";
+                      value = true;
+                    }
                   ];
                   prefixes = [
-                    { priefix = "VIP ";
-                      priority = 10; }
+                    {
+                      priefix = "VIP ";
+                      priority = 10;
+                    }
                   ];
                   suffixes = [
-                    { suffix = " SMTH";
-                      priority = 10; }
+                    {
+                      suffix = " SMTH";
+                      priority = 10;
+                    }
                   ];
                 };
               };
@@ -401,7 +407,7 @@ in
     { containers = builtins.listToAttrs (map (key: getAttr key server-containers) (attrNames server-containers)); } //
     {
       # TODO: check if plugins have same server type value with server.package
-      assertions = [];
+      assertions = [ ];
     }
   );
 }
