@@ -19,4 +19,5 @@ with pkgs; {
   essentialsx-spawn = callPackage ./plugins/essentialsx/spawn.nix { };
   essentialsx-xmpp = callPackage ./plugins/essentialsx/xmpp.nix { };
   redlib = callPackage ./plugins/redlib { };
+  vault = callPackage ./plugins/vault { };
 }
