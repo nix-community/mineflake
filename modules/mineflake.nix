@@ -254,9 +254,9 @@ in
               (permissions.generator server.permissions)
               (properties.generator server.properties)
               (bungeecord.generator server.bungeecord)
-              # User configs (highest priority)
-              server.configs
-            ];
+            ] //
+            # User configs (highest priority)
+            server.configs;
           in
           {
             name = "mf-${name}";
