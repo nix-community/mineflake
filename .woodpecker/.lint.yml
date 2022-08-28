@@ -1,0 +1,5 @@
+pipeline:
+  lint:
+    image: cofob/nixfmt
+    commands:
+      - nixpkgs-fmt --check .
