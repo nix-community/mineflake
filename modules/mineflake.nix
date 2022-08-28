@@ -31,17 +31,30 @@ in
   options.minecraft = {
     enable = mkEnableOption "If enabled, Nix-defined minecraft servers will be created from minecraft.servers";
 
-    hostAddress = mkOption {
-      type = types.str;
-      default = "192.168.100.1";
-      example = "10.20.0.1";
-      description = "Container address in the host system";
+    default = mkOption {
+      type = types.attrs;
+      default = { };
+      example = { hostAddress = "192.168.100.1"; };
+      description = "Option that will be merged with all servers";
     };
 
     servers = mkOption {
       type = types.attrsOf (types.submodule
         ({ name, ... }: {
           options = {
+            useDefault = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Whether to merge minecraft.default with this server";
+            };
+
+            hostAddress = mkOption {
+              type = types.str;
+              default = "192.168.100.1";
+              example = "10.20.0.1";
+              description = "Container address in the host system";
+            };
+
             localAddress = mkOption {
               type = types.str;
               example = "192.168.100.2";
@@ -242,8 +255,9 @@ in
   config = mkIf cfg.enable (
     let
       server-containers = builtins.mapAttrs
-        (name: server:
+        (name: base_server:
           let
+            server = base_server // (optionalAttrs base_server.useDefault cfg.default);
             pre_plugins = server.plugins ++
               (if server.permissions.enable then [ server.permissions.package ] else [ ]);
             # Add plugin depedencies to plugin list
@@ -270,7 +284,7 @@ in
             value = {
               autoStart = true;
               privateNetwork = true;
-              hostAddress = cfg.hostAddress;
+              hostAddress = server.hostAddress;
               localAddress = server.localAddress;
               extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) [ server.secretsFile ]))) ++
                 (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
