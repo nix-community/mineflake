@@ -24,4 +24,5 @@ with pkgs; {
   authme = callPackage ./plugins/authme { };
   chatty = callPackage ./plugins/chatty { };
   negativity = callPackage ./plugins/negativity { };
+  tabtps = callPackage ./plugins/tabtps { };
 }
