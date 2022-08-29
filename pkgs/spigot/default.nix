@@ -26,4 +26,5 @@ with pkgs; {
   negativity = callPackage ./plugins/negativity { };
   tabtps = callPackage ./plugins/tabtps { };
   protocollib = callPackage ./plugins/protocollib { };
+  illegalstack = callPackage ./plugins/illegalstack { };
 }

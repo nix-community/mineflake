@@ -1,0 +1,190 @@
+{
+  "ConfigVersion": "2.0",
+  "Exploits": {
+    "Other": {
+      "PunishForChestsOnMobs": false,
+      "PreventMinecartsInBoats": true,
+      "PreventCommandsInBed": true,
+      "PreventItemSwapLagExploit": true,
+      "PreventEndPortalDestruction": true,
+      "PreventNestedShulkers": true,
+      "PreventBedrockDestruction": true,
+      "DisableRidingExploitableMobs": true,
+      "PreventBedExplosions": true,
+      "PreventRailDupe": true,
+      "DisableChestsOnMobs": true,
+      "PreventHoppersToUnloadedChunks": true,
+      "PreventInvalidPotions": true
+    },
+    "NegativeDurability": true,
+    "1_14_Exploits": {
+      "Traders": {
+        "VillagerRestockTime": 10,
+        "BlockVillagerTradeCheesing": true,
+        "ZombieVillagerTransformChance": 65
+      }
+    },
+    "OverStack": {
+      "StackWhiteListMode": true,
+      "FixOverstackedItemInstead": false,
+      "GroupStack": [],
+      "PreventOverStackedItemInHoppers": true,
+      "AllowStack": [
+        "POTION"
+      ],
+      "RemoveOverstackedItems": true,
+      "RemoveItemsOfType": []
+    },
+    "Enchants": {
+      "FixIllegalEnchants": false,
+      "OnlyFunctionInWorlds": [],
+      "CustomEnchantOverride": [],
+      "EnchantedItemWhitelist": [],
+      "RemoveCustomAttributes": false,
+      "DestroyIllegallyEnchantedItemsInstead": false,
+      "AllowBypass": false,
+      "RemoveUnbreakableFlag": false
+    },
+    "Teleport": {
+      "PearlPhasing": true
+    },
+    "Nether": {
+      "BlockPlayersAboveNether": true,
+      "ExcludeNetherWorldFromHeightCheck": [],
+      "BlockBuildingAboveNether": true,
+      "EnsureSafeTeleportLocationIfAboveCeiling": true,
+      "NetherYLevel": 128,
+      "KillPlayersBelowNether": false
+    },
+    "BookExploit": {
+      "DisableBookWriting": false
+    },
+    "3rdParty": {
+      "BlockCMIShulkerStacking": true
+    },
+    "1_15_Exploits": {
+      "Dupes": {
+        "PreventTripwireDupe": true
+      }
+    },
+    "FishMod": {
+      "WarnPlayerThenKickInsteadOfNotify": false,
+      "MaxFishAllowedBeforeKick": 5,
+      "WatchForAutoFishMod": true,
+      "MaxFishToNotifyStaffThenBlock": 5
+    },
+    "PortalDupe": {
+      "EndWhiteListMode": true,
+      "NetherWhiteList": [],
+      "BlockNonPlayersInNetherPortal": true,
+      "NetherWhiteListMode": true,
+      "NotifyBlockedPortalAttempts": false,
+      "EndWhiteList": [],
+      "BlockNonPlayersInEndPortal": true
+    },
+    "MineCart": {
+      "MinecartBlockWhiteList": [],
+      "RemoveExistingGlitchedMinecarts": false,
+      "PreventMinecartGlitch": true,
+      "PreventHeadInsideBlocks": false
+    },
+    "RNGEnchant": {
+      "PreventRNGEnchant": true
+    },
+    "Fishing": {
+      "KickForAutoClickerFishing": true
+    },
+    "Minecart": {
+      "AlsoPreventHeadInside": [
+        "COMPOSTER"
+      ]
+    },
+    "RecordDupe": true,
+    "NetherPortal": {
+      "PreventPortalTrap": true
+    },
+    "EndGateway": {
+      "PreventEndGatewayCrashExploit": true
+    },
+    "SignExploit": {
+      "DestroyBadSignsOnChunkLoad": false
+    },
+    "DropperDupe": {
+      "BlockLoopedDroppers": false
+    },
+    "LavaDupe": {
+      "PreventLavaDupe": true
+    },
+    "1_13": {
+      "_Exploits": {
+        "MeltSnowballsInWater": false
+      }
+    },
+    "TNTDupe": {
+      "PreventIndirectTNTPowerDupe": true
+    },
+    "Looting": {
+      "PreventLootingExploit": true
+    }
+  },
+  "UserRequested": {
+    "ItemRemoval": {
+      "NameLoreStrictMatchMode": false,
+      "RemoveItemsMatchingName": false,
+      "ItemNamesToRemove": [],
+      "BlockEnchantingInstead": false,
+      "ItemLoresToRemove": [],
+      "BlockRepairsInstead": false
+    },
+    "Mobs": {
+      "PreventZombieItemPickup": false
+    },
+    "NetherDamage": {
+      "DamageDelay": 2,
+      "DamagePlayersAboveNether": false,
+      "DamageAmount": 2
+    },
+    "Obsure": {
+      "Misc": {
+        "RemoveAllRenamedItems": false
+      }
+    },
+    "Misc": {
+      "NotifyInsteadOfBlock": []
+    },
+    "Obscure": {
+      "HopperCheck": {
+        "IgnoreAllHopperChecks": false
+      },
+      "HackedShulker": {
+        "DestroyInvalidShulkers": false,
+        "CheckGroundForBadShulkerAtLogin": false
+      },
+      "IgnoreAllShulkerPlaceChecks": false,
+      "BlockBadItemsFromCreativeTab": false
+    },
+    "Cobble": {
+      "PreventCobbleGenerators": false
+    }
+  },
+  "Misc": {
+    "DisableInWorlds": [],
+    "BreakMachinesInsteadOfDroppingItems": true,
+    "InGameOffenseNotifications": true,
+    "LogOffensesInSeparateFile": true,
+    "Spawners": {
+      "PreventSpawnEggsOnSpawners": true
+    },
+    "ItemScanTimer": 10,
+    "NotifyNearbyPlayers": false
+  },
+  "Exploit": {
+    "LagMachines": {
+      "End Crystal": true,
+      "ArmorStand": true
+    },
+    "Teleport": {
+      "CorrectionNotify": false
+    }
+  }
+}
