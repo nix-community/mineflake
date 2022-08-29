@@ -29,4 +29,5 @@ with pkgs; {
   illegalstack = callPackage ./plugins/illegalstack { };
   playtime = callPackage ./plugins/playtime { };
   placeholderapi = callPackage ./plugins/placeholderapi { };
+  lightchatbubbles = callPackage ./plugins/lightchatbubbles { };
 }
