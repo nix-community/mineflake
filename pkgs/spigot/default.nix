@@ -27,4 +27,5 @@ with pkgs; {
   tabtps = callPackage ./plugins/tabtps { };
   protocollib = callPackage ./plugins/protocollib { };
   illegalstack = callPackage ./plugins/illegalstack { };
+  playtime = callPackage ./plugins/playtime { };
 }
