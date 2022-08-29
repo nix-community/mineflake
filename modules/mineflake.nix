@@ -253,8 +253,8 @@ in
 
             package = mkOption {
               type = types.package;
-              default = spigot.paper_1_18_2;
-              example = "pkgs.spigot.paper_1_18_2";
+              default = spigot.paper;
+              example = "pkgs.spigot.paper";
               description = "Server package";
             };
           };

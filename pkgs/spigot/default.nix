@@ -5,6 +5,7 @@ with pkgs; {
   utils = callPackage ../utils { };
 
   # Servers
+  paper = callPackage ./servers/paper_1.18.2 { };
   paper_1_18_2 = callPackage ./servers/paper_1.18.2 { };
 
   # Plugins

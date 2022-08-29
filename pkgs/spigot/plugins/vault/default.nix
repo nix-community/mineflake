@@ -24,9 +24,16 @@ stdenv.mkDerivation {
     license = licenses.lgpl3;
     platforms = platforms.all;
     deps = [ ];
-    configs = { };
+    configs = {
+      "plugins/Vault/config.yml" = {
+        type = "yaml";
+        data = {
+          update-check = true;
+        };
+      };
+    };
     server = "spigot";
     type = "result";
-    folders = [ ];
+    folders = [ "plugins/Vault" ];
   };
 }
