@@ -5,7 +5,7 @@ let
   buildNum = "387";
   hash = "sha256-XB1NpToEW/0LO080Y+sDH+i+NBGuQh1ZsQpaHH+gne0=";
   mojang_dep = fetchurl {
-    url = "https://ipfs.io/ipfs/bafybeidd64amhqeqkrtm6udjyhlu7lero7fakzeunqha7oywwibeogluqq/mojang_1.18.2.jar";
+    url = "https://w3s.link/ipfs/bafybeidd64amhqeqkrtm6udjyhlu7lero7fakzeunqha7oywwibeogluqq/mojang_1.18.2.jar";
     hash = "sha256-V76dHjWqkc/fokattjoOoRqUYIHgRk0IvD02ZRcYo0M=";
   };
 in
