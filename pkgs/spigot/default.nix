@@ -28,4 +28,5 @@ with pkgs; {
   protocollib = callPackage ./plugins/protocollib { };
   illegalstack = callPackage ./plugins/illegalstack { };
   playtime = callPackage ./plugins/playtime { };
+  placeholderapi = callPackage ./plugins/placeholderapi { };
 }
