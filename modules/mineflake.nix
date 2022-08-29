@@ -65,7 +65,7 @@ in
               type = types.listOf types.str;
               example = [ "1.1.1.1" "9.9.9.9" ];
               default = [ "1.1.1.1" "8.8.8.8" "9.9.9.9" "94.140.14.14" ];
-              description = "List of DNS servers that will be useed inside container";
+              description = "List of DNS servers that will be used inside container";
             };
 
             datadir = mkOption {
