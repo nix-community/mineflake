@@ -18,7 +18,7 @@ pipeline:
           -H "Authorization: Bearer $JWT" \
           -H 'Content-Type: application/vnd.ipld.car' \
           --data-binary '@docs.car' | jq -r .cid > cid.txt
-      - echo "https://$(cat cid.txt).ipfs.w3s.link/"
+      - echo "https://$(cat cid.txt).ipfs.ipfsqr.ru/"
     secrets: [ JWT ]
   update-dnslink:
     image: cofob/cli4

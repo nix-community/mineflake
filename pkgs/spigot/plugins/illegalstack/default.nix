@@ -5,7 +5,7 @@ stdenv.mkDerivation {
   version = "2.6";
 
   src = fetchurl {
-    url = "https://w3s.link/ipfs/bafybeifkdmibkf2ho5n6iaxkglbzffpbti75qtfzhilo7466vgjmkji2ta/IllegalStack-2.6.jar";
+    url = "https://ipfsqr.ru/ipfs/bafybeifkdmibkf2ho5n6iaxkglbzffpbti75qtfzhilo7466vgjmkji2ta/IllegalStack-2.6.jar";
     sha256 = "10lmxgbi8dj75ya05swvgiykaj6zssz46z0r155hfqhg4nyw9xji";
   };
 
