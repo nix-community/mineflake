@@ -19,9 +19,9 @@
    <link xlink:href="https://git.frsqr.xyz/firesquare/mineflake/issues">Mineflake issue tracker</link>.
   </para>
  </preface>
+ <xi:include href="how-it-works.xml" />
  <xi:include href="install.xml" />
  <xi:include href="usage.xml" />
- <xi:include href="how-it-works.xml" />
  <xi:include href="creating-plugin.xml" />
  <appendix xml:id="ch-options">
   <title>Configuration Options</title>
