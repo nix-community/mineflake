@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article>
+<article
+  xmlns="http://docbook.org/ns/docbook" version="5.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <info>
+    <title></title>
+  </info>
+  <section xml:id="creating-plugin">
+    <title>Creating plugin</title>
+    <section xml:id="how-plugins-work">
+      <title>How plugins work</title>
+      <para>
+        Basically, plugins are simple, so we recommend you to read the
+        <link xlink:href="https://nixos.org/guides/nix-pills/">Nix
+        Pills</link> series of articles and documentation about them.
+      </para>
+      <para>
+        The only difference between plugins and regular packages is
+        their meta information - the information by which mineflake
+        knows what it is, how to install it, what configurations it has.
+        Plugins do not have a description of options or any other
+        business logic inside them.
+      </para>
+      <section xml:id="what-parameters-can-plugins-contain">
+        <title>What parameters can plugins contain?</title>
+        <itemizedlist spacing="compact">
+          <listitem>
+            <para>
+              <literal>configs</literal> - attrs of the configs.
+              (Folders for them should already exist)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>server</literal> - the type of server for which
+              this plugin is suitable. This field is needed for
+              build-time checks for config correctness. It can be
+              <literal>bungee</literal>, for bungeecord-based,
+              <literal>spigot</literal>, for spigot-based or
+              <literal>forge</literal>, for forge mods (there is no
+              support for forge at this time).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>type</literal> - plugin type. It can be either
+              <literal>complex</literal>, for complex packages with
+              complex dependency relationships, or
+              <literal>result</literal>, for simple plugins with no
+              additional dependencies for themselves. Complex plugins
+              must contain the result file in the
+              <literal>$out</literal> folder, with the main jar file.
+              result plugins must contain the jar file in the
+              <literal>$out</literal> path, with no additional
+              directory.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>struct</literal> - field only for complex type of
+              plugins. Contains attrs map (path in server folder)=(path
+              in out folder).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>deps</literal> - list with other plugins that
+              will be installed along with this plugin.
+              (<emphasis role="strong">Important</emphasis> - plugin
+              dependencies cannot have other dependencies.)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>folders</literal> - list of folders that will be
+              created in the server folder.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+    </section>
+    <section xml:id="practice">
+      <title>Practice</title>
+      <para>
+        You can look at
+        <link xlink:href="https://git.frsqr.xyz/firesquare/mineflake/src/branch/main/pkgs/spigot/plugins">ready-made
+        plugins</link> as a reference.
+      </para>
+      <section xml:id="simple-plugin">
+        <title>Simple plugin</title>
+        <programlisting language="bash">
+{ callPackage, lib, stdenv, fetchurl, ... }:
+
+let
+  version = &quot;1.0&quot;;
+in
+stdenv.mkDerivation {
+  inherit version;
+
+  pname = &quot;PluginName&quot;;
+
+  src = fetchurl {
+    url = &quot;https://github.com/author/${pname}/releases/download/${version}/${pname}-${version}.jar&quot;;
+    sha256 = &quot;1f9w6rdmma009x8k3l4k2h006swkascd8mk2mqi5bm3vj95515q8&quot;; # You can get this hash via the command &quot;nix-prefetch-url &lt;file link&gt;&quot;
+  };
+
+  dontUnpack = true;
+  dontConfigure = true;
+
+  installPhase = &quot;install -Dm444 $src $out&quot;;
+
+  meta = with lib; {
+    description = &quot;Short plugin description&quot;;
+    homepage = &quot;https://github.com/author/${pname}&quot;;
+    license = licenses.mit; # See LICENSE file in plugin repo
+    platforms = platforms.all;
+    deps = [ ];
+    configs = {
+      &quot;plugins/${pname}/config.yml&quot; = {
+        type = &quot;yaml&quot;;
+        data = {
+            example-value = true;
+        };
+      };
+    };
+    server = &quot;spigot&quot;;
+    type = &quot;result&quot;;
+    folders = [ &quot;plugins/${pname}&quot; ];
+  };
+}
+</programlisting>
+      </section>
+      <section xml:id="complex-plugin">
+        <title>Complex plugin</title>
+        <programlisting language="bash">
+{ callPackage, lib, stdenv, fetchurl, ... }:
+
+let
+  version = &quot;1.0&quot;;
+  pname = &quot;PluginName&quot;;
+  additional_dep = fetchurl {
+    url = &quot;https://github.com/author/${pname}/releases/download/${version}/${pname}-${version}-lib.jar&quot;;
+    sha256 = &quot;053kv00g07pp083f18safwllgq9a41r69z2k806860r02p89mj1d&quot;;
+  };
+in
+stdenv.mkDerivation {
+  inherit version pname;
+
+  src = fetchurl {
+    url = &quot;https://github.com/author/${pname}/releases/download/${version}/${pname}-${version}.jar&quot;;
+    sha256 = &quot;1f9w6rdmma009x8k3l4k2h006swkascd8mk2mqi5bm3vj95515q8&quot;;
+  };
+
+  dontUnpack = true;
+  dontConfigure = true;
+
+  installPhase = ''
+    mkdir -p $out
+    install -Dm444 $src $out/result
+    install -Dm444 ${additional_dep} $out/lib.jar
+  '';
+
+  meta = with lib; {
+    description = &quot;Short plugin description&quot;;
+    homepage = &quot;https://github.com/author/${pname}&quot;;
+    license = licenses.mit; # See LICENSE file in plugin repo
+    platforms = platforms.all;
+    deps = [ ];
+    configs = {
+      &quot;plugins/${pname}/config.yml&quot; = {
+        type = &quot;yaml&quot;;
+        data = {
+            example-value = true;
+        };
+      };
+    };
+    server = &quot;spigot&quot;;
+    type = &quot;complex&quot;;
+    struct = {
+        &quot;plugins/${pname}/libs/library.jar&quot; = &quot;lib.jar&quot;;
+    };
+    folders = [ &quot;plugins/${pname}&quot; &quot;plugins/${pname}/libs&quot; ];
+  };
+}
+</programlisting>
+      </section>
+    </section>
+  </section>
+</article>

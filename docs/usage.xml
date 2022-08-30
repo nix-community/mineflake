@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article>
+<article
+  xmlns="http://docbook.org/ns/docbook" version="5.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <info>
+    <title></title>
+  </info>
+  <section xml:id="usage">
+    <title>Usage</title>
+    <para>
+      Once you have installed mineflake you can start using it.
+    </para>
+    <programlisting language="bash">
+  minecraft = {
+    enable = true;
+    default.hostAddress = &quot;192.168.100.1&quot;;
+    servers.example = {
+      localAddress = &quot;192.168.100.2&quot;;
+      plugins = with pkgs.spigot; [ negativity lightchatbubbles ];
+    };
+  };
+</programlisting>
+    <para>
+      See options page, for a full description of all possible features
+    </para>
+    <section xml:id="setting-up-internet-access">
+      <title>Setting up Internet access</title>
+      <para>
+        The systemd-nspawn containers do not configure the firewall in
+        any additional way, unlike docker, so we need to configure the
+        NAT ourselves.
+      </para>
+      <programlisting language="bash">
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [&quot;ve-+&quot;];
+  };
+</programlisting>
+    </section>
+    <section xml:id="port-forwarding">
+      <title>Port forwarding</title>
+      <para>
+        To open a port there is a special option forwardPorts
+      </para>
+      <para>
+        In the example above we open port 5000 and port 30000 which will
+        be redirected to port 25565 inside the container.
+      </para>
+      <programlisting language="bash">
+  minecraft = {
+    enable = true;
+    default.hostAddress = &quot;192.168.100.1&quot;;
+    servers.example = {
+      localAddress = &quot;192.168.100.2&quot;;
+      forwardPorts = [ &quot;30000:25565&quot;, 5000 ];
+    };
+  };
+</programlisting>
+    </section>
+    <section xml:id="bungeecord">
+      <title>Bungeecord</title>
+      <para>
+        Mineflake fully supports the functionality of bungeecord. Below
+        is a minimal configuration with proxy server, lobby and game
+        server.
+      </para>
+      <programlisting language="bash">
+  minecraft = {
+    enable = true;
+    default.hostAddress = &quot;192.168.100.1&quot;;
+    servers = {
+      proxy = {
+        localAddress = &quot;192.168.100.2&quot;;
+        forwardPorts = [ 25565 ];
+        bungeecord = {
+          enable = true;
+          online_mode = false;
+          servers = {
+            lobby.address = &quot;192.168.100.3&quot;;
+            main.address = &quot;192.168.100.4&quot;;
+          };
+          listeners = [
+            {
+              host = &quot;0.0.0.0:25565&quot;;
+              motd = &quot;Some cool server!&quot;;
+              priorities = [ &quot;lobby&quot; ];
+            }
+          ];
+        };
+      };
+      lobby = {
+        localAddress = &quot;192.168.100.3&quot;;
+        properties = {
+          enable = true;
+          online-mode = false;
+        };
+      };
+      main = {
+        localAddress = &quot;192.168.100.4&quot;;
+        properties = {
+          enable = true;
+          online-mode = false;
+        };
+      };
+    };
+  };
+</programlisting>
+    </section>
+    <section xml:id="custom-configs">
+      <title>Custom configs</title>
+      <para>
+        Not all plugins have options written for them - as this is a
+        long painful manual job. Instead, you can use a more low-level
+        way to manage configs. In the example below, we enable sessions
+        in AuthMe plugin.
+      </para>
+      <programlisting language="bash">
+  minecraft = {
+    enable = true;
+    default.hostAddress = &quot;192.168.100.1&quot;;
+    servers = {
+      main = {
+        localAddress = &quot;192.168.100.2&quot;;
+        plugins = [ pkgs.spigot.authme ];
+        configs = {
+          &quot;plugins/AuthMe/config.yml&quot; = {
+            type = &quot;yaml&quot;;
+            data = {
+              settings.sessions.enabled = true;
+            };
+          };
+        };
+      };
+    };
+  };
+</programlisting>
+    </section>
+    <section xml:id="default-values">
+      <title>Default values</title>
+      <para>
+        To avoid duplicate configurations between servers, the default
+        option is provided - it will be merged with all servers unless
+        otherwise specified. We already used this value when we set the
+        hostAddress option.
+      </para>
+      <para>
+        In the example below, we will change the
+        <literal>language.yml</literal> file of CoreProtect for all
+        servers.
+      </para>
+      <programlisting language="bash">
+  minecraft = {
+    enable = true;
+    default = {
+      hostAddress = &quot;192.168.100.1&quot;;
+      configs = {
+        &quot;plugins/CoreProtect/language.yml&quot; = {
+          type = &quot;yaml&quot;;
+          data = {
+            TELEPORTED = &quot;We changed config value in all servers! Teleported to {0}.&quot;;
+          };
+        };
+      };
+    };
+    servers = {
+      example1 = {
+        localAddress = &quot;192.168.100.2&quot;;
+        plugins = [ pkgs.spigot.coreprotect ];
+      };
+      example2 = {
+        localAddress = &quot;192.168.100.3&quot;;
+        plugins = [ pkgs.spigot.coreprotect ];
+      };
+      example3 = {
+        useDefault = false; # On this server, we disabled the &quot;default&quot; merge, so the config will not be changed here, and the hostAddress option needs to be repeated.
+        hostAddress = &quot;192.168.100.1&quot;;
+        localAddress = &quot;192.168.100.4&quot;;
+        plugins = [ pkgs.spigot.coreprotect ];
+      };
+    };
+  };
+</programlisting>
+    </section>
+  </section>
+</article>
