@@ -20,11 +20,3 @@ pipeline:
           --data-binary '@docs.car' | jq -r .cid > cid.txt
       - echo "https://$(cat cid.txt).ipfs.ipfsqr.ru/"
     secrets: [ JWT ]
-  update-dnslink:
-    image: cofob/cli4
-    commands:
-      - cli4 --delete "/zones/:ipfsqr.ru/dns_records/:_dnslink.mineflake.ipfsqr.ru" || true
-      - cli4 --post "name=_dnslink.mineflake.ipfsqr.ru" type=TXT content="dnslink=/ipfs/$(cat cid.txt)" "/zones/:ipfsqr.ru/dns_records"
-    secrets: [ CLOUDFLARE_API_KEY, CLOUDFLARE_ACCOUNT_ID ]
-
-branches: main
