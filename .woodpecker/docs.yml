@@ -25,6 +25,6 @@ pipeline:
     commands:
       - cli4 --delete "/zones/:ipfsqr.ru/dns_records/:_dnslink.mineflake.ipfsqr.ru" || true
       - cli4 --post "name=_dnslink.mineflake.ipfsqr.ru" type=TXT content="dnslink=/ipfs/$(cat cid.txt)" "/zones/:ipfsqr.ru/dns_records"
-    secrets: [ CLOUDFLARE_API_TOKEN, CLOUDFLARE_API_KEY, CLOUDFLARE_ACCOUNT_ID ]
+    secrets: [ CLOUDFLARE_API_KEY, CLOUDFLARE_ACCOUNT_ID ]
 
 branches: main
