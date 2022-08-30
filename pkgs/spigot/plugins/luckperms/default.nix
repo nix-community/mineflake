@@ -2,7 +2,7 @@
 
 let
   hash = "sha256-PoCUj536ApYR5Chw/jiabPHspVtzdIAL1rUSgPn6KyA=";
-  url = "https://ipfsqr.ru/ipfs/bafybeidlkbnqjddmsowjmbvrfrt7b54qqjxwrlmtvmdfpah5qqo72rvxvm/luckperms-spigot.tar.gz";
+  url = "https://static.ipfsqr.ru/ipfs/bafybeidlkbnqjddmsowjmbvrfrt7b54qqjxwrlmtvmdfpah5qqo72rvxvm/luckperms-spigot.tar.gz";
   src = fetchzip {
     url = url;
     hash = hash;

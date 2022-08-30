@@ -9,7 +9,7 @@ stdenv.mkDerivation {
   pname = "PlaceholderAPI";
 
   src = fetchurl {
-    url = "https://ipfsqr.ru/ipfs/bafybeigvumgag6nuirysu4kufwqpiiqavmrjlvtrkqkplszztasa733dua/PlaceholderAPI-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeigvumgag6nuirysu4kufwqpiiqavmrjlvtrkqkplszztasa733dua/PlaceholderAPI-${version}.jar";
     sha256 = "1mkp74qmxn0x58q5yw4xf2j9i9naamjsdk0x2cib52mzsw4cnx06";
   };
 
