@@ -399,6 +399,10 @@ in
                   "resolv.conf".text = (concatStringsSep "\n" (map (nameserver: "nameserver ${nameserver}") server.nameservers));
                 };
 
+                environment.systemPackages = [
+                  server.jre
+                ];
+
                 system.stateVersion = "22.05";
               };
             };
