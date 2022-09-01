@@ -34,7 +34,7 @@ stdenv.mkDerivation {
         data = importJSON ./en.yml.json;
       };
     };
-    server = "spigot";
+    server = ["spigot"];
     type = "result";
     folders = [ "plugins/Chatty" "plugins/Chatty/locale" ];
   };

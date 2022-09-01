@@ -31,7 +31,7 @@ stdenv.mkDerivation {
         data = importJSON ./config.json;
       };
     };
-    server = "spigot";
+    server = ["spigot"];
     type = "result";
     folders = [ "plugins/Essentials" ];
   };

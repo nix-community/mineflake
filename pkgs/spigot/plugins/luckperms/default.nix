@@ -167,7 +167,7 @@ stdenv.mkDerivation {
         };
       };
     };
-    server = "spigot";
+    server = ["spigot"];
     type = "complex";
     deps = [ ];
     struct = builtins.listToAttrs (map (entry: { name = "plugins/LuckPerms/libs/${entry}"; value = "libs/${entry}"; }) [
