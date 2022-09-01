@@ -31,7 +31,7 @@ stdenv.mkDerivation {
         data = importJSON ./discord.json;
       };
     };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [ "plugins/EssentialsDiscord" ];
   };

@@ -26,7 +26,7 @@ stdenv.mkDerivation {
     platforms = platforms.all;
     deps = [ (callPackage ./default.nix { }) ];
     configs = { };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [ ];
   };

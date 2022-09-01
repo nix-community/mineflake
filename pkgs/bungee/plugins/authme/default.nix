@@ -29,7 +29,7 @@ stdenv.mkDerivation {
         data = importJSON ./config.yml.json;
       };
     };
-    server = ["bungee"];
+    server = [ "bungee" ];
     type = "result";
     deps = [ ];
     folders = [ "plugins/AuthMeBungee" ];

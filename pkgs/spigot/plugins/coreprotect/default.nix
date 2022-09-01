@@ -289,7 +289,7 @@ stdenv.mkDerivation {
         };
       };
     };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [
       "plugins/CoreProtect"

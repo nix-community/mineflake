@@ -30,7 +30,7 @@ stdenv.mkDerivation {
         data = importJSON ./config.yml.json;
       };
     };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [ "plugins/PlaceholderAPI" ];
   };

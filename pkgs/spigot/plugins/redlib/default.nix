@@ -25,7 +25,7 @@ stdenv.mkDerivation {
     platforms = platforms.all;
     deps = [ ];
     configs = { };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [ ];
   };

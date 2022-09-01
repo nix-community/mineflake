@@ -30,7 +30,7 @@ stdenv.mkDerivation {
         data = importJSON ./messages.yml.json;
       };
     };
-    server = ["spigot"];
+    server = [ "spigot" ];
     type = "result";
     folders = [ "plugins/IllegalStack" ];
   };
