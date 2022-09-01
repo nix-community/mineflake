@@ -450,6 +450,17 @@ in
     {
       # TODO: check if plugins have same server type value with server.package
       assertions = [ ];
+      warnings = flatten (utils.attrsToList (mapAttrs (name: server:
+                                      concatMap (plugin:
+                                        if (plugin.meta ? "legacy") then
+                                          optional plugin.meta.legacy
+                                            ("The ${plugin.pname} plugin declared in the ${name} " +
+                                            "configuration will load an additional layer of " +
+                                            "support for legacy plugins. It is recommended to " +
+                                            "replace it for better performance.")
+                                        else [])
+                                      server.plugins)
+                                    cfg.servers));
     }
   );
 }

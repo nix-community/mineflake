@@ -67,4 +67,6 @@ in
         else last values
       );
     in f [ ] attrList;
+
+  attrsToList = attrs: map (key: getAttr key attrs) (attrNames attrs);
 }
