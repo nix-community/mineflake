@@ -31,4 +31,5 @@ with pkgs; {
   playtime = callPackage ./plugins/playtime { };
   placeholderapi = callPackage ./plugins/placeholderapi { };
   lightchatbubbles = callPackage ./plugins/lightchatbubbles { };
+  elyby = callPackage ./plugins/elyby { };
 }
