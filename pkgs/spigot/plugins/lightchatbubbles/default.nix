@@ -29,5 +29,6 @@ stdenv.mkDerivation {
     server = ["spigot"];
     type = "result";
     folders = [ "plugins/LightChatBubbles" ];
+    legacy = true;
   };
 }
