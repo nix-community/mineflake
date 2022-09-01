@@ -448,19 +448,29 @@ in
         (attrNames cfg.servers));
     } //
     {
-      # TODO: check if plugins have same server type value with server.package
-      assertions = [ ];
+      assertions = flatten (utils.attrsToList(mapAttrs (name: server:
+        map (plugin:
+          {
+            assertion = builtins.elem server.package.meta.server plugin.meta.server;
+            message =
+              ("The ${plugin.pname} plugin declared in the ${name} " +
+              "configuration is not compatible with the " +
+              "${server.package.meta.server} (${server.package.pname}) " +
+              "type server.");
+          })
+        server.plugins)
+      cfg.servers));
       warnings = flatten (utils.attrsToList (mapAttrs (name: server:
-                                      concatMap (plugin:
-                                        if (plugin.meta ? "legacy") then
-                                          optional plugin.meta.legacy
-                                            ("The ${plugin.pname} plugin declared in the ${name} " +
-                                            "configuration will load an additional layer of " +
-                                            "support for legacy plugins. It is recommended to " +
-                                            "replace it for better performance.")
-                                        else [])
-                                      server.plugins)
-                                    cfg.servers));
+        concatMap (plugin:
+          if (plugin.meta ? "legacy") then
+            optional plugin.meta.legacy
+              ("The ${plugin.pname} plugin declared in the ${name} " +
+              "configuration will load an additional layer of " +
+              "support for legacy plugins. It is recommended to " +
+              "replace it for better performance.")
+          else [])
+        server.plugins)
+      cfg.servers));
     }
   );
 }
