@@ -1,9 +1,15 @@
-{ lib, utils, ... }:
+{ lib, utils, spigot, ... }:
 
 with lib; with utils; {
   submodule = types.submodule ({ ... }: {
     options = {
       enable = mkEnableOption "Enables lazymc reverse proxy";
+
+      package = mkOption {
+        type = types.package;
+        default = spigot.lazymc;
+        description = "Lazymc package";
+      };
     };
   });
 

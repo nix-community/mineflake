@@ -312,7 +312,7 @@ in
                           (optional (server.maxMemory != null) "-Xmx${server.maxMemory}")))} -jar ${server.package}/result ${builtins.toString (builtins.map (x: "\""+x+"\"") server.opts)}'';
             start =
               if server.lazymc.enable then
-                "${spigot.lazymc}/bin/lazymc -c ${server.datadir}/lazymc.toml"
+                "${server.lazymc.package}/bin/lazymc -c ${server.datadir}/lazymc.toml"
               else
                 java-start;
           in
@@ -424,7 +424,7 @@ in
 
                 environment.systemPackages = [
                   server.jre
-                ];
+                ] ++ optional server.lazymc.enable server.lazymc.package;
 
                 system.stateVersion = "22.05";
               };
