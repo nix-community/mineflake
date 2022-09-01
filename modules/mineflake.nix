@@ -75,6 +75,12 @@ in
               description = "Server data directory";
             };
 
+            hostdir = mkOption {
+              type = types.path;
+              default = "/var/lib/mineflake/${name}";
+              description = "Host system data directory";
+            };
+
             secretsFile = mkOption {
               type = types.nullOr types.path;
               default = null;
@@ -95,14 +101,14 @@ in
             binds = mkOption {
               type = types.listOf types.path;
               default = [ ];
-              example = [ "/etc/somepath" ];
+              example = [ "/etc/somepath" "/host/path:/container/path" ];
               description = "List of paths that will be available inside the container (like volumes in docker)";
             };
 
             ro-binds = mkOption {
               type = types.listOf types.path;
               default = [ ];
-              example = [ "/etc/somepath" ];
+              example = [ "/etc/somepath" "/host/path:/container/path" ];
               description = "List of paths that will be available inside the container in read-only mode (like volumes in docker)";
             };
 
@@ -319,7 +325,8 @@ in
               localAddress = server.localAddress;
               extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) [ server.secretsFile ]))) ++
                 (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
-                (map (path: "--bind=${path}") server.binds) ++ server.extraFlags;
+                (map (path: "--bind=${path}") (server.binds ++ [ "${server.hostdir}:${server.datadir}" ])) ++ server.extraFlags;
+              ephemeral = true;
               config = { config, pkgs, ... }: {
                 systemd.services.minecraft = {
                   restartIfChanged = true;
@@ -425,6 +432,21 @@ in
           })
         cfg.servers; in
     { containers = builtins.listToAttrs (map (key: getAttr key server-containers) (attrNames server-containers)); } //
+    # Dirty hack to create a data folder before starting the container. We make the container unit depend on this unit, and run after it.
+    {
+      systemd.services = builtins.listToAttrs (map
+        (key: {
+          name = "mf-${key}-prepare";
+          value = {
+            requiredBy = [ "container@mf-${key}.service" ];
+            wantedBy = [ "container@mf-${key}.service" ];
+            script = "mkdir -p ${(getAttr key cfg.servers).hostdir}";
+            serviceConfig.Type = "oneshot";
+            serviceConfig.RemainAfterExit = true;
+          };
+        })
+        (attrNames cfg.servers));
+    } //
     {
       # TODO: check if plugins have same server type value with server.package
       assertions = [ ];
