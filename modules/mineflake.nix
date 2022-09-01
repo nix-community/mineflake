@@ -266,7 +266,7 @@ in
             package = mkOption {
               type = types.package;
               default = spigot.paper;
-              example = "pkgs.spigot.paper";
+              example = "pkgs.mineflake.paper";
               description = "Server package";
             };
           };

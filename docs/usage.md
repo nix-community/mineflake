@@ -8,7 +8,7 @@ Once you have installed mineflake you can start using it.
     default.hostAddress = "192.168.100.1";
     servers.example = {
       localAddress = "192.168.100.2";
-      plugins = with pkgs.spigot; [ negativity lightchatbubbles ];
+      plugins = with pkgs.mineflake; [ negativity lightchatbubbles ];
     };
   };
 ```
@@ -100,7 +100,7 @@ Not all plugins have options written for them - as this is a long painful manual
     servers = {
       main = {
         localAddress = "192.168.100.2";
-        plugins = [ pkgs.spigot.authme ];
+        plugins = [ pkgs.mineflake.authme ];
         configs = {
           "plugins/AuthMe/config.yml" = {
             type = "yaml";
@@ -137,17 +137,17 @@ In the example below, we will change the `language.yml` file of CoreProtect for 
     servers = {
       example1 = {
         localAddress = "192.168.100.2";
-        plugins = [ pkgs.spigot.coreprotect ];
+        plugins = [ pkgs.mineflake.coreprotect ];
       };
       example2 = {
         localAddress = "192.168.100.3";
-        plugins = [ pkgs.spigot.coreprotect ];
+        plugins = [ pkgs.mineflake.coreprotect ];
       };
       example3 = {
         useDefault = false; # On this server, we disabled the "default" merge, so the config will not be changed here, and the hostAddress option needs to be repeated.
         hostAddress = "192.168.100.1";
         localAddress = "192.168.100.4";
-        plugins = [ pkgs.spigot.coreprotect ];
+        plugins = [ pkgs.mineflake.coreprotect ];
       };
     };
   };

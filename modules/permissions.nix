@@ -76,7 +76,7 @@ with lib; with utils; {
       package = mkOption {
         type = types.package;
         default = spigot.luckperms;
-        example = "pkgs.spigot.luckperms";
+        example = "pkgs.mineflake.luckperms";
         description = "Plugin package";
       };
     };
