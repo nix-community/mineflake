@@ -3,7 +3,7 @@
 with lib; let
   mkConfigFile = option: (
     # yaml compatible with json format
-    if option.type == "yaml" || option.type == "json" then
+    if option.type == "yaml" || option.type == "json" || option.type == "toml" then
       (builtins.toFile "config.${option.type}" (builtins.toJSON option.data))
     else if option.type == "raw" then
       (builtins.toFile "config.${option.type}" option.data.raw)
@@ -26,6 +26,8 @@ in
         rm -f "${server.datadir}/${key}"
         ${if (getAttr key configs).type == "yaml" then
           ''${spigot.utils}/bin/json_to_yaml.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
+        if (getAttr key configs).type == "toml" then
+          ''${spigot.utils}/bin/json_to_toml.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
         if (getAttr key configs).type == "json" then
           ''${spigot.utils}/bin/format_json.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
           ''cp "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"''}

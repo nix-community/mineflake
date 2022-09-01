@@ -6,6 +6,7 @@ with lib; let
   properties = import ./properties.nix default_args;
   permissions = import ./permissions.nix default_args;
   bungeecord = import ./bungeecord.nix default_args;
+  lazymc = import ./lazymc.nix default_args;
 
   cfg = config.minecraft;
 
@@ -138,7 +139,7 @@ in
                 ({ ... }: {
                   options = {
                     type = mkOption {
-                      type = types.enum [ "yaml" "json" "raw" ];
+                      type = types.enum [ "yaml" "json" "toml" "raw" ];
                       default = "yaml";
                       example = "raw";
                       description = "Type of config";
@@ -206,6 +207,12 @@ in
               type = bungeecord.submodule;
               default = { };
               description = "Bungeecord settings";
+            };
+
+            lazymc = mkOption {
+              type = lazymc.submodule;
+              default = { };
+              description = "Lazymc settings";
             };
 
             disable-bstats = mkEnableOption "Disable bStats statistics collection";
@@ -288,9 +295,20 @@ in
               (permissions.generator server.permissions)
               (properties.generator server.properties)
               (bungeecord.generator server.bungeecord)
+              (lazymc.generator server)
             ] //
             # User configs (highest priority)
             server.configs;
+
+            # ExecStart generation
+            java-start = pkgs.writeShellScript "start.sh" ''${server.jre}/bin/java ${builtins.toString (builtins.map (x: "\""+x+"\"") (server.java_opts ++
+                          (optional (server.minMemory != null) "-Xms${server.minMemory}") ++
+                          (optional (server.maxMemory != null) "-Xmx${server.maxMemory}")))} -jar ${server.package}/result ${builtins.toString (builtins.map (x: "\""+x+"\"") server.opts)}'';
+            start =
+              if server.lazymc.enable then
+                "${spigot.lazymc}/bin/lazymc -c ${server.datadir}/lazymc.toml"
+              else
+                java-start;
           in
           {
             name = "mf-${name}";
@@ -317,9 +335,7 @@ in
                       Group = "minecraft";
                       SyslogIdentifier = "minecraft";
                       WorkingDirectory = "${server.datadir}";
-                      ExecStart = ''${server.jre}/bin/java ${builtins.toString (builtins.map (x: "\""+x+"\"") (server.java_opts ++
-                        (optional (server.minMemory != null) "-Xms${server.minMemory}") ++
-                        (optional (server.maxMemory != null) "-Xmx${server.maxMemory}")))} -jar ${server.package}/result ${builtins.toString (builtins.map (x: "\""+x+"\"") server.opts)}'';
+                      ExecStart = start;
                       ReadWritePaths = [ server.datadir ];
                       CapabilityBoundingSet = "";
                       NoNewPrivileges = true;
@@ -376,8 +392,8 @@ in
                     ${optionalString (server.package.meta.type == "complex") (utils.linkComplex server.package (server.datadir))}
                     ${utils.mkConfigs server configs}
                     echo "Link server core for easier debug and local launch..."
-                    rm -f ${server.datadir}/server-*.jar
-                    ln -sf "${server.package}/result" "${server.datadir}/server-${utils.getName server.package}.jar"
+                    rm -f "${server.datadir}/start.sh"
+                    ln -sf "${java-start}" "${server.datadir}/start.sh"
                   '';
                 };
 

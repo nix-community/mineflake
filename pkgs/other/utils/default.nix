@@ -5,7 +5,7 @@ buildPythonApplication {
   pname = "mineflake-utils";
   version = "1.0";
 
-  propagatedBuildInputs = [ pyyaml ];
+  propagatedBuildInputs = [ pyyaml toml ];
 
   src = ./src;
 }

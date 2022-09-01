@@ -2,7 +2,8 @@
 
 with pkgs; {
   # Utils
-  utils = callPackage ../utils { };
+  utils = callPackage ../other/utils { };
+  lazymc = callPackage ../other/lazymc { };
 
   # Servers
   paper = callPackage ./servers/paper_1.18.2 { };
