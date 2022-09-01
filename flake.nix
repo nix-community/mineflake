@@ -8,11 +8,7 @@
       nixosModules.default = import ./modules/mineflake.nix;
 
       overlays.default = final: prev: {
-        spigot = import ./pkgs/spigot {
-          pkgs = prev;
-          lib = prev.lib;
-        };
-        bungee = import ./pkgs/bungee {
+        mineflake = import ./pkgs {
           pkgs = prev;
           lib = prev.lib;
         };

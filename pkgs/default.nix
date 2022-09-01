@@ -2,12 +2,14 @@
 
 with pkgs; {
   # Utils
-  utils = callPackage ../other/utils { };
-  lazymc = callPackage ../other/lazymc { };
+  utils = callPackage ./other/utils { };
+  lazymc = callPackage ./other/lazymc { };
 
   # Servers
   paper = callPackage ./servers/paper_1.18.2 { };
   paper_1_18_2 = callPackage ./servers/paper_1.18.2 { };
+  bungeecord = callPackage ./servers/bungeecord { };
+  waterfall = callPackage ./servers/waterfall { };
 
   # Plugins
   luckperms = callPackage ./plugins/luckperms { };
@@ -32,4 +34,6 @@ with pkgs; {
   placeholderapi = callPackage ./plugins/placeholderapi { };
   lightchatbubbles = callPackage ./plugins/lightchatbubbles { };
   elyby = callPackage ./plugins/elyby { };
+  authmebungee = callPackage ./plugins/authmebungee { };
+  cleanmotd = callPackage ./plugins/cleanmotd { };
 }

@@ -1,8 +1,8 @@
 { lib, pkgs, config, ... }:
 
 with lib; let
-  utils = import ./utils.nix { inherit lib; inherit spigot; inherit bungee; };
-  default_args = { inherit lib; inherit spigot; inherit bungee; inherit utils; };
+  utils = import ./utils.nix { inherit lib; inherit spigot; };
+  default_args = { inherit lib; inherit spigot; inherit utils; };
   properties = import ./properties.nix default_args;
   permissions = import ./permissions.nix default_args;
   bungeecord = import ./bungeecord.nix default_args;
@@ -10,8 +10,7 @@ with lib; let
 
   cfg = config.minecraft;
 
-  spigot = pkgs.callPackage ../pkgs/spigot { };
-  bungee = pkgs.callPackage ../pkgs/bungee { };
+  spigot = pkgs.callPackage ../pkgs { };
 
   eula-file = utils.mkConfigFile {
     type = "raw";

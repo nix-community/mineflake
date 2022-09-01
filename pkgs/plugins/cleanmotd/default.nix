@@ -33,7 +33,7 @@ stdenv.mkDerivation {
         data = importJSON ./config.yml.json;
       };
     };
-    server = [ "bungee" ];
+    server = [ "bungee" "spigot" ];
     type = "result";
     deps = [ ];
     folders = [ "plugins/CleanMotD" ];
