@@ -36,4 +36,5 @@ with pkgs; {
   elyby = callPackage ./plugins/elyby { };
   authmebungee = callPackage ./plugins/authmebungee { };
   cleanmotd = callPackage ./plugins/cleanmotd { };
+  inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
 }
