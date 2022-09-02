@@ -1,0 +1,78 @@
+{
+  "SkinWithoutPerm": true,
+  "SkinChangeCooldown": 30,
+  "SkinErrorCooldown": 5,
+  "EnableCustomHelp": false,
+  "DisablePrefix": false,
+  "DefaultSkins": {
+    "Enabled": false,
+    "ApplyForPremium": false,
+    "Names": [
+      "xknat",
+      "Pistonmaster"
+    ]
+  },
+  "DisabledSkins": {
+    "Enabled": false,
+    "Names": [
+      "steve",
+      "owner"
+    ]
+  },
+  "NotAllowedCommandServers": {
+    "Enabled": true,
+    "AllowList": false,
+    "IfNoServerBlockCommand": false,
+    "List": [
+      "auth"
+    ]
+  },
+  "CustomGUI": {
+    "Enabled": false,
+    "ShowOnlyCustomGUI": true,
+    "Names": [
+      "xknat",
+      "Pistonmaster"
+    ]
+  },
+  "PerSkinPermissions": false,
+  "SkinExpiresAfter": 15,
+  "MySQL": {
+    "Enabled": false,
+    "Host": "localhost",
+    "Port": 3306,
+    "Database": "db",
+    "Username": "root",
+    "Password": "pass",
+    "MaxPoolSize": 10,
+    "SkinTable": "Skins",
+    "PlayerTable": "Players",
+    "ConnectionOptions": "verifyServerCertificate=false&useSSL=false&serverTimezone=UTC"
+  },
+  "NoSkinIfLoginCanceled": true,
+  "AlwaysApplyPremium": false,
+  "RestrictSkinUrls": {
+    "Enabled": false,
+    "List": [
+      "https://i.imgur.com",
+      "http://i.imgur.com",
+      "https://storage.googleapis.com",
+      "http://storage.googleapis.com",
+      "https://cdn.discordapp.com",
+      "http://cdn.discordapp.com",
+      "https://textures.minecraft.net",
+      "http://textures.minecraft.net"
+    ]
+  },
+  "MineskinAPIKey": "key",
+  "ResourcePackFix": true,
+  "DismountPlayerOnSkinUpdate": true,
+  "RemountPlayerOnSkinUpdate": true,
+  "DismountPassengersOnSkinUpdate": false,
+  "DisableOnJoinSkins": false,
+  "DisallowAutoUpdateSkin": false,
+  "EnableProtocolListener": false,
+  "ForwardTextures": true,
+  "Updater": null,
+  "Debug": false
+}

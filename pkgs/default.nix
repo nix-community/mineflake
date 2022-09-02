@@ -42,4 +42,5 @@ with pkgs; {
   tablist = callPackage ./plugins/tablist { };
   tablistbungee = callPackage ./plugins/tablistbungee { };
   advancedban = callPackage ./plugins/advancedban { };
+  skinsrestorer = callPackage ./plugins/skinsrestorer { };
 }
