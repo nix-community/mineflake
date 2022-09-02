@@ -17,6 +17,7 @@ with pkgs; {
   advancedban = callPackage ./plugins/advancedban { };
   authme = callPackage ./plugins/authme { };
   authmebungee = callPackage ./plugins/authmebungee { };
+  blockrename = callPackage ./plugins/blockrename { };
   chatty = callPackage ./plugins/chatty { };
   cleanmotd = callPackage ./plugins/cleanmotd { };
   coreprotect = callPackage ./plugins/coreprotect { };
