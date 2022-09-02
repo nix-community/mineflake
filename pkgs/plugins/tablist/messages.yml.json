@@ -1,0 +1,32 @@
+{
+  "reloadconfig": "&aReloaded!",
+  "nopermission": "&cYou don't have permission for that!&7 (%perm%)",
+  "unknownsub-command": "&cUnknown sub-command&7 %subcmd%&c.",
+  "noconsole": "&cThis command '&7/%command%&c' can only be in-game.",
+  "set-group": {
+    "meta-could-not-be-empty": "&cThe prefix text could not be empty!",
+    "meta-set": "&aYou have set meta for&e %team%&a, with this:&r %meta%",
+    "priority-must-be-number": "&cThe priority must be a number!",
+    "not-found": "&cThis team&7 %team%&c not found.",
+    "removed": "&cTeam with name&7 %team%&c removed."
+  },
+  "toggle": {
+    "console-usage": "&cUse: &7/%command% toggle <player/all>",
+    "enabled": "&aTab is turned on!",
+    "disabled": "&cTab is turned off!",
+    "player-not-found": "&cThis player&7 %player%&c not found!"
+  },
+  "fake-player": {
+    "added": "&aFake player&7 %name%&a added",
+    "removed": "&cFake player&7 %name%&c removed",
+    "already-added": "&cFake player&7 %name%&c already added.",
+    "not-exists": "&cFake player with this name not exists.",
+    "no-fake-player": "&cThere is no fake player either.",
+    "disabled": "&cFake player option is disabled in config.",
+    "ping-can-not-be-less": "&cThe ping amount should be greater than&e %amount%&c and the value should be a number.",
+    "list": [
+      "&cFake players&7 (&e%amount%&7):",
+      "&r%fake-players%"
+    ]
+  }
+}

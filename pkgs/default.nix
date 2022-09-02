@@ -39,4 +39,6 @@ with pkgs; {
   inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
   plasmovoice = callPackage ./plugins/plasmovoice { };
   discordsrv = callPackage ./plugins/discordsrv { };
+  tablist = callPackage ./plugins/tablist { };
+  tablistbungee = callPackage ./plugins/tablistbungee { };
 }
