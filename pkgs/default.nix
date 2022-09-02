@@ -33,6 +33,7 @@ with pkgs; {
   essentialsx-xmpp = callPackage ./plugins/essentialsx/xmpp.nix { };
   illegalstack = callPackage ./plugins/illegalstack { };
   inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
+  itemcontrol = callPackage ./plugins/itemcontrol { };
   lightchatbubbles = callPackage ./plugins/lightchatbubbles { };
   luckperms = callPackage ./plugins/luckperms { };
   negativity = callPackage ./plugins/negativity { };
