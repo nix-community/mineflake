@@ -37,4 +37,5 @@ with pkgs; {
   authmebungee = callPackage ./plugins/authmebungee { };
   cleanmotd = callPackage ./plugins/cleanmotd { };
   inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
+  plasmovoice = callPackage ./plugins/plasmovoice { };
 }
