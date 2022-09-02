@@ -42,6 +42,7 @@ with pkgs; {
   playtime = callPackage ./plugins/playtime { };
   protocollib = callPackage ./plugins/protocollib { };
   redlib = callPackage ./plugins/redlib { };
+  shutdown = callPackage ./plugins/shutdown { };
   skinsrestorer = callPackage ./plugins/skinsrestorer { };
   tablist = callPackage ./plugins/tablist { };
   tablistbungee = callPackage ./plugins/tablistbungee { };

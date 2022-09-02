@@ -1,0 +1,14 @@
+{
+  "shutdown": "&cReboot in %time%! Reason: %reason%.",
+  "start": "&cShutdown initiated! Server will stop in %time%! Reason: %reason%.",
+  "stop": "&cShutdown stopped!",
+  "reload": "&aReloaded!",
+  "goodbye": "Goodbye!",
+  "kick": "Server stop!",
+  "title": "&4Reboot!",
+  "subtitle": "&cIn %time%.",
+  "placeholder_timer": "reboot in %time%",
+  "placeholder_reason": "reason: %reason%",
+  "seconds": " sec.",
+  "minutes": " min."
+}

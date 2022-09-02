@@ -1,0 +1,8 @@
+{
+  "delays": [],
+  "shutdown_time": 300,
+  "enable_titles": true,
+  "title_fade_in": 1,
+  "title_stay": 4,
+  "title_fade_out": 1
+}
