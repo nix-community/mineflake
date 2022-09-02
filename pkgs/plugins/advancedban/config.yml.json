@@ -1,0 +1,82 @@
+{
+  "UseMySQL": false,
+  "MySQL": {
+    "IP": "localhost",
+    "DB-Name": "database-name",
+    "Username": "admin",
+    "Password": "superSecret",
+    "Port": 3306,
+    "Properties": "verifyServerCertificate=false&useSSL=false&useUnicode=true&characterEncoding=utf8"
+  },
+  "DetailedEnableMessage": true,
+  "DetailedDisableMessage": true,
+  "LockdownOnError": true,
+  "DefaultReason": "none",
+  "TimeDiff": 0,
+  "MuteCommands": [
+    "me",
+    "say",
+    "action",
+    "eaction",
+    "describe",
+    "edescribe",
+    "eme",
+    "w",
+    "m",
+    "pm",
+    "whisper",
+    "ewhisper",
+    "emsg",
+    "msg",
+    "etell",
+    "tell",
+    "er",
+    "r",
+    "reply",
+    "ereply",
+    "ac",
+    "eac",
+    "amsg",
+    "eamsg",
+    "ehelpop",
+    "p msg"
+  ],
+  "ExemptPlayers": [
+    "Leoko",
+    "md5",
+    "dutchy1001",
+    "ItzSomebody"
+  ],
+  "DateFormat": "dd.MM.yyyy-HH:mm",
+  "EnableAllPermissionNodes": false,
+  "UUID-Fetcher": {
+    "Dynamic": true,
+    "Enabled": true,
+    "Intern": false,
+    "REST-API": {
+      "URL": "https://api.mojang.com/users/profiles/minecraft/%NAME%?at=%TIMESTAMP%",
+      "Key": "id"
+    },
+    "BackUp-API": {
+      "URL": "https://us.mc-api.net/v3/uuid/%NAME%",
+      "Key": "uuid"
+    }
+  },
+  "WarnActions": {
+    "3": "kick %PLAYER% &c&oYou have received your 3rd warning!",
+    "4": "tempban %PLAYER% 30m &c&oYou have received your 4th warning!",
+    "5": "tempban %PLAYER% 5h &c&oYou have received your 5th warning!",
+    "6": "tempban %PLAYER% 7d &c&oYou have received your 6th warning!",
+    "7": "tempban %PLAYER% 1mo &c&oYou have received your %COUNT%th warning!",
+    "10": "ban %PLAYER% &c&oYou have received your 10th warning!"
+  },
+  "TempPerms": {
+    "1": 600,
+    "2": 3600,
+    "3": 43200
+  },
+  "Debug": false,
+  "Log Purge Days": 10,
+  "Disable Prefix": false,
+  "Friendly Register Commands": false
+}

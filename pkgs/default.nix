@@ -41,4 +41,5 @@ with pkgs; {
   discordsrv = callPackage ./plugins/discordsrv { };
   tablist = callPackage ./plugins/tablist { };
   tablistbungee = callPackage ./plugins/tablistbungee { };
+  advancedban = callPackage ./plugins/advancedban { };
 }
