@@ -301,9 +301,9 @@ in
               (properties.generator server.properties)
               (bungeecord.generator server.bungeecord)
               (lazymc.generator server)
-            ] //
-            # User configs (highest priority)
-            server.configs;
+              # User configs (highest priority)
+              server.configs
+            ];
 
             # ExecStart generation
             java-start = pkgs.writeShellScript "start.sh" ''${server.jre}/bin/java ${builtins.toString (builtins.map (x: "\""+x+"\"") (server.java_opts ++
