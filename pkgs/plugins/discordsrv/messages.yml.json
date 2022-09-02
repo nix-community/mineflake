@@ -1,0 +1,201 @@
+{
+  "DiscordToMinecraftChatMessageFormat": "[<aqua>Discord</aqua> | %toprolecolor%%toprolealias%<reset>] %name%%reply% » %message%",
+  "DiscordToMinecraftChatMessageFormatNoRole": "[<aqua>Discord</aqua>] %name%%reply% » %message%",
+  "DiscordToMinecraftAllRolesSeparator": " | ",
+  "DiscordToMinecraftMessageReplyFormat": " (replying to %name%)",
+  "MinecraftChatToDiscordMessageFormat": "**%primarygroup%** %displayname% » %message%",
+  "MinecraftChatToDiscordMessageFormatNoPrimaryGroup": "%displayname% » %message%",
+  "ChatChannelHookMessageFormat": "%channelcolor%[%channelnickname%]&r %message%",
+  "DynmapNameFormat": "[Discord | %toprolealias%] %username%",
+  "DynmapChatFormat": "%message%",
+  "DynmapDiscordFormat": "[Dynmap] %name% » %message%",
+  "DiscordConsoleChannelTimestampFormat": "EEE HH:mm:ss",
+  "DiscordConsoleChannelPrefix": "[{date} {level}{name}] ",
+  "DiscordConsoleChannelSuffix": "",
+  "DiscordConsoleChannelPadding": 0,
+  "DiscordChatChannelConsoleCommandNotifyErrorsFormat": "**%user%**, you tried running a command. Unfortunately, there was an error: %error%",
+  "DiscordChatChannelListCommandFormatOnlinePlayers": "**Online players (%playercount%):**",
+  "DiscordChatChannelListCommandFormatNoOnlinePlayers": "**No online players**",
+  "DiscordChatChannelListCommandPlayerFormat": "%displayname%",
+  "DiscordChatChannelListCommandAllPlayersSeparator": ", ",
+  "MinecraftPlayerJoinMessage": {
+    "Enabled": true,
+    "Webhook": {
+      "Enable": false,
+      "AvatarUrl": "%botavatarurl%",
+      "Name": "%botname%"
+    },
+    "Content": "",
+    "Embed": {
+      "Enabled": true,
+      "Color": "#00ff00",
+      "Author": {
+        "ImageUrl": "%embedavatarurl%",
+        "Name": "%username% joined the server",
+        "Url": ""
+      },
+      "ThumbnailUrl": "",
+      "Title": {
+        "Text": "",
+        "Url": ""
+      },
+      "Description": "",
+      "Fields": [],
+      "ImageUrl": "",
+      "Footer": {
+        "Text": "",
+        "IconUrl": ""
+      },
+      "Timestamp": false
+    }
+  },
+  "MinecraftPlayerFirstJoinMessage": {
+    "Enabled": true,
+    "Webhook": {
+      "Enable": false,
+      "AvatarUrl": "%botavatarurl%",
+      "Name": "%botname%"
+    },
+    "Content": "",
+    "Embed": {
+      "Enabled": true,
+      "Color": "#ffd700",
+      "Author": {
+        "ImageUrl": "%embedavatarurl%",
+        "Name": "%username% joined the server for the first time",
+        "Url": ""
+      },
+      "ThumbnailUrl": "",
+      "Title": {
+        "Text": "",
+        "Url": ""
+      },
+      "Description": "",
+      "Fields": [],
+      "ImageUrl": "",
+      "Footer": {
+        "Text": "",
+        "IconUrl": ""
+      },
+      "Timestamp": false
+    }
+  },
+  "MinecraftPlayerLeaveMessage": {
+    "Enabled": true,
+    "Webhook": {
+      "Enable": false,
+      "AvatarUrl": "%botavatarurl%",
+      "Name": "%botname%"
+    },
+    "Content": "",
+    "Embed": {
+      "Enabled": true,
+      "Color": "#ff0000",
+      "Author": {
+        "ImageUrl": "%embedavatarurl%",
+        "Name": "%username% left the server",
+        "Url": ""
+      },
+      "ThumbnailUrl": "",
+      "Title": {
+        "Text": "",
+        "Url": ""
+      },
+      "Description": "",
+      "Fields": [],
+      "ImageUrl": "",
+      "Footer": {
+        "Text": "",
+        "IconUrl": ""
+      },
+      "Timestamp": false
+    }
+  },
+  "MinecraftPlayerDeathMessage": {
+    "Enabled": true,
+    "Webhook": {
+      "Enable": false,
+      "AvatarUrl": "%botavatarurl%",
+      "Name": "%botname%"
+    },
+    "Content": "",
+    "Embed": {
+      "Enabled": true,
+      "Color": "#000000",
+      "Author": {
+        "ImageUrl": "%embedavatarurl%",
+        "Name": "%deathmessage%",
+        "Url": ""
+      },
+      "ThumbnailUrl": "",
+      "Title": {
+        "Text": "",
+        "Url": ""
+      },
+      "Description": "",
+      "Fields": [],
+      "ImageUrl": "",
+      "Footer": {
+        "Text": "",
+        "IconUrl": ""
+      },
+      "Timestamp": false
+    }
+  },
+  "MinecraftPlayerAchievementMessage": {
+    "Enabled": true,
+    "Webhook": {
+      "Enable": false,
+      "AvatarUrl": "%botavatarurl%",
+      "Name": "%botname%"
+    },
+    "Content": "",
+    "Embed": {
+      "Enabled": true,
+      "Color": "#ffd700",
+      "Author": {
+        "ImageUrl": "%embedavatarurl%",
+        "Name": "%username% has made the advancement %achievement%!",
+        "Url": ""
+      },
+      "ThumbnailUrl": "",
+      "Title": {
+        "Text": "",
+        "Url": ""
+      },
+      "Description": "",
+      "Fields": [],
+      "ImageUrl": "",
+      "Footer": {
+        "Text": "",
+        "IconUrl": ""
+      },
+      "Timestamp": false
+    }
+  },
+  "ChannelTopicUpdaterChatChannelTopicFormat": "%playercount%/%playermax% players online | %totalplayers% unique players ever joined | Server online for %uptimemins% minutes | Last update: %date%",
+  "ChannelTopicUpdaterConsoleChannelTopicFormat": "TPS: %tps% | Mem: %usedmemorygb%GB used/%freememorygb%GB free/%maxmemorygb%GB max | %serverversion%",
+  "ChannelTopicUpdaterChatChannelTopicAtServerShutdownFormat": "Server is offline | %totalplayers% unique players ever joined",
+  "ChannelTopicUpdaterConsoleChannelTopicAtServerShutdownFormat": "Server is offline | %serverversion%",
+  "DiscordCommandFormat": "&bJoin us on Discord at {INVITE}&b. For command help, do \"/discord ?\"",
+  "NoPermissionMessage": "&cYou do not have permission to perform this command.",
+  "UnknownCommandMessage": "&bThat command doesn't exist!",
+  "DiscordChatChannelServerStartupMessage": ":white_check_mark: **Server has started**",
+  "DiscordChatChannelServerShutdownMessage": ":octagonal_sign: **Server has stopped**",
+  "ServerWatchdogMessage": "<t:%timestamp%:R> %guildowner%, the server hasn't ticked in %timeout% seconds :fire::bangbang:",
+  "CodeGenerated": "Your link code is %code%. PM the bot on Discord (%botname%) containing just this code as the message to link your accounts.",
+  "UnknownCode": "I don't know of such a code, try again.",
+  "InvalidCode": "Are you sure that's your code? Link codes are 4 numbers long.",
+  "DiscordAccountLinked": "Your Discord account has been linked to %name% (%uuid%)",
+  "DiscordAccountAlreadyLinked": "You are already linked to %username% (%uuid%)",
+  "DiscordLinkedAccountRequired": "You attempted to say the following message to the game chat but this server requires that you have your Minecraft account linked to your Discord account. Link it in-game by typing `/discord link`. \n```%message%```",
+  "DiscordLinkedAccountCheckFailed": "Unable to check if your account is linked, please try again later",
+  "ClickToCopyCode": "Click to copy",
+  "MinecraftAccountLinked": "&bYour UUID has been linked to Discord user %username% (%id%)",
+  "MinecraftAccountAlreadyLinked": "&bYour Minecraft account is already associated with a Discord account. Should you have permission to, you can unlink your account with /discord unlink.",
+  "LinkedCommandSuccess": "&bYour Minecraft account is associated with %name%.",
+  "UnlinkCommandSuccess": "&bYour Minecraft account is no longer associated with %name%.",
+  "MinecraftNoLinkedAccount": "&cYour Minecraft account isn't associated with a Discord account.",
+  "LinkingError": "&cCurrently unable to link accounts due to an internal error. Contact your server administration team.",
+  "MinecraftNobodyFound": "&cNobody found with Discord ID/Discord name/Minecraft name/Minecraft UUID matching \"%target%\" to look up."
+}

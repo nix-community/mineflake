@@ -38,4 +38,5 @@ with pkgs; {
   cleanmotd = callPackage ./plugins/cleanmotd { };
   inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
   plasmovoice = callPackage ./plugins/plasmovoice { };
+  discordsrv = callPackage ./plugins/discordsrv { };
 }
