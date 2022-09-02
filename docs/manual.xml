@@ -10,6 +10,8 @@
   <title>Preface</title>
   <para>
    This manual describes all Mineflake options.
+   For guides on how to use it, use the
+   <link xlink:href="https://git.frsqr.xyz/firesquare/mineflake/wiki">wiki</link>.
   </para>
   <para>
    If you encounter problems then please reach out on the Matrix channel
@@ -19,10 +21,6 @@
    <link xlink:href="https://git.frsqr.xyz/firesquare/mineflake/issues">Mineflake issue tracker</link>.
   </para>
  </preface>
- <xi:include href="how-it-works.xml" />
- <xi:include href="install.xml" />
- <xi:include href="usage.xml" />
- <xi:include href="creating-plugin.xml" />
  <appendix xml:id="ch-options">
   <title>Configuration Options</title>
   <xi:include href="./nmd-result/mineflake-options.xml" />
