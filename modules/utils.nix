@@ -23,16 +23,13 @@ in
       # substitute ${server.envfile} ${server.datadir}/${key}
       (key: ''
         echo 'Create "${key}" config file'
-        rm -f "${server.datadir}/${key}"
+        rm -f ""${server.datadir}/${key}""
         ${if (getAttr key configs).type == "yaml" then
-          ''${spigot.utils}/bin/json_to_yaml.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
+          ''${spigot.utils}/bin/mineflake-cli convert --to yaml --path ${mkConfigFile (getAttr key configs)} > /tmp/config'' else
         if (getAttr key configs).type == "toml" then
-          ''${spigot.utils}/bin/json_to_toml.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
-        if (getAttr key configs).type == "json" then
-          ''${spigot.utils}/bin/format_json.py "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"'' else
-          ''cp "${mkConfigFile (getAttr key configs)}" "${server.datadir}/${key}"''}
-        chmod 640 "${server.datadir}/${key}"
-        ${spigot.utils}/bin/replace_env.py "${server.datadir}/${key}" "${server.datadir}/${key}"
+          ''${spigot.utils}/bin/mineflake-cli convert --to toml --path ${mkConfigFile (getAttr key configs)} > /tmp/config'' else
+          ''cp ${mkConfigFile (getAttr key configs)} /tmp/config''}
+        ${spigot.utils}/bin/mineflake-cli replace-secrets /tmp/config > "${server.datadir}/${key}"
       '')
       (attrNames configs));
 

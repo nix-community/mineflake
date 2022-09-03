@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform, pkg-config, openssl }:
+{ lib, fetchFromGitHub, rustPlatform, pkg-config }:
 
 rustPlatform.buildRustPackage rec {
   pname = "lazymc";
@@ -10,6 +10,8 @@ rustPlatform.buildRustPackage rec {
     rev = "v${version}";
     hash = "sha256-JuKCZxyh55L6jzoUwpAv7Mpo0HX3rrSRtHgsrZoTV+8=";
   };
+
+  doCheck = false;
 
   cargoSha256 = "sha256-l4qd5WB6awraxpqI9V3zxzRohzmcA161+CDa9E8MKsE=";
 
