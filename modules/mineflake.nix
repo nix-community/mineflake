@@ -423,6 +423,7 @@ in
 
                 environment.systemPackages = [
                   server.jre
+                  spigot.utils
                 ] ++ optional server.lazymc.enable server.lazymc.package;
 
                 system.stateVersion = "22.05";
