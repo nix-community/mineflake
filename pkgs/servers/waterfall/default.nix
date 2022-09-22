@@ -4,40 +4,40 @@ let
   buildNum = "503";
   mcVersion = "1.19";
   cmd_find = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-find/target/cmd_find.jar";
-    hash = "sha256-tGs3xYxN9t2q6kO5zeWoJMqGh3V4e1ljV447PpClcKU=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeidjszlckqq2jwykzkxrla63gg5vub2moz5tykxfxke2fiukvwnr4a/cmd_find.jar";
+    sha256 = "0951l4j14d2vp1l5bn40nf3bqani89gn4fnxws2lqy7gvz04j7d2";
   };
   cmd_kick = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-kick/target/cmd_kick.jar";
-    hash = "sha256-6LD0fdT/3NUVJ3UtNxnzT1vZ2d88Eor/FYgI0dt8Mog=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeie77dwt7nst4vui63tz5hmldaorrkixabtraujcle3xfp57vj5pia/cmd_kick.jar";
+    sha256 = "0dxvfh451vxhifmxcllfhpgnbalpyha0cwq4jcm1npbv1x264m35";
   };
   cmd_list = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-list/target/cmd_list.jar";
-    hash = "sha256-DoFo4YkjHzgTBystuJZa3ATpvILGz2EsNmQ/u5IEl44=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeidsdx77vr2q2jscrioqai46edlrv2gas6ebi7hm34krmgyksgl5bu/cmd_list.jar";
+    sha256 = "0k0k70drc4k308ga4vp1xpgzch4bx1zafk4hpxsxvmqbaqc2fv1b";
   };
   cmd_send = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-send/target/cmd_send.jar";
-    hash = "sha256-GON6gso4DX/+2qtywM1zB916KUiaZfIwupmbRx8aw/A=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeicmprxqhdlasgdlhtolwv3f2mqku2o63tlwo4j7yogfftu7v7ff4m/cmd_send.jar";
+    sha256 = "1h8m5ywp5gl7dlmwf15sqcrmwm54z5xwff1h9w0bl0zs5gx1fcgi";
   };
   cmd_alert = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-alert/target/cmd_alert.jar";
-    hash = "sha256-33DV20OK9nSIpRixKXdK3IA7HXElosdmyTh8mzGN84c=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeic4ixwsbg3hr2zvlrucvp7otup4jsjhzw4yhdnhsbynos2f4cbl6m/cmd_alert.jar";
+    sha256 = "165k5ds4jbl71zldlk7l9y1wpxqfyy9dj443c94has17hcbx75wa";
   };
   cmd_server = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/cmd-server/target/cmd_server.jar";
-    hash = "sha256-1brlgoKr6305JxH1PRsW2SHCyuQ6blzcPtWiSVwZz7M=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeihvextf23ppvk3qmozktle6tpnalvnge3zdeidxfpynltsnlwd2rq/cmd_server.jar";
+    sha256 = "1qrqarzdq5w5bar0h53379wipa8w7sd3c0hrmfiq7gxigy9wlsah";
   };
   reconnect_yaml = fetchurl {
-    url = "https://ci.md-5.net/job/BungeeCord/${buildNum}/artifact/module/reconnect-yaml/target/reconnect_yaml.jar";
-    hash = "sha256-JjzB6QBai05/J2WZvuDcgnNHrVjri5rNALJwaBGy2tQ=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeifa4cvuoaxudteospv3ig7kvlsgp3lvvcwpjc3dytedvnjmdeuvji/reconnect_yaml.jar";
+    sha256 = "0qwm6047i7mcv3kf1kgqrabvc05gykmj1p96bdk113bn6dsy4yq3";
   };
 in
 stdenv.mkDerivation {
   pname = "waterfall";
   version = "${mcVersion}r${buildNum}";
   src = fetchurl {
-    url = "https://api.papermc.io/v2/projects/waterfall/versions/${mcVersion}/builds/${buildNum}/downloads/waterfall-${mcVersion}-${buildNum}.jar";
-    hash = "sha256-0H/g7Tl8MxU3ieu77ryLpLGbjq3EZbuqQihSuiW8+Xc=";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeihsjnzlfzduc6vavwurv5jhoss7ch6nil6vkyuiynmm4u6p3pxeqy/waterfall-${mcVersion}-${buildNum}.jar";
+    sha256 = "0xzrphjvlli88ambnrf4mn79pcd4ifyfxfzbi4viacvw77ny0zyh";
   };
 
   dontUnpack = true;

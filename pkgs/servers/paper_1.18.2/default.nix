@@ -3,7 +3,7 @@
 let
   mcVersion = "1.18.2";
   buildNum = "387";
-  hash = "sha256-XB1NpToEW/0LO080Y+sDH+i+NBGuQh1ZsQpaHH+gne0=";
+  hash = "1vcxl1ziqnhan5cishmf24sbxs0z0gmn6d2g7c5zsnq47ajls7aw";
   mojang_dep = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeidd64amhqeqkrtm6udjyhlu7lero7fakzeunqha7oywwibeogluqq/mojang_1.18.2.jar";
     hash = "sha256-V76dHjWqkc/fokattjoOoRqUYIHgRk0IvD02ZRcYo0M=";
@@ -15,8 +15,8 @@ stdenv.mkDerivation {
   pname = "paper";
   version = "${mcVersion}r${buildNum}";
   src = fetchurl {
-    url = "https://papermc.io/api/v2/projects/paper/versions/${mcVersion}/builds/${buildNum}/downloads/paper-${mcVersion}-${buildNum}.jar";
-    hash = hash;
+    url = "https://static.ipfsqr.ru/ipfs/bafybeie2pe2huulqyi7guhqhh63zt7vzylysundqdpohijchlmuf2fjawu/paper-${mcVersion}-${buildNum}.jar";
+    sha256 = hash;
   };
 
   preferLocalBuild = true;
