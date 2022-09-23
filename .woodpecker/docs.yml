@@ -4,19 +4,10 @@ pipeline:
     commands:
       - nix-build -A docs.html
       - cp -r result/share/doc/mineflake/ docs-result/
-  mk-car:
-    image: cofob/ipfs-tools
+  pin-cluster:
+    image: cofob/ipfs-cluster-ctl
     commands:
-      - ipfs-car --wrapWithDirectory false --pack docs-result/ --output docs.car
-  pin-web3:
-    image: cofob/node-hugo-jq
-    commands:
-      - |
-        curl -X 'POST' \
-          'https://api.web3.storage/car' \
-          -H 'accept: application/json' \
-          -H "Authorization: Bearer $JWT" \
-          -H 'Content-Type: application/vnd.ipld.car' \
-          --data-binary '@docs.car' | jq -r .cid > cid.txt
-      - echo "https://$(cat cid.txt).ipfs.ipfsqr.ru/"
-    secrets: [ JWT ]
+      - ipfs-cluster-ctl --host /dns4/rat.frsqr.xyz/tcp/9094 --basic-auth default:$CLUSTER_SECRET add -r --expire-in 2160h --name mineflake-build-$(date +%s) -Q docs-result/ > cid.txt
+      - cat cid.txt
+      - echo "https://ipfsqr.ru/ipfs/$(cat cid.txt)"
+    secrets: [CLUSTER_SECRET]
