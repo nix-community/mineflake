@@ -19,6 +19,7 @@ with pkgs; {
   authmebungee = callPackage ./plugins/authmebungee { };
   blockrename = callPackage ./plugins/blockrename { };
   chatty = callPackage ./plugins/chatty { };
+  clans = callPackage ./plugins/clans { };
   cleanmotd = callPackage ./plugins/cleanmotd { };
   coreprotect = callPackage ./plugins/coreprotect { };
   discordsrv = callPackage ./plugins/discordsrv { };
