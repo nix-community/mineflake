@@ -23,11 +23,11 @@ stdenv.mkDerivation rec {
     configs = {
       "plugins/ClansFork/Settings/config.yml" = {
         type = "yaml";
-        data = importJSON ./messages.json;
+        data = importJSON ./config.json;
       };
       "plugins/ClansFork/Settings/messages.yml" = {
         type = "yaml";
-        data = importJSON ./config.json;
+        data = importJSON ./messages.json;
       };
     };
     server = [ "spigot" ];

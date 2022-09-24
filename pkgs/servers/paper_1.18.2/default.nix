@@ -3,20 +3,17 @@
 let
   mcVersion = "1.18.2";
   buildNum = "387";
-  hash = "1vcxl1ziqnhan5cishmf24sbxs0z0gmn6d2g7c5zsnq47ajls7aw";
   mojang_dep = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeidd64amhqeqkrtm6udjyhlu7lero7fakzeunqha7oywwibeogluqq/mojang_1.18.2.jar";
-    hash = "sha256-V76dHjWqkc/fokattjoOoRqUYIHgRk0IvD02ZRcYo0M=";
+    sha256 = "0hx330bnadixph44sip0h5h986m11qxbdba6lbgwz4da6lg9vgjp";
   };
 in
 stdenv.mkDerivation {
-  inherit hash;
-
   pname = "paper";
   version = "${mcVersion}r${buildNum}";
   src = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeie2pe2huulqyi7guhqhh63zt7vzylysundqdpohijchlmuf2fjawu/paper-${mcVersion}-${buildNum}.jar";
-    sha256 = hash;
+    sha256 = "1vcxl1ziqnhan5cishmf24sbxs0z0gmn6d2g7c5zsnq47ajls7aw";
   };
 
   preferLocalBuild = true;

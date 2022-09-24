@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://static.ipfsqr.ru/ipfs/bafybeidlkbnqjddmsowjmbvrfrt7b54qqjxwrlmtvmdfpah5qqo72rvxvm/luckperms-spigot.tar.gz";
-    sha256 = "02kgv2i2xxdrvwb171q8mbphmnaczy155b3x31sfabkmbclpfjqc";
+    hash = "sha256-PoCUj536ApYR5Chw/jiabPHspVtzdIAL1rUSgPn6KyA=";
   };
 
   preferLocalBuild = true;
