@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.7.3";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "Vault";
+  version = "1.7.3";
 
   src = fetchurl {
-    url = "https://github.com/MilkBowl/Vault/releases/download/${version}/Vault.jar";
-    hash = "sha256-prXtl/Q6XPW7rwCnyM0jxa/JvQA/hJh1r4s25s930B0=";
+    url = "https://static.ipfsqr.ru/ipfs/QmQ8Aczhs1HLFLcXcHzSo4cUhio9SebUgJUGj2UmaUt5ZL";
+    sha256 = "07fhfz7ycdlbmxsri11z02ywkby54g6wi9q0myxzap1syjbyvdd6";
   };
 
   dontUnpack = true;

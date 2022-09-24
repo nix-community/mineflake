@@ -1,12 +1,8 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "0.1.0";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "ItemControl";
+  version = "0.1.0";
 
   src = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeia7pvtqfhnlxdoxv34levxmqvarqvnmpnj6zqeoni4mo6ypqh6glm/ItemControl-${version}.jar";

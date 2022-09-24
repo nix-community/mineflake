@@ -1,16 +1,12 @@
 { lib, stdenv, fetchurl, ... }:
 
-let
-  version = "0.2.7";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "CleanMotD";
+  version = "0.2.7";
 
   src = fetchurl {
-    url = "https://github.com/2lstudios-mc/CleanMOTD/releases/download/c7f6459/CleanMoTD.jar";
-    hash = "sha256-7ymUPUXJnOwBjI31y78SPLMnqiwPcyW1eiNDBtTqF3Y=";
+    url = "https://static.ipfsqr.ru/ipfs/QmNZdN1me8E4Er4iT9EhQQAKSRysNeMaYcunyoRKcn1zgs";
+    sha256 = "0xhpxba0chr3gasjawqg5jm2gcrw2azwpxcdih0yr7698lyr8agg";
   };
 
   dontUnpack = true;

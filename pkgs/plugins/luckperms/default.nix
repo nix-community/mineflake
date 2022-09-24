@@ -1,18 +1,13 @@
 { lib, stdenv, fetchzip, ... }:
 
-let
-  hash = "sha256-PoCUj536ApYR5Chw/jiabPHspVtzdIAL1rUSgPn6KyA=";
-  url = "https://static.ipfsqr.ru/ipfs/bafybeidlkbnqjddmsowjmbvrfrt7b54qqjxwrlmtvmdfpah5qqo72rvxvm/luckperms-spigot.tar.gz";
-  src = fetchzip {
-    url = url;
-    hash = hash;
-  };
-in
-stdenv.mkDerivation {
-  inherit hash src;
-
+stdenv.mkDerivation rec {
   pname = "LuckPerms";
   version = "5.4";
+
+  src = fetchzip {
+    url = "https://static.ipfsqr.ru/ipfs/bafybeidlkbnqjddmsowjmbvrfrt7b54qqjxwrlmtvmdfpah5qqo72rvxvm/luckperms-spigot.tar.gz";
+    sha256 = "02kgv2i2xxdrvwb171q8mbphmnaczy155b3x31sfabkmbclpfjqc";
+  };
 
   preferLocalBuild = true;
 

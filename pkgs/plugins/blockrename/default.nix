@@ -1,12 +1,8 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "0.1.0";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "BlockRename";
+  version = "0.1.0";
 
   src = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeiezkl5itvhmgn7v7yzawlowfuswmylswc4ufpueiefdr7bdl7mcwq/BlockRename-${version}.jar";

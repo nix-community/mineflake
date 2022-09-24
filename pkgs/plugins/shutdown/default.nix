@@ -1,12 +1,8 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "0.1.0";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "Shutdown";
+  version = "0.1.0";
 
   src = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/bafybeic74odzzawl4uvhdxk6tszs64u6or3e753bto5bb7pkyv55iy7b4y/shutdown.jar";

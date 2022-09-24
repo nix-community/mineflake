@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "2.2.9";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "TabListBungee";
+  version = "2.3.0";
 
   src = fetchurl {
-    url = "https://github.com/montlikadani/TabList/releases/download/v${version}/TabList-bungee-${version}.jar";
-    sha256 = "0220xj45yccxsqbxjvppl8b0r9l4j2hxw2bfz80xgykvzha6zhwf";
+    url = "https://static.ipfsqr.ru/ipfs/QmWcbRxoayEG8ksZmnj8uBX4g3xru6VcP6iMVzqHzmrBVr";
+    sha256 = "076njjz1ighhm7h67pvqidvy82xfwsax8i6952z6s1wf06lri9a3";
   };
 
   dontUnpack = true;

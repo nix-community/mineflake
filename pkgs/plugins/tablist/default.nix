@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "5.6.3";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "TabList";
+  version = "5.6.4";
 
   src = fetchurl {
-    url = "https://github.com/montlikadani/TabList/releases/download/v${version}/TabList-bukkit-${version}.jar";
-    sha256 = "1g7bnssfwv6c37chcyj91vyid3r59c5a4dlx7wlnj5095609hg5x";
+    url = "https://static.ipfsqr.ru/ipfs/QmPkwNLM7R5MuqnvvNybmcCW2BQTov96WtcpW6Fgwtgexi";
+    sha256 = "156vniw8mahh55g6b6682jjqgnr9zva1nhlsxan98sy7mhy5y3cp";
   };
 
   dontUnpack = true;

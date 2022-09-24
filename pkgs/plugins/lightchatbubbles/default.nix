@@ -1,6 +1,6 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "LightChatBubbles";
   version = "4";
 

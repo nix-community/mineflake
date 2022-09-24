@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "0.2.0-beta";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "ElyBy";
+  version = "0.2.0-beta";
 
   src = fetchurl {
-    url = "https://ely.by/skinsystem-plugin/elyby-skinsystem-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmcVcM15VECR2mbWc7XqDTHRVqbZYw4A5S5pQvTLCfKBmk";
     sha256 = "132l414ca8x12bcnf9vx976za3c2bwaf55b33i8llydwpqx4jsis";
   };
 

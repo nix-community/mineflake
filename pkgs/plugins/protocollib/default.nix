@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "4.8.0";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "ProtocolLib";
+  version = "4.8.0";
 
   src = fetchurl {
-    url = "https://github.com/dmulloy2/ProtocolLib/releases/download/${version}/ProtocolLib.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmP8bi2BQrTGDfzhVg57ZgRCJcLpvPGy61k15JeeXJyfKH";
     sha256 = "10qnrqf06y6lyabp38ya9dsnp6gh51l1m2wvcb4vp12i3f43pmwm";
   };
 

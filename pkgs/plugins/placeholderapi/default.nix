@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "2.11.2";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "PlaceholderAPI";
+  version = "2.11.2";
 
   src = fetchurl {
-    url = "https://static.ipfsqr.ru/ipfs/bafybeigvumgag6nuirysu4kufwqpiiqavmrjlvtrkqkplszztasa733dua/PlaceholderAPI-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeigvumgag6nuirysu4kufwqpiiqavmrjlvtrkqkplszztasa733dua/PlaceholderAPI-2.11.2.jar";
     sha256 = "1mkp74qmxn0x58q5yw4xf2j9i9naamjsdk0x2cib52mzsw4cnx06";
   };
 

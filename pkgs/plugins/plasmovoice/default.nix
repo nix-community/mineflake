@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.0.10";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "PlasmoVoice";
+  version = "1.0.10";
 
   src = fetchurl {
-    url = "https://github.com/plasmoapp/plasmo-voice/releases/download/${version}-spigot/plasmovoice-server-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmXXbPLkqp11xW27iv281MaksjE3HofXi2XKSSXEPV8kFV";
     sha256 = "1pgja0mmjwgw0nhjz7dai8rmkqwa017c0jafnkyhpmnqykgm33yd";
   };
 

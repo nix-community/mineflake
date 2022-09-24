@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.25.1";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "DiscordSRV";
+  version = "1.25.1";
 
   src = fetchurl {
-    url = "https://github.com/DiscordSRV/DiscordSRV/releases/download/v1.25.1/DiscordSRV-Build-1.25.1.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmYCCMu5iuCUXbUJZXnUbC9BqLTW6rQEXU6ckQ5YqVMMUt";
     sha256 = "1ipcq3ap3xi3w3g1bhd5jzs7y00blfb2mph66g6hjskhq9n4ypms";
   };
 

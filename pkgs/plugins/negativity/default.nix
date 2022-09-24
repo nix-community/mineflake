@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.12.2";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "Negativity";
+  version = "1.12.2";
 
   src = fetchurl {
-    url = "https://github.com/Elikill58/Negativity/releases/download/${version}/Negativity-${version}.jar";
-    hash = "sha256-G0M84OaFQU2RI9ZkcJxqxch/tPMJ9M0TxqOsWvyinrI=";
+    url = "https://static.ipfsqr.ru/ipfs/Qmady3pPskcqvAUsyZcvdBWYTsC9sxFaqHTWuEdE9KDPbA";
+    sha256 = "1clylby5mb53qq9wvx09yfs7zj65daf70r6n4f8lshc5wvh3qhqv";
   };
 
   dontUnpack = true;

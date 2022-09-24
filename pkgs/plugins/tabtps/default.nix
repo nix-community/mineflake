@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.3.15";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "TabTPS";
+  version = "1.3.15";
 
   src = fetchurl {
-    url = "https://github.com/jpenilla/TabTPS/releases/download/v${version}/tabtps-spigot-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmStzUwiCCNv2V7byCNGwpwf5HdJmtKVCwLQFVPvbDWUTq";
     sha256 = "1f9w6rdmma009x8k3l4k2h006swkascd8mk2mqi5bm3vj95515q8";
   };
 

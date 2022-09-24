@@ -1,16 +1,12 @@
 { lib, stdenv, fetchurl, ... }:
 
-let
-  version = "2.2.0-beta1";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "AuthMeBungee";
+  version = "2.2.0-beta1";
 
   src = fetchurl {
-    url = "https://github.com/AuthMe/AuthMeBungee/releases/download/${version}/AuthMeBungee-${version}.jar";
-    hash = "sha256-fhE9q1sdti5nW+V+WQ9ickNTCk5pFl8wr0RHHCcGo2g=";
+    url = "https://static.ipfsqr.ru/ipfs/QmdE4VwsMD8W45XqDjTKeEVnCnr9j2f7LNWwW8EDiAiHh8";
+    sha256 = "0s530qkiqis4mwq5y5k99q556hvjc87mjzp5bdkjxdhxbfmks4by";
   };
 
   dontUnpack = true;

@@ -1,17 +1,12 @@
 { lib, stdenv, fetchurl, ... }:
 
-let
-  hash = "sha256-BPMbYJ0ePhxT6ZqqBsoQ6mvfUXLJS/WvjM8QiwvEuXc=";
-  version = "21.2";
-  url = "https://github.com/PlayPro/CoreProtect/releases/download/v${version}/CoreProtect-${version}.jar";
-in
-stdenv.mkDerivation {
-  inherit hash version;
-
+stdenv.mkDerivation rec {
   pname = "CoreProtect";
+  version = "21.2";
+
   src = fetchurl {
-    url = url;
-    hash = hash;
+    url = "https://static.ipfsqr.ru/ipfs/QmVaiZGsa7GSX56k2i2qAwZ4gdVwpPRRjK5oVRXqK8MAqd";
+    sha256 = "0xxrqh5qn46gijpzajy9f98xysza2350dalsx59iqghykmh1pwq4";
   };
 
   preferLocalBuild = true;

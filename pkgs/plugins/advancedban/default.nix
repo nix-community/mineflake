@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "2.3.0";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "AdvancedBan";
+  version = "2.3.0";
 
   src = fetchurl {
-    url = "https://github.com/DevLeoko/AdvancedBan/releases/download/v${version}/AdvancedBan-Bundle-${version}-RELEASE.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmdvDBpqbYrBRnJAYxoJ6Jekwn3kHBykPHhHQ1BiSy9Zte";
     sha256 = "1n0x0cwsci6zbn8ls0a3wp1770hlwwxn056cizi110camfnnajbv";
   };
 

@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "3.1.12";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "PlayTime";
+  version = "3.1.12";
 
   src = fetchurl {
-    url = "https://github.com/Wertik/PlayTime/releases/download/${version}/PlayTime-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmQEzJTD9SdSmrGDkw5Uf1Yrh8R9WdtjcnXAq7iBPUC3fT";
     sha256 = "053kv00g07pp083f18safwllgq9a41r69z2k806860r02p89mj1d";
   };
 

@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "5.6.0-beta2";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "AuthMe";
+  version = "5.6.0-beta2";
 
   src = fetchurl {
-    url = "https://github.com/AuthMe/AuthMeReloaded/releases/download/${version}/AuthMe-${version}.jar";
-    hash = "sha256-v/O0FW5DKotFKlm2q9h4jYEhXyYiu2kbQ9gGaeUbI4Y=";
+    url = "https://static.ipfsqr.ru/ipfs/QmdwFv1FLzBWv6Z7kA186TZzgHmnpvAZJW7VSqyBGZXJRY";
+    sha256 = "11i33gjnj1nq8cdnkfr24rgj30cdg3capdjr592qnaj3dqav9wxz";
   };
 
   dontUnpack = true;

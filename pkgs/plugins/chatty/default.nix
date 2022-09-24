@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "2.19.12";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "Chatty";
+  version = "2.19.12";
 
   src = fetchurl {
-    url = "https://github.com/Brikster/Chatty/releases/download/v${version}/Chatty.jar";
-    hash = "sha256-28bpZNb88IPsUmDiXJzByaadXd41yEh0e6Lg/2p73HE=";
+    url = "https://static.ipfsqr.ru/ipfs/QmZcQZ8SeJuhBWQqP6iV4tWMT7MjX4qiBosXiQmUKZXNTL";
+    sha256 = "0wfwgdmgzq52gds4ij1mvrfrv9n9q6f5rqk0abn87w7wsrjfkinv";
   };
 
   dontUnpack = true;

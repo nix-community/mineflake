@@ -1,12 +1,8 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "14.2.3";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "SkinsRestorer";
+  version = "14.2.3";
 
   src = fetchurl {
     url = "https://static.ipfsqr.ru/ipfs/QmZSvqXLAqKJgZkEzstAuKiL8fmXkvh9g4QjjbqovAfQHw/SkinsRestorer.jar";

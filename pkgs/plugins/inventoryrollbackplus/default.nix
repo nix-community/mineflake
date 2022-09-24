@@ -1,15 +1,11 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "1.6.7";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "InventoryRollbackPlus";
+  version = "1.6.7";
 
   src = fetchurl {
-    url = "https://github.com/TechnicallyCoded/Inventory-Rollback-Plus/releases/download/v${version}/InventoryRollbackPlus-${version}.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmUha5jtsWmEvXnhXUWideCBTYEuvYU5REbAg4E6YuHYVM";
     sha256 = "0cxp1arxx6j1vkqjs17pqpfbwq14k9azrqyfyf9nw6k9wr6jxxb0";
   };
 

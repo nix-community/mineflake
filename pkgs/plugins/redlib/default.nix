@@ -1,16 +1,12 @@
 { callPackage, lib, stdenv, fetchurl, ... }:
 
-let
-  version = "6.5.4.1";
-in
-stdenv.mkDerivation {
-  inherit version;
-
+stdenv.mkDerivation rec {
   pname = "RedLib";
+  version = "6.5.4.1";
 
   src = fetchurl {
-    url = "https://github.com/Redempt/RedLib/releases/download/${version}/RedLib.jar";
-    hash = "sha256-+j6D+sChbbKiwg5tF0ldcuXQyYBx79hNvLEZdUcvt9U=";
+    url = "https://static.ipfsqr.ru/ipfs/QmaWsxd4sqB6PjshiWRfAWTKYEYXEd9iNUjtuaUHpPCqdA";
+    sha256 = "1mdp5x3pa6dipi6xivvih34x1rbjbm4ifv8fqaib4vd1q3x86gps";
   };
 
   dontUnpack = true;
