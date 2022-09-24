@@ -23,7 +23,8 @@ in
       # substitute ${server.envfile} ${server.datadir}/${key}
       (key: ''
         echo 'Create "${key}" config file'
-        rm -f ""${server.datadir}/${key}""
+        mkdir -p "$(dirname "${server.datadir}/${key}")"
+        rm -f "${server.datadir}/${key}"
         ${if (getAttr key configs).type == "yaml" then
           ''${spigot.utils}/bin/mineflake-cli convert --to yaml --path ${mkConfigFile (getAttr key configs)} > /tmp/config'' else
         if (getAttr key configs).type == "toml" then

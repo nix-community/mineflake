@@ -6,57 +6,9 @@
   "blacklisted-players": null,
   "interval": 4,
   "random": false,
-  "header": [
-    "&5&m==========================\n%anim:tablist%",
-    "&7<75> %anim:welcome% %player%&c!&7 <74>",
-    "",
-    "&6Ping:&r %ping%&7ms&a TPS:&r %tps%\n"
-  ],
-  "footer": [
-    "",
-    "&e&lPlayers:&6 %online-players%&7/&6%max-players%",
-    "&7<28> %anim:website%&7:&2 &nexample.com&7 <28>\n\n&5&m=========================="
-  ],
-  "per-world": {
-    "my_nether, otherWorld": {
-      "header": "&3This is a per world plugin %anim:tablist%&3.",
-      "footer": "&6World:&7 %world%"
-    },
-    "justWorld": {
-      "header": "%anim:perWorld%",
-      "footer": "&6World:&7 %world%",
-      "per-player": {
-        "playerName": {
-          "header": "&3This is a per player plugin %anim:tablist%&3.",
-          "footer": [
-            "&6World:&7 %world%",
-            "&aPlayer:&8 %player%"
-          ]
-        }
-      }
-    },
-    "testWorld": {
-      "per-group": {
-        "groupName": {
-          "header": "&3This is a per group plugin %anim:tablist%&3.",
-          "footer": [
-            "&6World:&7 %world%",
-            "&aGroup:&8 %vault_rank%"
-          ]
-        }
-      }
-    }
-  },
-  "per-player": {
-    "testplayer": {
-      "header": "%anim:perPlayer%",
-      "footer": "&5&m======================"
-    }
-  },
-  "per-group": {
-    "vaultGroup": {
-      "header": "%anim:perGroupHead%",
-      "footer": "%anim:perGroupFoot%"
-    }
-  }
+  "header": [],
+  "footer": [],
+  "per-world": {},
+  "per-player": {},
+  "per-group": {}
 }

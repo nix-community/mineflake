@@ -32,6 +32,6 @@ stdenv.mkDerivation {
     };
     server = [ "spigot" ];
     type = "result";
-    folders = [ "plugins/AuthMe" ];
+    folders = [ "plugins/AuthMe" "plugins/AuthMe/messages" ];
   };
 }

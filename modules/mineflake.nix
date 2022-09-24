@@ -263,6 +263,12 @@ in
               description = "List of plugins that need to be installed";
             };
 
+            server-icon = mkOption {
+              type = types.nullOr types.path;
+              default = null;
+              description = "Path to 'server-icon.png'";
+            };
+
             package = mkOption {
               type = types.package;
               default = spigot.paper;
@@ -322,7 +328,7 @@ in
               privateNetwork = true;
               hostAddress = server.hostAddress;
               localAddress = server.localAddress;
-              extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) [ server.secretsFile ]))) ++
+              extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) server.secretsFile))) ++
                 (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
                 (map (path: "--bind=${path}") (server.binds ++ [ "${server.hostdir}:${server.datadir}" ])) ++ server.extraFlags;
               ephemeral = true;
@@ -386,6 +392,10 @@ in
                       echo "eula.txt generation..."
                       rm -f "${server.datadir}/eula.txt"
                       ln -sf "${eula-file}" "${server.datadir}/eula.txt"''}
+                    ${optionalString (server.server-icon != null) ''
+                      echo "server-icon.png linking..."
+                      rm -f "${server.datadir}/server-icon.png"
+                      ln -sf "${server.server-icon}" "${server.datadir}/server-icon.png"''}
                     echo "Remove old plugin symlinks..."
                     rm -f ${server.datadir}/plugins/*.jar
                     ${concatStringsSep "\n" (map (

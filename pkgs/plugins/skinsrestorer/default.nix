@@ -9,7 +9,7 @@ stdenv.mkDerivation {
   pname = "SkinsRestorer";
 
   src = fetchurl {
-    url = "https://github.com/SkinsRestorer/SkinsRestorerX/releases/download/${version}/SkinsRestorer.jar";
+    url = "https://static.ipfsqr.ru/ipfs/QmZSvqXLAqKJgZkEzstAuKiL8fmXkvh9g4QjjbqovAfQHw/SkinsRestorer.jar";
     sha256 = "0rg9i29jly5jmsxd7wld9xxh3cvz7vk6bwk9cm8j75g0qzgp3534";
   };
 
