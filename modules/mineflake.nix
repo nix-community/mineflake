@@ -75,7 +75,7 @@ in
             };
 
             hostdir = mkOption {
-              type = types.nullOr types.path;
+              type = types.path;
               default = "/var/lib/mineflake/${name}";
               description = "Host system data directory";
             };
@@ -269,12 +269,6 @@ in
               description = "Path to 'server-icon.png'";
             };
 
-            world = mkOption {
-              type = types.nullOr types.path;
-              default = null;
-              description = "Path to directory containing 'world', 'world_nether' and 'world_the_end'";
-            };
-
             package = mkOption {
               type = types.package;
               default = spigot.paper;
@@ -334,14 +328,9 @@ in
               privateNetwork = true;
               hostAddress = server.hostAddress;
               localAddress = server.localAddress;
-              extraFlags =
-                (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) server.secretsFile)))
-                ++ (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts)
-                ++ (map (path: "--bind=${path}") (
-                  server.binds
-                  ++ (optional (server.hostdir != null) "${server.hostdir}:${server.datadir}")
-                ))
-                ++ server.extraFlags;
+              extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) server.secretsFile))) ++
+                (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
+                (map (path: "--bind=${path}") (server.binds ++ [ "${server.hostdir}:${server.datadir}" ])) ++ server.extraFlags;
               ephemeral = true;
               config = { config, pkgs, ... }: {
                 systemd.services.minecraft = {
@@ -378,8 +367,6 @@ in
                       RestrictRealtime = true;
                       RestrictSUIDSGID = true;
                       PrivateMounts = true;
-                      Restart = "on-failure";
-                      RestartSec = "5s";
                     }
                     (optionalAttrs (server.secretsFile != null) { EnvironmentFile = server.secretsFile; })
                     (optionalAttrs (server.CPUWeight != null) { CPUWeight = toString server.CPUWeight; })
@@ -426,24 +413,6 @@ in
                   '';
                 };
 
-                systemd.services.minecraft-prepare = {
-                  requiredBy = [ "minecraft.service" ];
-                  wantedBy = [ "minecraft.service" ];
-                  script = ''
-                    ${optionalString (server.world != null) ''
-                      echo "world linking..."
-                      rm -rf "${server.datadir}/world"
-                      rm -rf "${server.datadir}/world_nether"
-                      rm -rf "${server.datadir}/world_the_end"
-                      cp -r "${server.world}/world" "${server.datadir}/world"
-                      cp -r "${server.world}/world_nether" "${server.datadir}/world_nether"
-                      cp -r "${server.world}/world_the_end" "${server.datadir}/world_the_end"
-                      chmod -R 744 "${server.datadir}/world" "${server.datadir}/world_nether" "${server.datadir}/world_the_end"''}
-                    chown -R minecraft:minecraft "${server.datadir}"'';
-                  serviceConfig.Type = "oneshot";
-                  serviceConfig.RemainAfterExit = true;
-                };
-
                 users = {
                   users.minecraft = {
                     createHome = true;
@@ -481,7 +450,7 @@ in
           value = {
             requiredBy = [ "container@mf-${key}.service" ];
             wantedBy = [ "container@mf-${key}.service" ];
-            script = if ((getAttr key cfg.servers).hostdir != null) then "mkdir -p ${(getAttr key cfg.servers).hostdir}" else "sleep 1";
+            script = "mkdir -p ${(getAttr key cfg.servers).hostdir}";
             serviceConfig.Type = "oneshot";
             serviceConfig.RemainAfterExit = true;
           };
