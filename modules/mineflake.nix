@@ -269,6 +269,17 @@ in
               description = "Path to 'server-icon.png'";
             };
 
+            worlds = mkOption {
+              type = types.nullOr (types.attrsOf types.path);
+              default = null;
+              description = "Worlds";
+              example = {
+                world = "/some/path";
+                world_the_end = "/some/path2";
+                world_nether = "/some/path3";
+              };
+            };
+
             package = mkOption {
               type = types.package;
               default = spigot.paper;
@@ -310,6 +321,12 @@ in
               # User configs (highest priority)
               server.configs
             ];
+
+            worlds = if server.worlds == null then null else (mapAttrs (key: path: ''
+            echo "${key} world copying..."
+            rm -rf "${server.datadir}/${key}"
+            cp -r ${path} "${server.datadir}/${key}"
+            chmod -R 764 "${server.datadir}/${key}"'') server.worlds);
 
             # ExecStart generation
             java-start = pkgs.writeShellScript "start.sh" ''${server.jre}/bin/java ${builtins.toString (builtins.map (x: "\""+x+"\"") (server.java_opts ++
@@ -396,6 +413,8 @@ in
                       echo "server-icon.png linking..."
                       rm -f "${server.datadir}/server-icon.png"
                       ln -sf "${server.server-icon}" "${server.datadir}/server-icon.png"''}
+                    ${optionalString (server.worlds != null)
+                      (concatStringsSep "\n" (map (key: getAttr key worlds) (attrNames worlds)))}
                     echo "Remove old plugin symlinks..."
                     rm -f ${server.datadir}/plugins/*.jar
                     ${concatStringsSep "\n" (map (
