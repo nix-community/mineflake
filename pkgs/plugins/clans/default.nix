@@ -5,8 +5,8 @@ stdenv.mkDerivation rec {
   version = "0.0.1";
 
   src = fetchurl {
-    url = "https://static.ipfsqr.ru/ipfs/QmPQJwd1WFp1jNw8WCf67x9hxoa6oHa3WYBQ7n4EHAwvVy";
-    sha256 = "0hna83fid5f0ag2i21a3gml67v9097zrrgjqjid22hizb6qlqcs5";
+    url = "https://static.ipfsqr.ru/ipfs/bafybeibti4nrxvnzrvlzdi62uw2qkfbyuhkgxbfllosscazkfimeqaoobi/ClansFork-0.0.1.jar";
+    sha256 = "0vazgs0f583c4r6zvchl7ayal1caw2i42m1b6mgv9ckixcfv09h8";
   };
 
   dontUnpack = true;
