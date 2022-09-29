@@ -75,7 +75,7 @@ in
             };
 
             hostdir = mkOption {
-              type = types.path;
+              type = types.nullOr types.path;
               default = "/var/lib/mineflake/${name}";
               description = "Host system data directory";
             };
@@ -322,11 +322,14 @@ in
               server.configs
             ];
 
-            worlds = if server.worlds == null then null else (mapAttrs (key: path: ''
-            echo "${key} world copying..."
-            rm -rf "${server.datadir}/${key}"
-            cp -r ${path} "${server.datadir}/${key}"
-            chmod -R 764 "${server.datadir}/${key}"'') server.worlds);
+            worlds = if server.worlds == null then null else
+            (mapAttrs
+              (key: path: ''
+                echo "${key} world copying..."
+                rm -rf "${server.datadir}/${key}"
+                cp -r ${path} "${server.datadir}/${key}"
+                chmod -R 764 "${server.datadir}/${key}"'')
+              server.worlds);
 
             # ExecStart generation
             java-start = pkgs.writeShellScript "start.sh" ''${server.jre}/bin/java ${builtins.toString (builtins.map (x: "\""+x+"\"") (server.java_opts ++
@@ -347,7 +350,7 @@ in
               localAddress = server.localAddress;
               extraFlags = (map (path: "--bind-ro=${path}") (server.ro-binds ++ (optional (server.secretsFile != null) server.secretsFile))) ++
                 (concatMap (port: [ "-p" (toString port) ]) server.forwardPorts) ++
-                (map (path: "--bind=${path}") (server.binds ++ [ "${server.hostdir}:${server.datadir}" ])) ++ server.extraFlags;
+                (map (path: "--bind=${path}") (server.binds ++ (optional (server.hostdir != null) "${server.hostdir}:${server.datadir}"))) ++ server.extraFlags;
               ephemeral = true;
               config = { config, pkgs, ... }: {
                 systemd.services.minecraft = {
@@ -469,7 +472,10 @@ in
           value = {
             requiredBy = [ "container@mf-${key}.service" ];
             wantedBy = [ "container@mf-${key}.service" ];
-            script = "mkdir -p ${(getAttr key cfg.servers).hostdir}";
+            script =
+              if ((getAttr key cfg.servers).hostdir != null) then
+                "mkdir -p ${(getAttr key cfg.servers).hostdir}" else
+                "sleep 0";
             serviceConfig.Type = "oneshot";
             serviceConfig.RemainAfterExit = true;
           };
