@@ -1,6 +1,6 @@
 # mineflake
 
-[![license gpl3.0](https://img.shields.io/static/v1?label=License&message=GPL%203.0&color=FE7D37)](https://git.frsqr.xyz/firesquare/mineflake/src/branch/main/LICENSE) [![ci/cd status](https://wp.frsqr.xyz/api/badges/firesquare/mineflake/status.svg)](https://wp.frsqr.xyz/firesquare/mineflake) [![matrix](https://img.shields.io/static/v1?label=Matrix&message=%23mineflake:matrix.org&color=GREEN)](https://matrix.to/#/#mineflake:matrix.org) [![read the wiki](https://img.shields.io/static/v1?label=Read%20The&message=Wiki&color=7C5D63)](https://git.frsqr.xyz/firesquare/mineflake/wiki) [![read the options](https://img.shields.io/static/v1?label=Read%20The&message=Options&color=8A2BE2)](https://mineflake.ipfsqr.ru/) [![gitea](https://img.shields.io/static/v1?label=Code%20on&message=Gitea&color=009C08&logo=gitea)](https://git.frsqr.xyz/firesquare/mineflake) [![wakatime](https://wakatime.com/badge/user/ebd31081-494e-4581-b228-7619d0fe1080/project/c81c6e21-8431-4002-839f-b7e8da67c3ae.svg)](https://wakatime.com/@ebd31081-494e-4581-b228-7619d0fe1080/projects/vewdumcbno)
+[![license MIT](https://img.shields.io/static/v1?label=License&message=MIT&color=FE7D37)](https://git.frsqr.xyz/firesquare/mineflake/src/branch/main/LICENSE) [![ci/cd status](https://wp.frsqr.xyz/api/badges/firesquare/mineflake/status.svg)](https://wp.frsqr.xyz/firesquare/mineflake) [![matrix](https://img.shields.io/static/v1?label=Matrix&message=%23mineflake:matrix.org&color=GREEN)](https://matrix.to/#/#mineflake:matrix.org) [![read the wiki](https://img.shields.io/static/v1?label=Read%20The&message=Wiki&color=7C5D63)](https://git.frsqr.xyz/firesquare/mineflake/wiki) [![read the options](https://img.shields.io/static/v1?label=Read%20The&message=Options&color=8A2BE2)](https://mineflake.ipfsqr.ru/) [![gitea](https://img.shields.io/static/v1?label=Code%20on&message=Gitea&color=009C08&logo=gitea)](https://git.frsqr.xyz/firesquare/mineflake) [![wakatime](https://wakatime.com/badge/user/ebd31081-494e-4581-b228-7619d0fe1080/project/c81c6e21-8431-4002-839f-b7e8da67c3ae.svg)](https://wakatime.com/@ebd31081-494e-4581-b228-7619d0fe1080/projects/vewdumcbno)
 
 NixOS flake for easy declarative creation of minecraft server containers.
 
@@ -63,4 +63,26 @@ minecraft = {
 };
 ```
 
-## [Read the docs!](https://git.frsqr.xyz/firesquare/mineflake/wiki)
+[Read the docs!](https://git.frsqr.xyz/firesquare/mineflake/wiki)
+
+## Contributing
+
+You can read the [contributing guide](CONTRIBUTING.md) for more information.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+In short, you can do whatever you want with this project. You must include the license file
+with your distribution, but you don't have to include the source code. But if you include a
+link to the original project, the author will be immensely pleased.
+
+In addition, this project uses the following third-party software:
+
+* [nixpkgs](https://github.com/NixOS/nixpkgs) - Licensed under the [MIT License](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+
+## Contributors
+
+If you contribute to this project, please add your name to the list below.
+
+* [cofob](https://t.me/cofob) - Author and maintainer
