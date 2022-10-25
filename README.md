@@ -79,10 +79,11 @@ link to the original project, the author will be immensely pleased.
 
 In addition, this project uses the following third-party software:
 
-* [nixpkgs](https://github.com/NixOS/nixpkgs) - Licensed under the [MIT License](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+- [nixpkgs](https://github.com/NixOS/nixpkgs) - Licensed under the
+  [MIT License](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
 
 ## Contributors
 
 If you contribute to this project, please add your name to the list below.
 
-* [cofob](https://t.me/cofob) - Author and maintainer
+- [cofob](https://t.me/cofob) - Author and maintainer
