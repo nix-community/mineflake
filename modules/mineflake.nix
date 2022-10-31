@@ -462,7 +462,8 @@ in
               };
             };
           })
-        cfg.servers; in
+        cfg.servers;
+    in
     { containers = builtins.listToAttrs (map (key: getAttr key server-containers) (attrNames server-containers)); } //
     # Dirty hack to create a data folder before starting the container. We make the container unit depend on this unit, and run after it.
     {
