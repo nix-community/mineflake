@@ -3,34 +3,22 @@
 This is a guide for contributing to the mineflake project. It is a work in progress,
 and will be updated as the project evolves.
 
-For Gitea issue/PR references, use `#<number>`.
-For GitHub issue/PR references, use `$#<number>`.
-
 ## Filling issues
 
 If you have a problem with the project, or have a feature request, please file an issue
-on the [issue tracker](https://git.frsqr.xyz/firesquare/mineflake/issues). Please be as
+on the [issue tracker](https://github.com/nix-community/mineflake/issues). Please be as
 descriptive as possible, and include any relevant information.
 
 Please, dont post issues that are not related to the project. If you have a problem with
 a specific plugin, please contact the plugin author.
 
 Dont submit security issues here, send them to <cofob@riseup.net> or write me directly at
-telegram (@cofob).
-
-You can submit issues to [Gitea](https://git.frsqr.xyz/firesquare/mineflake)
-(registration is open and you can register with GitHub account), or to
-[GitHub mirror](https://github.com/fire-square/mineflake).
+telegram ([@cofob](https://t.me/cofob)).
 
 ## Submitting pull requests
 
 If you want to contribute to the project, you can submit a pull request. Please be as
 descriptive as possible, and include any relevant information.
-
-You can submit your pull request to [Gitea](https://git.frsqr.xyz/firesquare/mineflake)
-(registration is open and you can register with GitHub), or to
-[GitHub mirror](https://github.com/fire-square/mineflake). Also you can send email with
-patch to <cofob@riseup.net>.
 
 Please ensure that your pull request is properly formatted. See "Formatting" section below.
 
@@ -41,8 +29,8 @@ email, telegram or any other).
 In pull requests, please dont include any unrelated changes. If you want to make a
 cosmetic change, please submit a separate pull request.
 
-Add description of your changes to the CHANGELOG.md file. Please follow the format of
-other entries.
+Add description of your changes to the [CHANGELOG.md](CHANGELOG.md) file. Please follow
+the format of other entries.
 
 ## Formatting
 

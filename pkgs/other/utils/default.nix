@@ -4,11 +4,7 @@ rustPlatform.buildRustPackage rec {
   pname = "mineflake-cli";
   version = "0.1.0";
 
-  src = fetchgit {
-    url = "https://git.frsqr.xyz/firesquare/mineflake-cli.git";
-    rev = "refs/tags/v0.1.0";
-    hash = "sha256-4uRzueV+vQH9mZ6gE34YkDeBphB+4pkJHr/NPRHhCUE=";
-  };
+  src = ./cli;
 
   doCheck = false;
 
@@ -18,7 +14,6 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     description = "Mineflace CLI";
-    homepage = "https://git.frsqr.xyz/firesquare/mineflake-cli";
     license = licenses.gpl3;
   };
 }

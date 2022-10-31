@@ -27,7 +27,7 @@ let
     nmd.buildModulesDocs ({
       moduleRootPaths = [ ./.. ];
       mkModuleUrl = path:
-        "https://git.frsqr.xyz/firesquare/mineflake/src/branch/main/${path}";
+        "https://github.org/nix-community/mineflake/src/branch/main/${path}";
       channelName = "mineflake";
     } // args);
 

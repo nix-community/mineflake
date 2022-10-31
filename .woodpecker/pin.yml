@@ -1,6 +1,0 @@
-pipeline:
-  pin:
-    image: cofob/requests
-    commands:
-      - python3 .woodpecker/pin_all.py
-    secrets: [CLUSTER_SECRET]
