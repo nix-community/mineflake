@@ -1,5 +1,7 @@
 # Installing mineflake
 
+[<- Back](./README.md)
+
 ## Add a flake
 
 Mineflake can only be installed via flakes, so you must [enable them](https://nixos.wiki/wiki/Flakes) in your nix config. After you have enabled it, add a new input.

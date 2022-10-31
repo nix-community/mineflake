@@ -1,5 +1,7 @@
 # How mineflake works
 
+[<- Back](./README.md)
+
 ## NixOS
 
 Mineflake relies on NixOS, which gives us a reliable system and atomic updates with simple rollbacks, and its Nix package manager which

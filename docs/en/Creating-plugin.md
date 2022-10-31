@@ -1,5 +1,7 @@
 # Creating plugin
 
+[<- Back](./README.md)
+
 ## How plugins work
 
 Basically, plugins are simple, so we recommend you to read the [Nix Pills](https://nixos.org/guides/nix-pills/) series of articles and

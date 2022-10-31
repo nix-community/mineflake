@@ -1,5 +1,7 @@
 # Usage
 
+[<- Back](./README.md)
+
 Once you have installed mineflake you can start using it.
 
 ```nix
