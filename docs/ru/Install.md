@@ -13,7 +13,7 @@ Mineflake может быть установлен только через фл�
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
 
-    mineflake.url = "git+https://git.frsqr.xyz/firesquare/mineflake?ref=main";
+    mineflake.url = "github:nix-community/mineflake";
     mineflake.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -42,7 +42,7 @@ Mineflake может быть установлен только через фл�
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
 
-    mineflake.url = "git+https://git.frsqr.xyz/firesquare/mineflake?ref=main";
+    mineflake.url = "github:nix-community/mineflake";
     mineflake.inputs.nixpkgs.follows = "nixpkgs";
   };
 

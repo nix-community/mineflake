@@ -13,7 +13,7 @@ Mineflake can only be installed via flakes, so you must [enable them](https://ni
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
 
-    mineflake.url = "git+https://git.frsqr.xyz/firesquare/mineflake?ref=main";
+    mineflake.url = "github:nix-community/mineflake";
     mineflake.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -42,7 +42,7 @@ Add a new module and overlay nixpkgs to your nixosSystem.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
 
-    mineflake.url = "git+https://git.frsqr.xyz/firesquare/mineflake?ref=main";
+    mineflake.url = "github:nix-community/mineflake";
     mineflake.inputs.nixpkgs.follows = "nixpkgs";
   };
 
