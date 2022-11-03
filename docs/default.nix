@@ -32,7 +32,7 @@ let
     } // args);
 
   hmModulesDocs = buildModulesDocs {
-    modules = [ ../modules/mineflake.nix scrubbedPkgsModule dontCheckDefinitions ];
+    modules = [ ../modules/default.nix scrubbedPkgsModule dontCheckDefinitions ];
     docBook.id = "mineflake-options";
   };
 
