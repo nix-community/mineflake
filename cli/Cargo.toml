@@ -9,11 +9,6 @@ authors = [
 license = "MIT"
 
 [dependencies]
-# Argument parsing
-clap = "4.0.18"
-# Serialization
-serde = "1.0.147"
-serde_json = "1.0.87"
 
 [profile.release]
 overflow-checks = true
