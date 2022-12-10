@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  pin:
+  cargo-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,6 +15,9 @@ jobs:
         with:
           toolchain: stable
           override: true
+
+      - name: Change directory to the crate
+        run: cd cli
 
       - uses: actions-rs/cargo@v1
         with:
