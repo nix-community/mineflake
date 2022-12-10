@@ -2,6 +2,9 @@ name: Build derivations
 
 on:
   push:
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
