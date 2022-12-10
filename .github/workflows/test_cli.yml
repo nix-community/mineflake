@@ -22,3 +22,8 @@ jobs:
         run: |
           cd cli
           cargo test
+
+      - name: Check
+        run: |
+          cd cli
+          cargo check
