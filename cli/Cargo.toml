@@ -16,20 +16,25 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 # Serialization
-serde = "^1"
+serde = { version = "^1", features = ["derive"] }
 serde_json = "^1"
+serde_yaml = "^0.9"
 
 # CLI
-clap = "^4"
+clap = { version = "^4", features = ["derive"] }
+
+# Urls
+url = "^2"
 
 # Logging
 log = "^0.4"
-env_logger = "^0.10"
+pretty_env_logger = "^0.4"
+tracing-subscriber = "^0.3"
 
 [profile.release]
 overflow-checks = true
 incremental = false
-opt-level = 3
+opt-level = 2
 debug = false
 strip = true
 lto = true

@@ -1,0 +1,22 @@
+name: Cargo test
+
+on:
+  pull_request:
+    paths:
+      - "**.rs"
+
+jobs:
+  pin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
