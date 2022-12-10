@@ -1,9 +1,8 @@
 name: Cargo test
 
 on:
+  push:
   pull_request:
-    paths:
-      - "**.rs"
 
 jobs:
   pin:
