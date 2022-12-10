@@ -22,6 +22,8 @@ jobs:
           cargo fmt --check
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
 
       - name: Test
         run: |
