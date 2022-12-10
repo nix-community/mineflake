@@ -18,7 +18,7 @@ enum Commands {
     /// Apply a configuration to directory.
     Apply {
         /// Configuration to apply.
-        #[clap(default_value = "mineflake.yml")]
+        #[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
         config: PathBuf,
         /// Directory to apply configuration. If not specified, the current directory will be used.
         directory: Option<PathBuf>,
@@ -32,11 +32,14 @@ enum Commands {
         /// Configuration path. If not specified, a configuration will be printed to stdout.
         #[clap(long = "output", short = 'o')]
         config: Option<PathBuf>,
+        /// File format to use. Possible values: yaml, json. Defaults to yaml.
+        #[clap(long = "format", short = 'f', default_value = "yaml")]
+        format: String,
     },
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    mineflake::utils::log::initialize_logger();
+    mineflake::utils::initialize_logger();
 
     let cli = Cli::parse();
 
@@ -46,9 +49,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(Commands::Apply { config, directory }) => {
             mineflake::commands::apply(config, directory)?
         }
-        Some(Commands::Generate { server, config }) => {
-            mineflake::commands::generate(server, config)?
-        }
+        Some(Commands::Generate {
+            server,
+            config,
+            format,
+        }) => mineflake::commands::generate(server, config, format)?,
         None => {
             error!("No subcommand was used. Use --help for more information.");
         }

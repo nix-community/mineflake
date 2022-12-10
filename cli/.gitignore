@@ -1,2 +1,4 @@
 target
-/mineflake.yml
+/mineflake.*
+/packages
+/server

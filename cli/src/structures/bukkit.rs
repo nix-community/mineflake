@@ -18,14 +18,9 @@ impl BukkitServer {
             package: BukkitPackage::Local(BukkitPackageLocal {
                 path: PathBuf::from("/path/to/server.jar"),
             }),
-            plugins: vec![
-                BukkitPackage::Local(BukkitPackageLocal {
-                    path: PathBuf::from("/path/to/plugin/data"),
-                }),
-                BukkitPackage::Remote(BukkitPackageRemote {
-                    url: "https://example.com/plugin.zip".to_string(),
-                }),
-            ],
+            plugins: vec![BukkitPackage::Local(BukkitPackageLocal {
+                path: PathBuf::from("/path/to/plugin/data"),
+            })],
         }
     }
 }
@@ -36,16 +31,18 @@ impl BukkitServer {
 pub enum BukkitPackage {
     /// Package from a local directory.
     Local(BukkitPackageLocal),
-    /// Package from a remote URL. This is a direct URL to a ZIP file.
-    Remote(BukkitPackageRemote),
+    // /// Package from a remote URL. This is a direct URL to a ZIP file.
+    // Remote(BukkitPackageRemote),
 }
 
+/// Local directory package.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BukkitPackageLocal {
     /// Path to package.
     pub path: PathBuf,
 }
 
+/// Remote package.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BukkitPackageRemote {
     /// Direct URL to package zip.
