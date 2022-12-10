@@ -11,26 +11,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions-rs/toolchain@v1
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
 
-      - name: Fmt
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
+
+      - name: Check formatting
         run: |
           cd cli
           cargo fmt --check
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: cli
-
-      - name: Test
-        run: |
-          cd cli
-          cargo test
-
-      - name: Check
+      - name: Check packages
         run: |
           cd cli
           cargo check
+
+      - name: Test crate
+        run: |
+          cd cli
+          cargo test
