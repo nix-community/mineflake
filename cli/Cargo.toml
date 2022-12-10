@@ -4,11 +4,27 @@ version = "0.1.0"
 edition = "2021"
 description = "A CLI that powers Mineflake"
 authors = [
-  "Egor Ternovoy <cofob@riseup.net>"
+  "Egor Ternovoy <cofob@riseup.net>",
+  "Mineflake Contributors"
 ]
 license = "MIT"
+repository = "https://github.com/nix-community/mineflake"
+documentation = "https://github.com/nix-community/mineflake/tree/main/docs"
+readme = "README.md"
+keywords = ["mineflake", "nix", "nixos", "minecraft", "cli"]
+categories = ["command-line-utilities"]
 
 [dependencies]
+# Serialization
+serde = "^1"
+serde_json = "^1"
+
+# CLI
+clap = "^4"
+
+# Logging
+log = "^0.4"
+env_logger = "^0.10"
 
 [profile.release]
 overflow-checks = true

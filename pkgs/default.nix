@@ -7,4 +7,7 @@ with pkgs; rec {
   '';
 
   mineflake = callPackage ../cli { };
+
+  # Alias to mineflake for `nix build .` command
+  default = mineflake;
 }
