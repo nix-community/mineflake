@@ -19,7 +19,7 @@ with pkgs; rec {
   ### TESTING AREA ###
 
   docker = buildMineflakeContainer {
-    type = "bukkit";
+    type = "spigot";
     package = {
       type = "local";
       path = fetchzip {
