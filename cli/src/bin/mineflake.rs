@@ -29,18 +29,13 @@ enum Commands {
 		/// Directory to apply configuration. If not specified, the current directory will be used.
 		directory: Option<PathBuf>,
 	},
-
-	/// Generate a configuration.
-	Generate {
-		/// Server type to generate configuration for. Currently only Bukkit is supported.
-		#[clap(default_value = "bukkit")]
-		server: String,
-		/// Configuration path. If not specified, a configuration will be printed to stdout.
-		#[clap(long = "output", short = 'o')]
-		config: Option<PathBuf>,
-		/// File format to use. Possible values: yaml, json. Defaults to yaml.
-		#[clap(long = "format", short = 'f', default_value = "yaml")]
-		format: String,
+	/// Run server.
+	Run {
+		/// Configuration to apply.
+		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
+		config: PathBuf,
+		/// Directory to apply configuration. If not specified, the current directory will be used.
+		directory: Option<PathBuf>,
 	},
 }
 
@@ -74,11 +69,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				}
 			}
 		}
-		Some(Commands::Generate {
-			server: _,
-			config: _,
-			format: _,
-		}) => {}
+		Some(Commands::Run { config, directory }) => {
+			let config = ServerConfig::from(config.clone());
+			let directory = match directory {
+				Some(dir) => dir.clone(),
+				None => current_dir()?,
+			};
+			match &config.server {
+				ServerSpecificConfig::Spigot(spigot) => {
+					spigot.run_server(&config, &directory)?;
+				}
+			}
+		}
 		None => {
 			return Err("No subcommand was used. Use --help for more information.".into());
 		}
