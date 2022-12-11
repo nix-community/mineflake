@@ -1,4 +1,5 @@
-mod config;
+pub mod config;
+pub mod linker;
 mod log;
 
 pub use self::log::initialize_logger;

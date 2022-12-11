@@ -25,7 +25,7 @@ jobs:
       - name: Check formatting
         run: |
           cd cli
-          cargo fmt --check
+          cargo fmt --all -- --check
 
       - name: Check packages
         run: |

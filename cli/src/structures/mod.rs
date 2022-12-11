@@ -1,4 +1,2 @@
-pub mod bukkit;
-mod structures;
-
-pub use structures::*;
+pub mod common;
+pub mod spigot;

@@ -1,45 +1,40 @@
-use crate::structures::Server;
+use crate::structures::common::{FileMapping, ServerConfig};
+use anyhow::Result;
 
-pub fn load_config(config_data: &str) -> Result<Server, Box<dyn std::error::Error>> {
-    let config: Server = match serde_yaml::from_str(config_data) {
-        Ok(config) => config,
-        Err(_) => match serde_json::from_str(config_data) {
-            Ok(config) => config,
-            Err(_) => {
-                return Err("Failed to parse configuration".into());
-            }
-        },
-    };
+/// Try to load Server configuration from string.
+pub fn load_config(config_data: &str) -> Result<ServerConfig> {
+	let config: ServerConfig = match serde_yaml::from_str(config_data) {
+		Ok(config) => config,
+		Err(e1) => match serde_json::from_str(config_data) {
+			Ok(config) => config,
+			Err(e2) => {
+				debug!("Error 1 while parsing yaml: {}", e1);
+				debug!("Error 2 while parsing json: {}", e2);
+				return Err(anyhow!("Error parsing config file: {:?} and {:?}", e1, e2));
+			}
+		},
+	};
 
-    debug!("Loaded configuration {:#?}", config);
+	debug!("Loaded configuration {:#?}", config);
 
-    Ok(config)
+	Ok(config)
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub fn find_collisions(files: &Vec<FileMapping>) -> Result<()> {
+	for (i, mapping1) in files.iter().enumerate() {
+		for (j, mapping2) in files.iter().enumerate() {
+			if i == j {
+				continue;
+			}
 
-    #[test]
-    fn test_load_config() {
-        let config = load_config(
-            r#"
-type: bukkit
-package:
-  type: local
-  path: /path/to/server.jar
-plugins:
-- type: local
-  path: /path/to/plugin/data
-"#,
-        )
-        .expect("Failed to load configuration");
+			if mapping1.1 == mapping2.1 {
+				return Err(anyhow!(
+					"Found collision in file mappings: {:?}",
+					mapping1.1,
+				));
+			}
+		}
+	}
 
-        match config {
-            Server::Bukkit(_) => {}
-            _ => {
-                panic!("Failed to load configuration");
-            }
-        }
-    }
+	Ok(())
 }
