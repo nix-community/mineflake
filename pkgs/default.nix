@@ -1,9 +1,25 @@
 { pkgs, ... }:
 
 with pkgs; rec {
+  buildMineflakeConfig =
+    { type ? "spigot"
+    , package
+    , plugins ? [ ]
+    , command ? ""
+    , configs ? [ ]
+    ,
+    }: writeText "mineflake.json" (builtins.toJSON {
+      type = type;
+      package = mkMfPackage package;
+      plugins = map (p: mkMfPackage p) plugins;
+      command = command;
+      configs = configs;
+    });
+
+
   buildMineflakeBin = config: writeScriptBin "mineflake" ''
     #!${pkgs.runtimeShell}
-    ${mineflake}/bin/mineflake apply -r -c "${writeText "mineflake.json" (builtins.toJSON config)}"
+    ${mineflake}/bin/mineflake apply -r -c "${buildMineflakeConfig config}"
   '';
 
   buildMineflakeContainer = config: pkgs.dockerTools.buildImage {
@@ -29,9 +45,9 @@ with pkgs; rec {
   docker = buildMineflakeContainer {
     type = "spigot";
     command = "echo {}";
-    package = mkMfPackage paper;
+    package = paper;
     plugins = [
-      (mkMfPackage authme)
+      authme
     ];
   };
 
