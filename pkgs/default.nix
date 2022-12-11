@@ -3,7 +3,7 @@
 with pkgs; rec {
   buildMineflakeBin = config: writeScriptBin "mineflake" ''
     #!${pkgs.runtimeShell}
-    ${mineflake}/bin/mineflake apply -c "${writeText "mineflake.json" (builtins.toJSON config)}"
+    ${mineflake}/bin/mineflake apply -r -c "${writeText "mineflake.json" (builtins.toJSON config)}"
   '';
 
   buildMineflakeContainer = config: pkgs.dockerTools.buildImage {
