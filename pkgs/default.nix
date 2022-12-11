@@ -16,6 +16,11 @@ with pkgs; rec {
     };
   };
 
+  mkMfPackage = package: {
+    type = "local";
+    path = package;
+  };
+
   paper = callPackage ./servers/paper_1.19.2 { };
   authme = callPackage ./plugins/authme { };
 
@@ -24,15 +29,9 @@ with pkgs; rec {
   docker = buildMineflakeContainer {
     type = "spigot";
     command = "echo {}";
-    package = {
-      type = "local";
-      path = paper;
-    };
+    package = mkMfPackage paper;
     plugins = [
-      {
-        type = "local";
-        path = authme;
-      }
+      (mkMfPackage authme)
     ];
   };
 
