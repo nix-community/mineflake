@@ -47,6 +47,9 @@ enum Commands {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	mineflake::utils::initialize_logger();
 
+	const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+	debug!("Running mineflake v{}", VERSION);
+
 	let cli = Cli::parse();
 
 	// You can check for the existence of subcommands, and if found use their

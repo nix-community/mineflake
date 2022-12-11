@@ -1,5 +1,5 @@
+use std::path::PathBuf;
 use std::process::Command;
-use std::{env::set_current_dir, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -25,7 +25,7 @@ impl SpigotConfig {
 	fn prepare_packages(
 		&self,
 		config: &ServerConfig,
-		directory: &PathBuf,
+		_directory: &PathBuf,
 	) -> anyhow::Result<Vec<LinkTypes>> {
 		let ignore_patterns: Vec<PathBuf> =
 			vec![PathBuf::from("package.yml"), PathBuf::from("package.jar")];
@@ -83,6 +83,14 @@ impl Server for SpigotConfig {
 
 		let mut files = self.prepare_packages(config, directory)?;
 
+		// Configs
+		if let Some(configs) = &config.configs {
+			for config in configs {
+				let text = config.to_string();
+				files.push(LinkTypes::Raw(text, config.path.clone()));
+			}
+		}
+
 		let state = ServerState {
 			paths: files.iter().map(|p| p.get_path()).collect(),
 		};
@@ -95,21 +103,28 @@ impl Server for SpigotConfig {
 			remove_with_parent(&directory.join(path));
 		}
 
+		debug!("Final files: {:#?}", &files);
+
 		link_files(directory, &files)?;
+
+		info!("Linked {} files to {:?} directory", files.len(), directory);
 
 		Ok(())
 	}
 
 	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
-		let server_path = self.get_server_path(config)?;
-		let command = config.command.replace("{}", server_path.to_str().unwrap());
-		debug!("Running command: {}", command);
-		let spl: Vec<&str> = command.split(" ").collect();
-		Command::new(&spl[0])
-			.current_dir(directory)
-			.args(&spl[1..])
-			.spawn()?;
-		info!("Started server process and detatched");
-		Ok(())
+		if let Some(command) = &config.command {
+			let server_path = self.get_server_path(config)?;
+			let command = command.replace("{}", server_path.to_str().unwrap());
+			debug!("Running command: {}", command);
+			let spl: Vec<&str> = command.split(" ").collect();
+			Command::new(&spl[0])
+				.current_dir(directory)
+				.args(&spl[1..])
+				.spawn()?;
+			info!("Started server process and detatched");
+			return Ok(());
+		}
+		Err(anyhow!("No command specifed"))
 	}
 }

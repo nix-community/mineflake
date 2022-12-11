@@ -7,6 +7,7 @@ use std::{
 
 use crate::structures::common::{FileMapping, ServerState};
 
+#[derive(Debug)]
 pub enum LinkTypes {
 	Copy(FileMapping),
 	Raw(String, PathBuf),
@@ -21,23 +22,24 @@ impl LinkTypes {
 	}
 }
 
+fn write_file(path: &PathBuf, content: &str) -> Result<()> {
+	let mut file = File::create(&path)?;
+	file.write_all(content.as_bytes())?;
+	Ok(())
+}
+
 pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 	for file in files {
+		debug!("Linking {:?}", file);
+		let dest_path = directory.join(file.get_path());
+		let parent = dest_path.parent().unwrap();
+		create_dir_all(parent)?;
 		match file {
 			LinkTypes::Copy(mapping) => {
-				let dest_path = directory.join(&mapping.1);
-				let parent = dest_path.parent().expect("Unable to get parent of path");
-				debug!("Linking Copy: from {:?} to {:?}", &mapping.0, &dest_path);
-				create_dir_all(parent)?;
 				copy(&mapping.0, dest_path)?;
 			}
-			LinkTypes::Raw(content, local_dest) => {
-				let dest_path = directory.join(local_dest);
-				let parent = dest_path.parent().expect("Unable to get parent of path");
-				debug!("Linking Raw: to {:?}", &dest_path);
-				create_dir_all(parent)?;
-				let mut file = File::create(dest_path)?;
-				file.write_all(content.as_bytes())?;
+			LinkTypes::Raw(content, _) => {
+				write_file(&dest_path, content)?;
 			}
 		}
 	}

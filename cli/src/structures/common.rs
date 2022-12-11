@@ -11,12 +11,32 @@ use std::fs::read_to_string;
 pub struct FileMapping(pub PathBuf, pub PathBuf);
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct FileConfig {
+	pub path: PathBuf,
+	pub format: String,
+	pub content: String,
+}
+
+impl ToString for FileConfig {
+	fn to_string(&self) -> String {
+		match self.format.as_str() {
+			"raw" => self.content.clone(),
+			_ => {
+				warn!("Unknow config type, assuming as raw");
+				self.content.clone()
+			}
+		}
+	}
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ServerConfig {
 	pub package: Package,
 	pub plugins: Vec<Package>,
 	#[serde(flatten)]
 	pub server: ServerSpecificConfig,
-	pub command: String,
+	pub command: Option<String>,
+	pub configs: Option<Vec<FileConfig>>,
 }
 
 impl From<PathBuf> for ServerConfig {
