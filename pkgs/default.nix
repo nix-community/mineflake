@@ -20,6 +20,7 @@ with pkgs; rec {
 
   docker = buildMineflakeContainer {
     type = "spigot";
+    command = "echo {}";
     package = {
       type = "local";
       path = fetchzip {

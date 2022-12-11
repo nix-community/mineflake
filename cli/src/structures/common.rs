@@ -16,6 +16,7 @@ pub struct ServerConfig {
 	pub plugins: Vec<Package>,
 	#[serde(flatten)]
 	pub server: ServerSpecificConfig,
+	pub command: String,
 }
 
 impl From<PathBuf> for ServerConfig {
@@ -146,6 +147,7 @@ pub enum ServerSpecificConfig {
 
 pub trait Server {
 	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
+	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

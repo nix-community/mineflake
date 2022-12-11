@@ -23,6 +23,9 @@ enum Commands {
 		/// Configuration to apply.
 		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
 		config: PathBuf,
+		/// Configuration to apply.
+		#[clap(default_value = "false", long = "run", short = 'r')]
+		run: bool,
 		/// Directory to apply configuration. If not specified, the current directory will be used.
 		directory: Option<PathBuf>,
 	},
@@ -49,7 +52,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	// You can check for the existence of subcommands, and if found use their
 	// matches just as you would the top level cmd
 	match &cli.command {
-		Some(Commands::Apply { config, directory }) => {
+		Some(Commands::Apply {
+			config,
+			directory,
+			run,
+		}) => {
 			let config = ServerConfig::from(config.clone());
 			let directory = match directory {
 				Some(dir) => dir.clone(),
@@ -57,7 +64,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			};
 			match &config.server {
 				ServerSpecificConfig::Spigot(spigot) => {
-					spigot.prepare_directory(&config, &directory)?
+					spigot.prepare_directory(&config, &directory)?;
+					if *run {
+						spigot.run_server(&config, &directory)?;
+					}
 				}
 			}
 		}

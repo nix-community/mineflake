@@ -1,4 +1,5 @@
-use std::path::PathBuf;
+use std::process::Command;
+use std::{env::set_current_dir, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -13,6 +14,14 @@ use super::common::{FileMapping, Server, ServerConfig, ServerState};
 pub struct SpigotConfig;
 
 impl SpigotConfig {
+	fn get_server_path(&self, config: &ServerConfig) -> anyhow::Result<PathBuf> {
+		let path = PathBuf::from(format!(
+			"{}.jar",
+			config.package.load_manifest()?.full_name()
+		));
+		Ok(path)
+	}
+
 	fn prepare_packages(
 		&self,
 		config: &ServerConfig,
@@ -88,6 +97,19 @@ impl Server for SpigotConfig {
 
 		link_files(directory, &files)?;
 
+		Ok(())
+	}
+
+	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
+		let server_path = self.get_server_path(config)?;
+		let command = config.command.replace("{}", server_path.to_str().unwrap());
+		debug!("Running command: {}", command);
+		let spl: Vec<&str> = command.split(" ").collect();
+		Command::new(&spl[0])
+			.current_dir(directory)
+			.args(&spl[1..])
+			.spawn()?;
+		info!("Started server process and detatched");
 		Ok(())
 	}
 }
