@@ -82,7 +82,7 @@ impl SpigotConfig {
 
 impl Server for SpigotConfig {
 	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
-		let prev_state = ServerState::from(directory.clone().join("state.json"));
+		let prev_state = ServerState::from(directory.clone().join(".state.json"));
 
 		let mut files = self.prepare_packages(config, directory)?;
 
@@ -114,7 +114,7 @@ impl Server for SpigotConfig {
 		};
 
 		let state_content = serde_json::to_string(&state)?;
-		files.push(LinkTypes::Raw(state_content, "state.json".into()));
+		files.push(LinkTypes::Raw(state_content, ".state.json".into()));
 
 		let diff = diff_states(&state, &prev_state);
 		for path in diff {
