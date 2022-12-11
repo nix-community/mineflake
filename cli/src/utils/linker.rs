@@ -2,7 +2,7 @@ use anyhow::Result;
 use std::{
 	fs::{copy, create_dir_all, File},
 	io::Write,
-	path::PathBuf,
+	path::PathBuf, env::vars,
 };
 
 use crate::structures::common::{FileMapping, ServerState};
@@ -24,6 +24,10 @@ impl LinkTypes {
 
 fn write_file(path: &PathBuf, content: &str) -> Result<()> {
 	let mut file = File::create(&path)?;
+	let mut content = content.to_string();
+	for var in vars() {
+		content = content.replace(&format!("#{}#", var.0), &var.1);
+	}
 	file.write_all(content.as_bytes())?;
 	Ok(())
 }
