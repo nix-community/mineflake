@@ -16,6 +16,9 @@ with pkgs; rec {
     };
   };
 
+  paper = callPackage ./servers/paper_1.19.2 { };
+  authme = callPackage ./plugins/authme { };
+
   ### TESTING AREA ###
 
   docker = buildMineflakeContainer {
@@ -23,13 +26,13 @@ with pkgs; rec {
     command = "echo {}";
     package = {
       type = "local";
-      path = fetchzip {
-        url = "https://bafybeibdyu6zey5k2rihdeapzeh3r2zr5mjgh3tcaqu27wiad6pxd3tjhi.ipfs.w3s.link/ipfs/bafybeibdyu6zey5k2rihdeapzeh3r2zr5mjgh3tcaqu27wiad6pxd3tjhi/essentialsx.zip";
-        sha256 = "0fqjfsicm9gaga7b7f1n60z296dkqwgmy11s2pghq2ygi08jrkk4";
-      };
+      path = paper;
     };
     plugins = [
-
+      {
+        type = "local";
+        path = authme;
+      }
     ];
   };
 
