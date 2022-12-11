@@ -11,25 +11,6 @@ use std::fs::read_to_string;
 pub struct FileMapping(pub PathBuf, pub PathBuf);
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileConfig {
-	pub path: PathBuf,
-	pub format: String,
-	pub content: String,
-}
-
-impl ToString for FileConfig {
-	fn to_string(&self) -> String {
-		match self.format.as_str() {
-			"raw" => self.content.clone(),
-			_ => {
-				warn!("Unknow config type, assuming as raw");
-				self.content.clone()
-			}
-		}
-	}
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ServerConfig {
 	pub package: Package,
 	pub plugins: Vec<Package>,
@@ -104,6 +85,36 @@ impl ServerConfig {
 		}
 		Ok(out)
 	}
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct FileConfig {
+	pub path: PathBuf,
+	#[serde(flatten)]
+	pub file: FileConfigEnum,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "type", rename_all = "lowercase")]
+pub enum FileConfigEnum {
+	Raw(RawFileConfig),
+	Json(JsonFileConfig),
+	Yaml(YamlFileConfig),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RawFileConfig {
+	pub content: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct JsonFileConfig {
+	pub content: serde_json::Value,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct YamlFileConfig {
+	pub content: serde_yaml::Value,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

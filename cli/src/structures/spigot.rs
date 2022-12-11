@@ -3,9 +3,12 @@ use std::process::Command;
 
 use serde::{Deserialize, Serialize};
 
-use crate::utils::{
-	config::find_collisions,
-	linker::{diff_states, link_files, remove_with_parent, LinkTypes},
+use crate::{
+	structures::common::FileConfigEnum,
+	utils::{
+		config::find_collisions,
+		linker::{diff_states, link_files, remove_with_parent, LinkTypes},
+	},
 };
 
 use super::common::{FileMapping, Server, ServerConfig, ServerState};
@@ -86,8 +89,23 @@ impl Server for SpigotConfig {
 		// Configs
 		if let Some(configs) = &config.configs {
 			for config in configs {
-				let text = config.to_string();
-				files.push(LinkTypes::Raw(text, config.path.clone()));
+				match &config.file {
+					FileConfigEnum::Raw(raw) => {
+						files.push(LinkTypes::Raw(raw.content.clone(), config.path.clone()));
+					}
+					FileConfigEnum::Json(json) => {
+						files.push(LinkTypes::Raw(
+							serde_json::to_string(&json.content)?,
+							config.path.clone(),
+						));
+					}
+					FileConfigEnum::Yaml(yaml) => {
+						files.push(LinkTypes::Raw(
+							serde_yaml::to_string(&yaml.content)?,
+							config.path.clone(),
+						));
+					}
+				}
 			}
 		}
 

@@ -1,8 +1,9 @@
 use anyhow::Result;
 use std::{
+	env::vars,
 	fs::{copy, create_dir_all, File},
 	io::Write,
-	path::PathBuf, env::vars,
+	path::PathBuf,
 };
 
 use crate::structures::common::{FileMapping, ServerState};
