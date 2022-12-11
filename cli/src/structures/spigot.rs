@@ -117,15 +117,18 @@ impl Server for SpigotConfig {
 		files.push(LinkTypes::Raw(state_content, ".state.json".into()));
 
 		let diff = diff_states(&state, &prev_state);
-		for path in diff {
+		for path in &diff {
 			remove_with_parent(&directory.join(path));
+		}
+		if diff.len() > 0 {
+			info!("Removed {} diffed files", diff.len());
 		}
 
 		debug!("Final files: {:#?}", &files);
 
 		link_files(directory, &files)?;
 
-		info!("Linked {} files to {:?} directory", files.len(), directory);
+		info!("Linked {} files", files.len());
 
 		Ok(())
 	}
