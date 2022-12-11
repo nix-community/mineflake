@@ -1,7 +1,12 @@
+use std::env;
+
 use pretty_env_logger;
 
 /// Initialize the logger.
 pub fn initialize_logger() {
+	if let Err(_) = env::var("RUST_LOG") {
+		env::set_var("RUST_LOG", "info");
+	}
 	pretty_env_logger::init();
 }
 
