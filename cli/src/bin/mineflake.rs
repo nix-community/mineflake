@@ -37,6 +37,12 @@ enum Commands {
 		/// Directory to apply configuration. If not specified, the current directory will be used.
 		directory: Option<PathBuf>,
 	},
+	/// Vendor remote plugins.
+	Vendor {
+		/// Configuration to take plugins from.
+		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
+		config: PathBuf,
+	},
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -79,6 +85,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				ServerSpecificConfig::Spigot(spigot) => {
 					spigot.run_server(&config, &directory)?;
 				}
+			}
+		}
+		Some(Commands::Vendor { config }) => {
+			let config = ServerConfig::from(config.clone());
+			for plugin in &config.plugins {
+				let path = plugin.get_path()?;
+				info!("Vendoring {:?}", path);
 			}
 		}
 		None => {
