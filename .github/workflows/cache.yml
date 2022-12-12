@@ -24,5 +24,4 @@ jobs:
 
       - name: Build derivations
         run: |
-          nix build .#mineflake
           nix build .#all
