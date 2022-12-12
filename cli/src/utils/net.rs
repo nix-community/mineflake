@@ -31,14 +31,19 @@ pub fn download_file(url: &url::Url, path: &PathBuf) -> Result<()> {
 pub fn get_cache_dir() -> PathBuf {
 	#[cfg(target_os = "windows")]
 	{
-		let path = var("MINEFLAKE_CACHE").unwrap_or_else(|_| var("TEMP").var("LOCALAPPDATA").unwrap_or_else(|_| var("TEMP").unwrap_or_else(|_| "C:\\Windows\\Temp".to_string())));
+		let path = var("MINEFLAKE_CACHE").unwrap_or_else(|_| {
+			var("TEMP")
+				.var("LOCALAPPDATA")
+				.unwrap_or_else(|_| var("TEMP").unwrap_or_else(|_| "C:\\Windows\\Temp".to_string()))
+		});
 		let mut path = PathBuf::from(path);
 		path.push("mineflake");
 		path
 	}
 	#[cfg(not(target_os = "windows"))]
 	{
-		let path = var("MINEFLAKE_CACHE").unwrap_or_else(|_| var("HOME").unwrap_or_else(|_| "/tmp".to_string()));
+		let path = var("MINEFLAKE_CACHE")
+			.unwrap_or_else(|_| var("HOME").unwrap_or_else(|_| "/tmp".to_string()));
 		let mut path = PathBuf::from(path);
 		path.push(".cache");
 		path.push("mineflake");
