@@ -111,22 +111,27 @@ pub fn diff_states(curr_state: &ServerState, prev_state: &ServerState) -> Vec<Pa
 	out
 }
 
-/// Remove a file and its parent directory if it is empty
+/// Remove a file and its parent directories if they are empty
 pub fn remove_with_parent(path: &PathBuf) {
 	debug!("Removing file {:?}", &path);
 	let _ = std::fs::remove_file(&path);
 	// Delete parent directory if it is empty
-	let parent = match path.parent() {
-		Some(parent) => parent.to_path_buf(),
-		None => return,
-	};
-	let read_dir = match parent.read_dir() {
-		Ok(read_dir) => read_dir,
-		Err(_) => return,
-	};
-	if read_dir.count() == 0 {
-		debug!("Removing empty directory {:?}", parent);
-		let _ = std::fs::remove_dir(parent);
+	let parent = path.clone();
+	loop {
+		let parent = match parent.parent() {
+			Some(parent) => parent.to_path_buf(),
+			None => break,
+		};
+		let read_dir = match parent.read_dir() {
+			Ok(read_dir) => read_dir,
+			Err(_) => break,
+		};
+		if read_dir.count() == 0 {
+			debug!("Removing empty directory {:?}", parent);
+			let _ = std::fs::remove_dir(parent);
+		} else {
+			break;
+		}
 	}
 }
 
