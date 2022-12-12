@@ -27,7 +27,8 @@ fn write_file(path: &PathBuf, content: &str) -> Result<()> {
 	let mut file = File::create(&path)?;
 	let mut content = content.to_string();
 	for var in vars() {
-		content = content.replace(&format!("#{}#", var.0), &var.1);
+		// {{VAR}}
+		content = content.replace(&format!("{{{{{}}}}}", var.0), &var.1);
 	}
 	file.write_all(content.as_bytes())?;
 	Ok(())
