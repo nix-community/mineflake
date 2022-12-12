@@ -68,6 +68,9 @@ In addition, this project uses the following third-party software:
 - [naersk](https://github.com/nix-community/naersk) - Licensed under the
   [MIT](https://github.com/nix-community/naersk/blob/master/LICENSE).
   Used to build Mineflake CLI.
+- [flake-utils](https://github.com/numtide/flake-utils) - Licensed under the
+  [MIT](https://github.com/numtide/flake-utils/blob/master/LICENSE).
+  Simplifies the creation of flake outputs.
 
 ## Contributors
 
