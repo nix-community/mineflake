@@ -85,20 +85,22 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 				write_file(&dest_path, &serde_json::to_string(&new_content)?)?;
 			}
 			LinkTypes::MergeYAML(content, _) => {
-				let mut new_content = if dest_path.is_file() {
+				let mut new_content: serde_json::Value = if dest_path.is_file() {
 					// Load the existing file
 					// If errors occur, use an empty object
-					let read_res = std::fs::read_to_string(&dest_path);
-					if let Ok(read) = read_res {
-						let obj_res: Result<serde_yaml::Value, _> = serde_yaml::from_str(&read);
-						if let Ok(obj) = obj_res {
-							serde_json::to_value(obj)?
-						} else {
-							serde_json::Value::Object(serde_json::Map::new())
+					let mut ret = None;
+					if let Ok(read) = std::fs::read_to_string(&dest_path) {
+						if let Ok(obj) = serde_yaml::from_str::<serde_yaml::Value>(&read) {
+							if let Ok(val) = serde_json::to_value(obj) {
+								ret = Some(val);
+							}
 						}
-					} else {
-						serde_json::Value::Object(serde_json::Map::new())
+					};
+					// If the above fails, use an empty object
+					if ret.is_none() {
+						ret = Some(serde_json::Value::Object(serde_json::Map::new()));
 					}
+					ret.unwrap()
 				} else {
 					serde_json::Value::Object(serde_json::Map::new())
 				};
