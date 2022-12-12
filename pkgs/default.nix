@@ -32,6 +32,16 @@ with pkgs; rec {
     };
   };
 
+  buildMineflakeLayeredContainer = config: pkgs.dockerTools.buildLayeredImage {
+    name = "mineflake";
+    tag = "latest";
+    contents = [ (buildMineflakeBin config) ];
+    config = {
+      Cmd = [ "/bin/mineflake" ];
+      WorkingDir = "/data";
+    };
+  };
+
   mkMfPackage = package: {
     type = "local";
     path = package;
@@ -48,7 +58,7 @@ with pkgs; rec {
 
   ### TESTING AREA ###
 
-  docker = buildMineflakeContainer {
+  docker = buildMineflakeLayeredContainer {
     type = "spigot";
     command = "${jre}/bin/java -jar {}";
     package = paper;

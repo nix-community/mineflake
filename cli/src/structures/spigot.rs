@@ -158,8 +158,9 @@ impl Server for SpigotConfig {
 				.current_dir(directory)
 				.args(&spl[1..])
 				.spawn()?;
-			process.wait().expect("Failed to wait on child");
-			info!("Started server process and detatched");
+			info!("Started server process, following output");
+			let _ = process.wait();
+			info!("Server process exited");
 			return Ok(());
 		}
 		Err(anyhow!("No command specifed"))
