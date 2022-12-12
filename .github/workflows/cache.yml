@@ -25,3 +25,7 @@ jobs:
       - name: Build derivations
         run: |
           nix build .#all
+
+      - name: Print store paths
+        run: |
+          cat result/buildInputs
