@@ -202,6 +202,7 @@ pub trait PackageTrait {
 /// Local package
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LocalPackage {
+	/// The path to the package
 	pub path: PathBuf,
 }
 
@@ -218,6 +219,7 @@ impl PackageTrait for LocalPackage {
 /// Remote package
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RemotePackage {
+	/// The URL to the package zip file
 	pub url: String,
 }
 
@@ -273,6 +275,7 @@ impl PackageManifest {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ServerSpecificConfig {
+	/// Bukkit-based server (Spigot, Paper, etc.)
 	Spigot(SpigotConfig),
 }
 
@@ -298,6 +301,7 @@ pub trait Generator {
 /// This is used to determine which files have changed since the last run and can be removed
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ServerState {
+	/// The paths of the files that were created
 	pub paths: Vec<PathBuf>,
 }
 
