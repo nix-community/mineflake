@@ -11,11 +11,46 @@ use crate::{
 	},
 };
 
-use super::common::{FileMapping, Server, ServerConfig, ServerState};
+use super::common::{FileMapping, Generator, Server, ServerConfig, ServerState};
+
+/// The configuration for a LuckPerms group
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct LuckPermsGroupConfig {
+	/// The name of the group
+	pub name: String,
+	/// The weight of the group
+	pub weight: u32,
+	/// Group permissions
+	pub permissions: Vec<String>,
+}
+
+impl Generator for LuckPermsGroupConfig {
+	fn generate(&self, _config: &ServerConfig) -> anyhow::Result<Vec<LinkTypes>> {
+		let mut files: Vec<LinkTypes> = Vec::new();
+
+		let mut path = PathBuf::from("plugins");
+		path.push("LuckPerms");
+		path.push("groups");
+		path.push(format!("{}.json", self.name));
+		let content = serde_json::to_string_pretty(&serde_json::json!(
+			{
+				"name": self.name,
+				"weight": self.weight,
+				"permissions": self.permissions
+			}
+		))?;
+		files.push(LinkTypes::Raw(content, path));
+
+		Ok(files)
+	}
+}
 
 /// The configuration for a Spigot server
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct SpigotConfig;
+pub struct SpigotConfig {
+	/// LuckPerms configuration
+	pub permissions: Option<Vec<LuckPermsGroupConfig>>,
+}
 
 impl SpigotConfig {
 	fn get_server_path(&self, config: &ServerConfig) -> anyhow::Result<PathBuf> {
@@ -86,6 +121,14 @@ impl Server for SpigotConfig {
 		let prev_state = ServerState::from(directory.clone().join(".state.json"));
 
 		let mut files = self.prepare_packages(config, directory)?;
+
+		// Generators
+		// LuckPerms
+		if let Some(permissions) = &self.permissions {
+			for permission in permissions {
+				files.extend(permission.generate(config)?);
+			}
+		}
 
 		// Configs
 		if let Some(configs) = &config.configs {

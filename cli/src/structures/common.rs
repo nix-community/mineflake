@@ -4,7 +4,7 @@ use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
-use crate::utils::{load_config, net::download_and_unzip_file};
+use crate::utils::{linker::LinkTypes, load_config, net::download_and_unzip_file};
 use anyhow::Result;
 use std::fs::read_to_string;
 
@@ -276,6 +276,12 @@ pub trait Server {
 	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
 	/// Runs the server (blocking, launches the server process)
 	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
+}
+
+/// Generator trait
+pub trait Generator {
+	/// Generates the server files from the given config
+	fn generate(&self, config: &ServerConfig) -> Result<Vec<LinkTypes>>;
 }
 
 /// Server state (used to store the server state between runs)
