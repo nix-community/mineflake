@@ -36,8 +36,19 @@
         packages =
           let
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            overlay = (self.overlays.default pkgs pkgs).mineflake;
+            buildInputs = builtins.filter (p: (builtins.typeOf p) == "set") (map (a: builtins.getAttr a overlay) (builtins.attrNames overlay));
           in
-          (self.overlays.default pkgs pkgs).mineflake;
+          (overlay // {
+            # This is a hack to get the buildInputs of the overlay
+            # Used for caching on cachix
+            all = pkgs.stdenv.mkDerivation {
+              name = "all";
+              src = ./.;
+              buildInputs = buildInputs;
+              installPhase = "mkdir -p $out; echo '${toString buildInputs}' > $out/buildInputs";
+            };
+          });
       }
     );
 }

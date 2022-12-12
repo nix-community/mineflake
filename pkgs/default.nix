@@ -53,34 +53,10 @@ with pkgs; rec {
     content = content;
   };
 
+  
+
   paper = callPackage ./servers/paper_1.19.2 { };
   authme = callPackage ./plugins/authme { };
-
-  ### TESTING AREA ###
-
-  docker = buildMineflakeLayeredContainer {
-    type = "spigot";
-    command = "${jre}/bin/java -jar {}";
-    package = paper;
-    plugins = [
-      authme
-    ];
-    configs = [
-      (mkMfConfig "raw" "server.properties" "online-mode=false")
-      (mkMfConfig "raw" "eula.txt" "eula=true")
-    ];
-    permissions = [
-      {
-        name = "root";
-        weight = 0;
-        permissions = [
-          "*"
-        ];
-      }
-    ];
-  };
-
-  ### TESTING AREA ###
 
   mineflake = callPackage ../cli { };
 

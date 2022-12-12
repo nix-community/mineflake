@@ -1,13 +1,10 @@
-name: Build derivations
+name: Cache derivations
 
 on:
   push:
-    branches:
-      - main
-      - dev
 
 jobs:
-  build:
+  cache:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,3 +22,4 @@ jobs:
       - name: Build derivations
         run: |
           nix build .#mineflake
+          nix build .#all
