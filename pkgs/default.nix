@@ -7,14 +7,14 @@ with pkgs; rec {
     , plugins ? [ ]
     , command ? ""
     , configs ? [ ]
-    ,
-    }: writeText "mineflake.json" (builtins.toJSON {
+    , ...
+    }@attrs: writeText "mineflake.json" (builtins.toJSON (attrs // {
       type = type;
       package = mkMfPackage package;
       plugins = map (p: mkMfPackage p) plugins;
       command = command;
       configs = configs;
-    });
+    }));
 
 
   buildMineflakeBin = config: writeScriptBin "mineflake" ''
@@ -68,6 +68,15 @@ with pkgs; rec {
     configs = [
       (mkMfConfig "raw" "server.properties" "online-mode=false")
       (mkMfConfig "raw" "eula.txt" "eula=true")
+    ];
+    permissions = [
+      {
+        name = "root";
+        weight = 0;
+        permissions = [
+          "*"
+        ];
+      }
     ];
   };
 
