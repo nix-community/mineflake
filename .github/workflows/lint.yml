@@ -1,4 +1,4 @@
-name: Lint
+name: Test & lint
 
 on:
   push:
@@ -18,3 +18,29 @@ jobs:
       - name: Lint
         run: |
           nix-shell -p nixpkgs-fmt --run "nixpkgs-fmt --check ."
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
+
+      - name: Check formatting
+        run: |
+          cd cli
+          cargo fmt --all -- --check
+
+      - name: Check packages
+        run: |
+          cd cli
+          cargo check
+
+      - name: Test crate
+        run: |
+          cd cli
+          cargo test
