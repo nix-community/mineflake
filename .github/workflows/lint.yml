@@ -24,6 +24,7 @@ jobs:
         with:
           toolchain: stable
           override: true
+          target: x86_64-pc-windows-gnu
 
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
@@ -44,3 +45,10 @@ jobs:
         run: |
           cd cli
           cargo test
+          cargo test --all-features
+          cargo test --no-default-features --features "cli"
+          cargo test --no-default-features --features "cli,net"
+          cargo test --target x86_64-pc-windows-gnu
+          cargo test --all-features --target x86_64-pc-windows-gnu
+          cargo test --no-default-features --features "cli" --target x86_64-pc-windows-gnu
+          cargo test --no-default-features --features "cli,net" --target x86_64-pc-windows-gnu
