@@ -1,6 +1,6 @@
-{ lib, fetchurl, stdenv, ... }:
+{ lib, fetchurl, stdenv, mineflake, ... }:
 
-stdenv.mkDerivation rec {
+mineflake.buildMineflakePackage rec {
   pname = "paper";
   version = "${mcVersion}r${buildNum}";
   src = fetchurl {
@@ -13,10 +13,8 @@ stdenv.mkDerivation rec {
 
   dontUnpack = true;
   dontConfigure = true;
-
   installPhase = ''
     mkdir -p $out
-    install -Dm444 ${./package.yml} $out/package.yml
     install -Dm444 $src $out/package.jar
   '';
 

@@ -53,6 +53,16 @@ with pkgs; rec {
     content = content;
   };
 
+  # Generates manifest.yml for a package
+  buildMineflakeManifest = name: version: writeText "mineflake-manifest.yml" (builtins.toJSON { inherit name version; });
+
+  buildMineflakePackage = { pname, version, ... }@attrs: stdenv.mkDerivation ({
+    phases = [ "buildPhase" "installPhase" "manifestPhase" ];
+    manifestPhase = ''
+      cp ${buildMineflakeManifest pname version} $out/package.yml
+    '';
+  } // attrs);
+
   # Servers
   paper = paper_1-19-2;
   paper_1-19-2 = callPackage ./servers/paper_1.19.2 { };
