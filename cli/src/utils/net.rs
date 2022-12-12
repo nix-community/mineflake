@@ -113,7 +113,9 @@ mod tests {
 	pub fn test_split_hash() {
 		assert_eq!(
 			super::split_hash("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"),
-			std::path::PathBuf::from("01/23/45/67/89abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
+			std::path::PathBuf::from(
+				"01/23/45/67/89abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+			)
 		);
 	}
 }

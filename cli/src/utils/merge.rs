@@ -19,3 +19,57 @@ pub fn merge_json(a: &mut serde_json::Value, b: &serde_json::Value) {
 		(a, b) => *a = b.clone(),
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use serde_json::json;
+
+	#[test]
+	fn test_merge_json() {
+		let mut a = json!({
+			"foo": "bar",
+			"bar": {
+				"foo": "bar",
+				"bar": "foo",
+				"baz": {
+					"foo": "bar",
+					"bar": "foo",
+				},
+			},
+			"baz": {
+				"foo": "bar",
+				"bar": "foo",
+			},
+			"zab": ["foo", "bar"]
+		});
+		let b = json!({
+			"foo": "foo",
+			"bar": {
+				"foo": "foo",
+				"baz": {
+					"foo": "foo",
+				},
+			},
+			"baz": ["foo", "bar"],
+			"zab": ["baz"]
+		});
+		merge_json(&mut a, &b);
+		assert_eq!(
+			a,
+			json!({
+				"foo": "foo",
+				"bar": {
+					"foo": "foo",
+					"bar": "foo",
+					"baz": {
+						"foo": "foo",
+						"bar": "foo",
+					},
+				},
+				"baz": ["foo", "bar"],
+				"zab": ["baz"]
+			})
+		);
+	}
+}

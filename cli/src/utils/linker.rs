@@ -152,3 +152,54 @@ pub fn remove_with_parent(path: &PathBuf) {
 		let _ = std::fs::remove_dir(parent);
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_diff_states() {
+		let curr_state = ServerState {
+			paths: vec![
+				PathBuf::from("a"),
+				PathBuf::from("b"),
+				PathBuf::from("c"),
+				PathBuf::from("d"),
+			],
+		};
+		let prev_state = ServerState {
+			paths: vec![
+				PathBuf::from("a"),
+				PathBuf::from("b"),
+				PathBuf::from("c"),
+				PathBuf::from("d"),
+				PathBuf::from("e"),
+				PathBuf::from("f"),
+			],
+		};
+		let diff = diff_states(&curr_state, &prev_state);
+		assert_eq!(diff, vec![PathBuf::from("e"), PathBuf::from("f")]);
+	}
+
+	#[test]
+	fn test_diff_states_empty() {
+		let curr_state = ServerState {
+			paths: vec![
+				PathBuf::from("a"),
+				PathBuf::from("b"),
+				PathBuf::from("c"),
+				PathBuf::from("d"),
+			],
+		};
+		let prev_state = ServerState {
+			paths: vec![
+				PathBuf::from("a"),
+				PathBuf::from("b"),
+				PathBuf::from("c"),
+				PathBuf::from("d"),
+			],
+		};
+		let diff = diff_states(&curr_state, &prev_state);
+		assert_eq!(diff, Vec::<PathBuf>::new());
+	}
+}

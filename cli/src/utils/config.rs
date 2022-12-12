@@ -39,3 +39,30 @@ pub fn find_collisions(files: &Vec<FileMapping>) -> Result<()> {
 
 	Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use std::path::PathBuf;
+
+	#[test]
+	fn test_find_collisions() {
+		let files = vec![
+			FileMapping(PathBuf::from("a"), PathBuf::from("b")),
+			FileMapping(PathBuf::from("c"), PathBuf::from("d")),
+			FileMapping(PathBuf::from("e"), PathBuf::from("f")),
+		];
+		assert_eq!(find_collisions(&files).is_ok(), true);
+	}
+
+	#[test]
+	fn test_find_collisions_collision() {
+		let files = vec![
+			FileMapping(PathBuf::from("a"), PathBuf::from("b")),
+			FileMapping(PathBuf::from("c"), PathBuf::from("d")),
+			FileMapping(PathBuf::from("e"), PathBuf::from("f")),
+			FileMapping(PathBuf::from("g"), PathBuf::from("d")),
+		];
+		assert_eq!(find_collisions(&files).is_ok(), false);
+	}
+}
