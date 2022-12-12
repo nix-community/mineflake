@@ -229,7 +229,7 @@ impl PackageTrait for LocalPackage {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RemotePackage {
 	/// The URL to the package zip file
-	pub url: String,
+	pub url: url::Url,
 }
 
 #[cfg(feature = "net")]
@@ -262,8 +262,7 @@ impl PackageTrait for RemotePackage {
 	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
 		use crate::utils::net::download_and_unzip_file;
-		let url = Url::parse(&self.url)?;
-		let path = download_and_unzip_file(&url)?;
+		let path = download_and_unzip_file(&self.url)?;
 		// If path contains a single directory, return that directory instead
 		let path = get_package_dir(&path)?;
 		Ok(path)
@@ -278,7 +277,7 @@ pub struct RepositoryPackage {
 	pub name: String,
 	/// Package repository URL
 	#[serde(alias = "repo", alias = "repository")]
-	pub repository: String,
+	pub repository: url::Url,
 }
 
 #[cfg(feature = "net")]
@@ -291,8 +290,7 @@ impl PackageTrait for RepositoryPackage {
 			"Downloading package {} from repository {}",
 			&self.name, &self.repository
 		);
-		let url = Url::parse(&self.repository)?;
-		let path = download_file_to_cache_full_path(&url, "json")?;
+		let path = download_file_to_cache_full_path(&self.repository, "json")?;
 		let content = read_to_string(&path)?;
 		// Parse repository index
 		let repo: HashMap<String, String> = serde_json::from_str(&content)?;
