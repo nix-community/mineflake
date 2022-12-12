@@ -106,6 +106,18 @@ impl Server for SpigotConfig {
 							config.path.clone(),
 						));
 					}
+					FileConfigEnum::MergeJson(json) => {
+						files.push(LinkTypes::MergeJSON(
+							json.content.clone(),
+							config.path.clone(),
+						));
+					}
+					FileConfigEnum::MergeYaml(yaml) => {
+						files.push(LinkTypes::MergeYAML(
+							yaml.content.clone(),
+							config.path.clone(),
+						));
+					}
 				}
 			}
 		}

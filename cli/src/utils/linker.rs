@@ -6,7 +6,10 @@ use std::{
 	path::PathBuf,
 };
 
-use crate::structures::common::{FileMapping, ServerState};
+use crate::{
+	structures::common::{FileMapping, ServerState},
+	utils::merge::merge_json,
+};
 
 /// A type of file to link
 #[derive(Debug)]
@@ -19,6 +22,12 @@ pub enum LinkTypes {
 	/// The first argument is the content, the second is the path.
 	/// Used for writing config files.
 	Raw(String, PathBuf),
+
+	/// Merge a JSON file with another
+	MergeJSON(serde_json::Value, PathBuf),
+
+	/// Merge a YAML file with another
+	MergeYAML(serde_yaml::Value, PathBuf),
 }
 
 impl LinkTypes {
@@ -27,6 +36,8 @@ impl LinkTypes {
 		match &self {
 			Self::Copy(f) => f.1.clone(),
 			Self::Raw(_, p) => p.clone(),
+			Self::MergeJSON(_, p) => p.clone(),
+			Self::MergeYAML(_, p) => p.clone(),
 		}
 	}
 }
@@ -56,6 +67,49 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 			}
 			LinkTypes::Raw(content, _) => {
 				write_file(&dest_path, content)?;
+			}
+			LinkTypes::MergeJSON(content, _) => {
+				let mut new_content = if dest_path.is_file() {
+					// Load the existing file
+					// If errors occur, use an empty object
+					let read_res = std::fs::read_to_string(&dest_path);
+					if let Ok(read) = read_res {
+						let obj_res = serde_json::from_str(&read);
+						if let Ok(obj) = obj_res {
+							obj
+						} else {
+							serde_json::Value::Object(serde_json::Map::new())
+						}
+					} else {
+						serde_json::Value::Object(serde_json::Map::new())
+					}
+				} else {
+					serde_json::Value::Object(serde_json::Map::new())
+				};
+				merge_json(&mut new_content, &content);
+				write_file(&dest_path, &serde_json::to_string(&new_content)?)?;
+			}
+			LinkTypes::MergeYAML(content, _) => {
+				let mut new_content = if dest_path.is_file() {
+					// Load the existing file
+					// If errors occur, use an empty object
+					let read_res = std::fs::read_to_string(&dest_path);
+					if let Ok(read) = read_res {
+						let obj_res: Result<serde_yaml::Value, _> = serde_yaml::from_str(&read);
+						if let Ok(obj) = obj_res {
+							serde_json::to_value(obj)?
+						} else {
+							serde_json::Value::Object(serde_json::Map::new())
+						}
+					} else {
+						serde_json::Value::Object(serde_json::Map::new())
+					}
+				} else {
+					serde_json::Value::Object(serde_json::Map::new())
+				};
+				let content = &serde_json::to_value(content)?;
+				merge_json(&mut new_content, &content);
+				write_file(&dest_path, &serde_yaml::to_string(&new_content)?)?;
 			}
 		}
 	}

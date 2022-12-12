@@ -117,6 +117,10 @@ pub enum FileConfigEnum {
 	Json(JsonFileConfig),
 	/// YAML file content
 	Yaml(YamlFileConfig),
+	/// Merge JSON files
+	MergeJson(MergeJsonFileConfig),
+	/// Merge YAML files
+	MergeYaml(MergeYamlFileConfig),
 }
 
 /// Raw file content
@@ -136,6 +140,20 @@ pub struct JsonFileConfig {
 /// YAML file content
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct YamlFileConfig {
+	/// The file content
+	pub content: serde_yaml::Value,
+}
+
+/// Merge JSON files
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MergeJsonFileConfig {
+	/// The file content
+	pub content: serde_json::Value,
+}
+
+/// Merge YAML files
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MergeYamlFileConfig {
 	/// The file content
 	pub content: serde_yaml::Value,
 }
