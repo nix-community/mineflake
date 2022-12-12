@@ -77,3 +77,16 @@ In addition, this project uses the following third-party software:
 If you contribute to this project, please add your name to the list below.
 
 - [cofob](https://github.com/cofob) - Author and maintainer
+
+## Sponsors and sponsorship
+
+If you want to support this project author directly, you can donate with cryptocurrency:
+
+- Tron: `TH2DAzhpe82TmwnhdtgDsyExTT1BBgpkyD`
+- Monero: `8B33vTVddZFitR33QY3bWe2tq4Q7o1ajdAz4wx831kr9e13fXTC14ur6caPYXm5fnijjsZ1aXvGvMFx2B1YgowWHJbfgcxQ`
+- Bitcoin: `bc1qcqqh02ctvq5z2v5ksv9rc0fza4gpr3pqy3uhdf`
+- Ethereum: `0xB2c854EBC480FB7cE9Be5f0dcD63F897ca49961b`
+
+Please notify the author about your donation by sending a message to the telegram
+[@cofob](https://t.me/cofob) or by email [cofob@riseup.net](mailto:cofob@riseup.net)
+and your name will be added to the list of sponsors.
