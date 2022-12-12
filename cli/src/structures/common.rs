@@ -1,9 +1,10 @@
-use std::path::PathBuf;
+use std::{fs::read_dir, path::PathBuf};
 
+use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
-use crate::utils::load_config;
+use crate::utils::{load_config, net::download_and_unzip_file};
 use anyhow::Result;
 use std::fs::read_to_string;
 
@@ -162,7 +163,10 @@ pub struct MergeYamlFileConfig {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum Package {
+	/// Local path package
 	Local(LocalPackage),
+	/// Remote package
+	Remote(RemotePackage),
 }
 
 impl Package {
@@ -170,6 +174,7 @@ impl Package {
 	pub fn get_path(&self) -> Result<PathBuf> {
 		match self {
 			Package::Local(path) => Ok(path.get_path()),
+			Package::Remote(remote) => remote.get_path(),
 		}
 	}
 
@@ -198,6 +203,41 @@ impl LocalPackage {
 	/// Returns the path to the package
 	pub fn get_path(&self) -> PathBuf {
 		self.path.clone()
+	}
+}
+
+/// Remote package
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RemotePackage {
+	pub url: String,
+}
+
+impl RemotePackage {
+	/// Returns the path to the package (downloads it if necessary)
+	pub fn get_path(&self) -> Result<PathBuf> {
+		let url = Url::parse(&self.url)?;
+		let path = download_and_unzip_file(&url)?;
+		// If path contains a single directory, return that directory instead
+		let path = if path.is_dir() {
+			let mut entries = read_dir(&path)?;
+			if let Some(Ok(entry)) = entries.next() {
+				if entries.next().is_none() {
+					let entry_path = entry.path();
+					if entry_path.is_dir() {
+						entry_path
+					} else {
+						path
+					}
+				} else {
+					path
+				}
+			} else {
+				path
+			}
+		} else {
+			path
+		};
+		Ok(path)
 	}
 }
 

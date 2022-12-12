@@ -23,8 +23,11 @@ serde_yaml = "^0.9"
 # CLI
 clap = { version = "^4", features = ["derive"] }
 
-# Urls
+# Net
 url = "^2"
+reqwest = { version = "^0.11", features = ["blocking", "json"] }
+sha256 = "^1"
+zip = "^0.6"
 
 # Logging
 log = "^0.4"
