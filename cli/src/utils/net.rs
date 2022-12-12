@@ -82,6 +82,15 @@ pub fn download_file_to_cache(url: &url::Url, extension: &str) -> Result<String>
 	Ok(hash)
 }
 
+pub fn download_file_to_cache_full_path(url: &url::Url, extension: &str) -> Result<PathBuf> {
+	let hash = download_file_to_cache(&url, &extension)?;
+	let hash_path = split_hash(&hash);
+	let mut path = get_cache_dir();
+	path.push(hash_path);
+	path.set_extension(extension);
+	Ok(path)
+}
+
 /// Unzip a $CACHE_DIR/$HASH.zip file to $CACHE_DIR/$HASH
 pub fn unzip_file_from_cache(hash: &str) -> Result<PathBuf> {
 	let cache = get_cache_dir();

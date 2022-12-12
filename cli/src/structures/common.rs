@@ -1,10 +1,14 @@
-use std::{fs::read_dir, path::PathBuf};
+use std::{collections::HashMap, fs::read_dir, path::PathBuf};
 
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
-use crate::utils::{linker::LinkTypes, load_config, net::download_and_unzip_file};
+use crate::utils::{
+	linker::LinkTypes,
+	load_config,
+	net::{download_and_unzip_file, download_file_to_cache_full_path},
+};
 use anyhow::Result;
 use std::fs::read_to_string;
 
@@ -167,6 +171,8 @@ pub enum Package {
 	Local(LocalPackage),
 	/// Remote package
 	Remote(RemotePackage),
+	/// Remote package from repository
+	Repository(RepositoryPackage),
 }
 
 impl Package {
@@ -175,6 +181,7 @@ impl Package {
 		match self {
 			Package::Local(path) => path.get_path(),
 			Package::Remote(remote) => remote.get_path(),
+			Package::Repository(repository) => repository.get_path(),
 		}
 	}
 
@@ -223,31 +230,80 @@ pub struct RemotePackage {
 	pub url: String,
 }
 
+fn get_package_dir(path: &PathBuf) -> Result<PathBuf> {
+	let path = if path.is_dir() {
+		let mut entries = read_dir(&path)?;
+		if let Some(Ok(entry)) = entries.next() {
+			if entries.next().is_none() {
+				let entry_path = entry.path();
+				if entry_path.is_dir() {
+					entry_path
+				} else {
+					path.clone()
+				}
+			} else {
+				path.clone()
+			}
+		} else {
+			path.clone()
+		}
+	} else {
+		path.clone()
+	};
+	Ok(path)
+}
+
 impl PackageTrait for RemotePackage {
 	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
 		let url = Url::parse(&self.url)?;
 		let path = download_and_unzip_file(&url)?;
 		// If path contains a single directory, return that directory instead
-		let path = if path.is_dir() {
-			let mut entries = read_dir(&path)?;
-			if let Some(Ok(entry)) = entries.next() {
-				if entries.next().is_none() {
-					let entry_path = entry.path();
-					if entry_path.is_dir() {
-						entry_path
-					} else {
-						path
-					}
-				} else {
-					path
-				}
-			} else {
-				path
+		let path = get_package_dir(&path)?;
+		Ok(path)
+	}
+}
+
+/// Repository package
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RepositoryPackage {
+	/// Package name
+	pub name: String,
+	/// Package repository URL
+	#[serde(alias = "repo", alias = "repository")]
+	pub repository: String,
+}
+
+impl PackageTrait for RepositoryPackage {
+	/// Returns the path to the package (downloads it if necessary)
+	fn get_path(&self) -> Result<PathBuf> {
+		debug!(
+			"Downloading package {} from repository {}",
+			&self.name, &self.repository
+		);
+		let url = Url::parse(&self.repository)?;
+		let path = download_file_to_cache_full_path(&url, "json")?;
+		let content = read_to_string(&path)?;
+		// Parse repository index
+		let repo: HashMap<String, String> = serde_json::from_str(&content)?;
+		debug!("Repository index: {:?}", &repo);
+		// Get package URL
+		let url = match repo.get(&self.name) {
+			Some(url) => url,
+			None => {
+				return Err(anyhow!(
+					"Package {} not found in repository {}",
+					&self.name,
+					&self.repository
+				))
 			}
-		} else {
-			path
 		};
+		debug!("Package URL: {}", &url);
+		// Download package
+		let url = Url::parse(url)?;
+		let path = download_and_unzip_file(&url)?;
+		// If path contains a single directory, return that directory instead
+		let path = get_package_dir(&path)?;
 		Ok(path)
 	}
 }
