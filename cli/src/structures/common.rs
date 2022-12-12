@@ -173,7 +173,7 @@ impl Package {
 	/// Returns the path to the package (downloads it if necessary)
 	pub fn get_path(&self) -> Result<PathBuf> {
 		match self {
-			Package::Local(path) => Ok(path.get_path()),
+			Package::Local(path) => path.get_path(),
 			Package::Remote(remote) => remote.get_path(),
 		}
 	}
@@ -193,16 +193,25 @@ impl Package {
 	}
 }
 
+/// Package trait
+pub trait PackageTrait {
+	/// Returns the path to the package
+	fn get_path(&self) -> Result<PathBuf>;
+}
+
 /// Local package
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LocalPackage {
 	pub path: PathBuf,
 }
 
-impl LocalPackage {
+impl PackageTrait for LocalPackage {
 	/// Returns the path to the package
-	pub fn get_path(&self) -> PathBuf {
-		self.path.clone()
+	///
+	/// # Errors
+	/// There is no error, so you can unwrap the result
+	fn get_path(&self) -> Result<PathBuf> {
+		Ok(self.path.clone())
 	}
 }
 
@@ -212,9 +221,9 @@ pub struct RemotePackage {
 	pub url: String,
 }
 
-impl RemotePackage {
+impl PackageTrait for RemotePackage {
 	/// Returns the path to the package (downloads it if necessary)
-	pub fn get_path(&self) -> Result<PathBuf> {
+	fn get_path(&self) -> Result<PathBuf> {
 		let url = Url::parse(&self.url)?;
 		let path = download_and_unzip_file(&url)?;
 		// If path contains a single directory, return that directory instead
