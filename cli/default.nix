@@ -1,4 +1,4 @@
-{ callPackage, fetchFromGitHub, rustPlatform, lib, ... }:
+{ callPackage, fetchFromGitHub, rustPlatform, lib, openssl, pkg-config, ... }:
 
 let
   naersk = callPackage
@@ -12,4 +12,6 @@ let
 in
 naersk.buildPackage rec {
   src = ./.;
+  buildInputs = [ pkg-config ];
+  nativeBuildInputs = [ openssl.dev ];
 }

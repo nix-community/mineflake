@@ -37,6 +37,12 @@ with pkgs; rec {
     path = package;
   };
 
+  mkMfConfig = type: path: content: {
+    type = type;
+    path = path;
+    content = content;
+  };
+
   paper = callPackage ./servers/paper_1.19.2 { };
   authme = callPackage ./plugins/authme { };
 
@@ -44,10 +50,14 @@ with pkgs; rec {
 
   docker = buildMineflakeContainer {
     type = "spigot";
-    command = "echo {}";
+    command = "${jre}/bin/java -jar {}";
     package = paper;
     plugins = [
       authme
+    ];
+    configs = [
+      (mkMfConfig "raw" "server.properties" "online-mode=false")
+      (mkMfConfig "raw" "eula.txt" "eula=true")
     ];
   };
 
