@@ -8,13 +8,21 @@ use std::{
 
 use crate::structures::common::{FileMapping, ServerState};
 
+/// A type of file to link
 #[derive(Debug)]
 pub enum LinkTypes {
+	/// Copy a file from one path to another
 	Copy(FileMapping),
+
+	/// Write a raw string to a file
+	///
+	/// The first argument is the content, the second is the path.
+	/// Used for writing config files.
 	Raw(String, PathBuf),
 }
 
 impl LinkTypes {
+	/// Get the path of the file to link
 	pub fn get_path(&self) -> PathBuf {
 		match &self {
 			Self::Copy(f) => f.1.clone(),
@@ -23,6 +31,7 @@ impl LinkTypes {
 	}
 }
 
+/// Write a file to the given path, replacing {{VAR}} with the value of the environment variable VAR
 fn write_file(path: &PathBuf, content: &str) -> Result<()> {
 	let mut file = File::create(&path)?;
 	let mut content = content.to_string();
@@ -34,6 +43,7 @@ fn write_file(path: &PathBuf, content: &str) -> Result<()> {
 	Ok(())
 }
 
+/// Link files to the given directory
 pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 	for file in files {
 		debug!("Linking {:?}", file);
@@ -53,6 +63,9 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 	Ok(())
 }
 
+/// Diff two server states and return a list of paths that are in the previous state but not in the current state
+///
+/// This is used to remove files that are no longer needed.
 pub fn diff_states(curr_state: &ServerState, prev_state: &ServerState) -> Vec<PathBuf> {
 	let mut out = Vec::new();
 	for prev_path in &prev_state.paths {
@@ -70,6 +83,7 @@ pub fn diff_states(curr_state: &ServerState, prev_state: &ServerState) -> Vec<Pa
 	out
 }
 
+/// Remove a file and its parent directory if it is empty
 pub fn remove_with_parent(path: &PathBuf) {
 	debug!("Removing file {:?}", &path);
 	let _ = std::fs::remove_file(&path);

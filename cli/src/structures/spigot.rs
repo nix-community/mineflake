@@ -13,6 +13,7 @@ use crate::{
 
 use super::common::{FileMapping, Server, ServerConfig, ServerState};
 
+/// The configuration for a Spigot server
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpigotConfig;
 

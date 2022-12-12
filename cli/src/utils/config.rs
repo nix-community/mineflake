@@ -20,6 +20,7 @@ pub fn load_config(config_data: &str) -> Result<ServerConfig> {
 	Ok(config)
 }
 
+/// Find collisions in file mappings.
 pub fn find_collisions(files: &Vec<FileMapping>) -> Result<()> {
 	for (i, mapping1) in files.iter().enumerate() {
 		for (j, mapping2) in files.iter().enumerate() {
