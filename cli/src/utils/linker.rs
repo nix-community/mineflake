@@ -69,41 +69,18 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 				write_file(&dest_path, content)?;
 			}
 			LinkTypes::MergeJSON(content, _) => {
-				let mut new_content = if dest_path.is_file() {
-					// Load the existing file
-					// If errors occur, use an empty object
-					if let Ok(read) = std::fs::read_to_string(&dest_path) {
-						if let Ok(obj) = serde_json::from_str(&read) {
-							obj
-						}
-					}
-					serde_json::Value::Object(serde_json::Map::new())
-				} else {
-					serde_json::Value::Object(serde_json::Map::new())
-				};
+				let mut new_content = serde_json::from_str(&std::fs::read_to_string(&dest_path)?)
+					.expect("Failed to parse JSON file");
 				merge_json(&mut new_content, &content);
 				write_file(&dest_path, &serde_json::to_string(&new_content)?)?;
 			}
 			LinkTypes::MergeYAML(content, _) => {
-				let mut new_content: serde_json::Value = if dest_path.is_file() {
-					// Load the existing file
-					// If errors occur, use an empty object
-					let mut ret = None;
-					if let Ok(read) = std::fs::read_to_string(&dest_path) {
-						if let Ok(obj) = serde_yaml::from_str::<serde_yaml::Value>(&read) {
-							if let Ok(val) = serde_json::to_value(obj) {
-								ret = Some(val);
-							}
-						}
-					};
-					// If the above fails, use an empty object
-					if ret.is_none() {
-						ret = Some(serde_json::Value::Object(serde_json::Map::new()));
-					}
-					ret.unwrap()
-				} else {
-					serde_json::Value::Object(serde_json::Map::new())
-				};
+				let mut new_content: serde_json::Value = serde_json::to_value(
+					serde_yaml::from_str::<serde_yaml::Value>(&std::fs::read_to_string(
+						&dest_path,
+					)?)
+					.expect("Failed to parse YAML file"),
+				)?;
 				let content = &serde_json::to_value(content)?;
 				merge_json(&mut new_content, &content);
 				write_file(&dest_path, &serde_yaml::to_string(&new_content)?)?;
