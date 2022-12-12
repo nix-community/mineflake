@@ -32,9 +32,11 @@ pub fn get_cache_dir() -> PathBuf {
 	#[cfg(target_os = "windows")]
 	{
 		let path = var("MINEFLAKE_CACHE").unwrap_or_else(|_| {
-			var("TEMP")
-				.var("LOCALAPPDATA")
-				.unwrap_or_else(|_| var("TEMP").unwrap_or_else(|_| "C:\\Windows\\Temp".to_string()))
+			var("TEMP").unwrap_or_else(|_| {
+				var("LOCALAPPDATA").unwrap_or_else(|_| {
+					var("TEMP").unwrap_or_else(|_| "C:\\Windows\\Temp".to_string())
+				})
+			})
 		});
 		let mut path = PathBuf::from(path);
 		path.push("mineflake");
