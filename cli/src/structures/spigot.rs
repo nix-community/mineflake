@@ -154,10 +154,11 @@ impl Server for SpigotConfig {
 			let command = command.replace("{}", server_path.to_str().unwrap());
 			debug!("Running command: {}", command);
 			let spl: Vec<&str> = command.split(" ").collect();
-			Command::new(&spl[0])
+			let mut process = Command::new(&spl[0])
 				.current_dir(directory)
 				.args(&spl[1..])
 				.spawn()?;
+			process.wait().expect("Failed to wait on child");
 			info!("Started server process and detatched");
 			return Ok(());
 		}
