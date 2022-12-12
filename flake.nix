@@ -37,7 +37,7 @@
           let
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
             overlay = (self.overlays.default pkgs pkgs).mineflake;
-            buildInputs = builtins.filter (p: (builtins.typeOf p) == "set") (builtins.attrValues overlay);
+            buildInputs = builtins.filter (p: p ? outPath) (builtins.attrValues overlay);
           in
           (overlay // {
             # This is a hack to get the buildInputs of the overlay
