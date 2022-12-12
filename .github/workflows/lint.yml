@@ -30,9 +30,6 @@ jobs:
         run: |
           sudo apt-get install -y mingw-w64
 
-      - name: Install cargo-llvm-cov
-        uses: taiki-e/install-action@cargo-llvm-cov
-
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
         with:
@@ -42,18 +39,6 @@ jobs:
         run: |
           cd cli
           cargo fmt --all -- --check
-
-      - name: Generate code coverage
-        run: |
-          cd cli
-          cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: cli/lcov.info
-          fail_ci_if_error: true
 
       - name: Check packages
         run: |
