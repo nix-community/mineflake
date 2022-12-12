@@ -2,6 +2,8 @@
 ///
 /// This is used to merge the config files, so that the user can override the default config.
 /// Arrays are replaced, not merged.
+///
+/// Copypasted from https://stackoverflow.com/a/67730632
 pub fn merge_json(a: &mut serde_json::Value, b: &serde_json::Value) {
 	match (a, b) {
 		(a @ &mut serde_json::Value::Object(_), serde_json::Value::Object(b)) => {
