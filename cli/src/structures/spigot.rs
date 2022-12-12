@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
 	structures::common::FileConfigEnum,
 	utils::{
-		config::find_collisions,
+		config::{check_configs_purity, find_collisions},
 		linker::{diff_states, link_files, remove_with_parent, LinkTypes},
 	},
 };
@@ -121,6 +121,8 @@ impl Server for SpigotConfig {
 				}
 			}
 		}
+
+		check_configs_purity(&files)?;
 
 		let state = ServerState {
 			paths: files.iter().map(|p| p.get_path()).collect(),

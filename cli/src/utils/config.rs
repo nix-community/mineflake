@@ -1,5 +1,9 @@
+use std::path::PathBuf;
+
 use crate::structures::common::{FileMapping, ServerConfig};
 use anyhow::Result;
+
+use super::linker::LinkTypes;
 
 /// Try to load Server configuration from string.
 pub fn load_config(config_data: &str) -> Result<ServerConfig> {
@@ -40,6 +44,31 @@ pub fn find_collisions(files: &Vec<FileMapping>) -> Result<()> {
 	Ok(())
 }
 
+pub fn check_configs_purity(configs: &Vec<LinkTypes>) -> Result<()> {
+	let mut pure_paths: Vec<PathBuf> = Vec::new();
+	for config in configs {
+		match config {
+			LinkTypes::Copy(mapping) => {
+				pure_paths.push(mapping.1.clone());
+			}
+			LinkTypes::Raw(_, path) => {
+				pure_paths.push(path.clone());
+			}
+			LinkTypes::MergeJSON(_, path) => {
+				if !pure_paths.contains(path) {
+					return Err(anyhow!("Found impure file mapping: {:?}", path));
+				}
+			}
+			LinkTypes::MergeYAML(_, path) => {
+				if !pure_paths.contains(path) {
+					return Err(anyhow!("Found impure file mapping: {:?}", path));
+				}
+			}
+		}
+	}
+	Ok(())
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
@@ -64,5 +93,29 @@ mod tests {
 			FileMapping(PathBuf::from("g"), PathBuf::from("d")),
 		];
 		assert_eq!(find_collisions(&files).is_ok(), false);
+	}
+
+	#[test]
+	fn test_check_configs_purity() {
+		let configs = vec![
+			LinkTypes::Raw("".to_string(), PathBuf::from("d")),
+			LinkTypes::MergeJSON(
+				serde_json::Value::Object(serde_json::Map::new()),
+				PathBuf::from("d"),
+			),
+		];
+		assert_eq!(check_configs_purity(&configs).is_ok(), true);
+	}
+
+	#[test]
+	fn test_check_configs_purity_impure() {
+		let configs = vec![
+			LinkTypes::Raw("".to_string(), PathBuf::from("d")),
+			LinkTypes::MergeJSON(
+				serde_json::Value::Object(serde_json::Map::new()),
+				PathBuf::from("e"),
+			),
+		];
+		assert_eq!(check_configs_purity(&configs).is_ok(), false);
 	}
 }
