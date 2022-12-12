@@ -13,6 +13,30 @@ use std::fs::read_to_string;
 pub struct FileMapping(pub PathBuf, pub PathBuf);
 
 /// The configuration for a server
+///
+/// This is the main configuration file for a server. It contains the server package,
+/// plugins, server specific configuration, command to run the server and configs to
+/// generate to the server directory.
+///
+/// # Example
+/// ```yaml
+/// type: spigot
+///
+/// command: java -Xms1G -Xmx1G -jar {}
+///
+/// package:
+///   type: remote
+///   url: https://example.com/paper.zip
+///
+/// plugins:
+/// - type: remote
+///   url: https://example.com/essentials.zip
+///
+/// configs:
+/// - path: server.properties
+///   type: raw
+///   content: online-mode=false
+/// ```
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ServerConfig {
 	/// Server package
@@ -102,6 +126,10 @@ impl ServerConfig {
 }
 
 /// Configuration file config
+///
+/// This is used to generate config files in the server directory without writing
+/// custom packages. This is useful for updating/generating config files that are not
+/// included in the server/plugins package.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FileConfig {
 	pub path: PathBuf,
@@ -128,35 +156,35 @@ pub enum FileConfigEnum {
 /// Raw file content
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RawFileConfig {
-	/// The file content
+	/// The string content
 	pub content: String,
 }
 
 /// JSON file content
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct JsonFileConfig {
-	/// The file content
+	/// The complex json content
 	pub content: serde_json::Value,
 }
 
 /// YAML file content
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct YamlFileConfig {
-	/// The file content
+	/// The complex yaml content
 	pub content: serde_yaml::Value,
 }
 
 /// Merge JSON files
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct MergeJsonFileConfig {
-	/// The file content
+	/// The json config, that will be merged with the previous configs
 	pub content: serde_json::Value,
 }
 
 /// Merge YAML files
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct MergeYamlFileConfig {
-	/// The file content
+	/// The yaml config, that will be merged with the previous configs
 	pub content: serde_yaml::Value,
 }
 
@@ -202,12 +230,16 @@ impl Package {
 }
 
 /// Package trait
+///
+/// Packages should return the path to the folder with "package.yml" manifest file
 pub trait PackageTrait {
 	/// Returns the path to the package
 	fn get_path(&self) -> Result<PathBuf>;
 }
 
 /// Local package
+///
+/// Local packages are just a local filesystem path to the package
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LocalPackage {
 	/// The path to the package
@@ -225,6 +257,9 @@ impl PackageTrait for LocalPackage {
 }
 
 /// Remote package
+///
+/// Remote packages are zip files that are downloaded from the internet
+/// and extracted to the cache directory.
 #[cfg(feature = "net")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RemotePackage {
@@ -259,7 +294,6 @@ fn get_package_dir(path: &PathBuf) -> Result<PathBuf> {
 
 #[cfg(feature = "net")]
 impl PackageTrait for RemotePackage {
-	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
 		use crate::utils::net::download_and_unzip_file;
 		let path = download_and_unzip_file(&self.url)?;
@@ -270,6 +304,9 @@ impl PackageTrait for RemotePackage {
 }
 
 /// Repository package
+///
+/// Repository is a mapping of package names to package URLs (like in RemotePackage).
+/// Repository manifests is cached forever, so URL must be changed manually to update the packages.
 #[cfg(feature = "net")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RepositoryPackage {
@@ -282,7 +319,6 @@ pub struct RepositoryPackage {
 
 #[cfg(feature = "net")]
 impl PackageTrait for RepositoryPackage {
-	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
 		use crate::utils::net::{download_and_unzip_file, download_file_to_cache_full_path};
 		use std::collections::HashMap;
@@ -336,6 +372,9 @@ impl PackageManifest {
 }
 
 /// Server configuration types
+///
+/// This is allows multiple server types to be supported without having to
+/// global configuration options for each server type.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ServerSpecificConfig {
@@ -355,6 +394,10 @@ pub trait Server {
 }
 
 /// Generator trait
+///
+/// Generator is a method that generates the server files from the given config.
+/// For example, generators allows configure LuckPerms configs declaratively
+/// from the config file, without having to write a bunch of configs entries.
 pub trait Generator {
 	/// Generates the server files from the given config
 	fn generate(&self, config: &ServerConfig) -> Result<Vec<LinkTypes>>;
@@ -362,7 +405,7 @@ pub trait Generator {
 
 /// Server state (used to store the server state between runs)
 ///
-/// This is used to determine which files have changed since the last run and can be removed
+/// This is used to determine which files have changed since the last run and can be removed.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ServerState {
 	/// The paths of the files that were created

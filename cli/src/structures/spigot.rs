@@ -13,12 +13,19 @@ use crate::{
 
 use super::common::{FileMapping, Generator, Server, ServerConfig, ServerState};
 
+fn default_weight() -> u32 {
+	0
+}
+
 /// The configuration for a LuckPerms group
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LuckPermsGroupConfig {
 	/// The name of the group
 	pub name: String,
-	/// The weight of the group
+	/// The weight of the group (default: 0)
+	///
+	/// Higher weight means higher priority.
+	#[serde(default = "default_weight")]
 	pub weight: u32,
 	/// Group permissions
 	pub permissions: Vec<String>,
@@ -48,7 +55,7 @@ impl Generator for LuckPermsGroupConfig {
 /// The configuration for a Spigot server
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpigotConfig {
-	/// LuckPerms configuration
+	/// LuckPerms generator configuration
 	pub permissions: Option<Vec<LuckPermsGroupConfig>>,
 }
 

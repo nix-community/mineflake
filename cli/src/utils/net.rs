@@ -64,7 +64,7 @@ pub fn split_hash(hash: &str) -> PathBuf {
 	path
 }
 
-/// Get sha256 hash of URL and download it to cache directory $CACHE_DIR/$HASH
+/// Get sha256 hash of URL and download it to cache directory $CACHE_DIR/$HA/SH
 ///
 /// Download only if file doesn't exist in cache directory.
 ///
@@ -84,6 +84,8 @@ pub fn download_file_to_cache(url: &url::Url, extension: &str) -> Result<String>
 	Ok(hash)
 }
 
+/// Get sha256 hash of URL and download it to cache directory $CACHE_DIR/$HA/SH.$EXTENSION
+/// and return the full path to the file.
 pub fn download_file_to_cache_full_path(url: &url::Url, extension: &str) -> Result<PathBuf> {
 	let hash = download_file_to_cache(&url, &extension)?;
 	let hash_path = split_hash(&hash);
@@ -93,7 +95,7 @@ pub fn download_file_to_cache_full_path(url: &url::Url, extension: &str) -> Resu
 	Ok(path)
 }
 
-/// Unzip a $CACHE_DIR/$HASH.zip file to $CACHE_DIR/$HASH
+/// Unzip a $CACHE_DIR/$HA/SH.zip file to $CACHE_DIR/$HA/SH
 pub fn unzip_file_from_cache(hash: &str) -> Result<PathBuf> {
 	let cache = get_cache_dir();
 	let hash_path = split_hash(&hash);

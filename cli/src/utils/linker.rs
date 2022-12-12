@@ -111,7 +111,11 @@ pub fn diff_states(curr_state: &ServerState, prev_state: &ServerState) -> Vec<Pa
 	out
 }
 
-/// Remove a file and its parent directories if they are empty
+/// Remove a file and its parent directories if they are empty.
+///
+/// This function is recursive and will remove all empty parent directories.
+/// This is potentially dangerous, because it will remove directories upper than directory,
+/// so use with caution.
 pub fn remove_with_parent(path: &PathBuf) {
 	debug!("Removing file {:?}", &path);
 	let _ = std::fs::remove_file(&path);
