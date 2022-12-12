@@ -42,7 +42,7 @@
           (overlay // {
             # This is a hack to get the buildInputs of the overlay
             # Used for caching on cachix
-            all = pkgs.stdenv.mkDerivation {
+            default = pkgs.stdenv.mkDerivation {
               name = "all";
               src = ./.;
               buildInputs = buildInputs;

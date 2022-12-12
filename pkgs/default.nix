@@ -53,13 +53,8 @@ with pkgs; rec {
     content = content;
   };
 
-  
-
   paper = callPackage ./servers/paper_1.19.2 { };
   authme = callPackage ./plugins/authme { };
 
   mineflake = callPackage ../cli { };
-
-  # Alias to mineflake for `nix build .` command
-  default = mineflake;
 }

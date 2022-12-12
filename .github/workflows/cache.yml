@@ -24,7 +24,7 @@ jobs:
 
       - name: Build derivations
         run: |
-          nix build .#all
+          nix build .
 
       - name: Print store paths
         run: |
