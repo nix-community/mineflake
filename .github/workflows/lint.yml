@@ -43,23 +43,6 @@ jobs:
           cd cli
           cargo fmt --all -- --check
 
-      - name: Check packages
-        run: |
-          cd cli
-          cargo check
-
-      - name: Test crate
-        run: |
-          cd cli
-          cargo test
-          cargo test --all-features
-          cargo test --no-default-features --features "cli"
-          cargo test --no-default-features --features "cli,net"
-          cargo b --target x86_64-pc-windows-gnu
-          cargo b --all-features --target x86_64-pc-windows-gnu
-          cargo b --no-default-features --features "cli" --target x86_64-pc-windows-gnu
-          cargo b --no-default-features --features "cli,net" --target x86_64-pc-windows-gnu
-
       - name: Generate code coverage
         run: |
           cd cli
@@ -68,5 +51,19 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: cli/lcov.info
           fail_ci_if_error: true
+
+      - name: Check packages
+        run: |
+          cd cli
+          cargo check
+
+      - name: Test crate
+        run: |
+          cd cli
+          cargo test --all-features
+          cargo test --no-default-features --features "cli"
+          cargo test --no-default-features --features "cli,net"
+          cargo b --target x86_64-pc-windows-gnu
