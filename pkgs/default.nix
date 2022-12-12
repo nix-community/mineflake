@@ -69,5 +69,6 @@ with pkgs; rec {
     ];
   };
 
-  mineflake = callPackage ../cli { };
+  mineflake = (callPackage ../cli { }).default;
+  mineflake-offline = (callPackage ../cli { }).offline;
 }

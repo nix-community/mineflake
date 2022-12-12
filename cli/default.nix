@@ -10,8 +10,15 @@ let
     })
     { };
 in
-naersk.buildPackage rec {
-  src = ./.;
-  buildInputs = [ pkg-config ];
-  nativeBuildInputs = [ openssl.dev ];
+{
+  default = naersk.buildPackage rec {
+    src = ./.;
+    buildInputs = [ pkg-config ];
+    nativeBuildInputs = [ openssl.dev ];
+  };
+
+  offline = naersk.buildPackage rec {
+    src = ./.;
+    cargoBuildOptions = f: f ++ [ "--no-default-features" "--features" "cli" ];
+  };
 }

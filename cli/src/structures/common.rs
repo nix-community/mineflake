@@ -1,14 +1,11 @@
-use std::{collections::HashMap, fs::read_dir, path::PathBuf};
+use std::path::PathBuf;
 
+#[cfg(feature = "net")]
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
-use crate::utils::{
-	linker::LinkTypes,
-	load_config,
-	net::{download_and_unzip_file, download_file_to_cache_full_path},
-};
+use crate::utils::{linker::LinkTypes, load_config};
 use anyhow::Result;
 use std::fs::read_to_string;
 
@@ -170,8 +167,10 @@ pub enum Package {
 	/// Local path package
 	Local(LocalPackage),
 	/// Remote package
+	#[cfg(feature = "net")]
 	Remote(RemotePackage),
 	/// Remote package from repository
+	#[cfg(feature = "net")]
 	Repository(RepositoryPackage),
 }
 
@@ -180,7 +179,9 @@ impl Package {
 	pub fn get_path(&self) -> Result<PathBuf> {
 		match self {
 			Package::Local(path) => path.get_path(),
+			#[cfg(feature = "net")]
 			Package::Remote(remote) => remote.get_path(),
+			#[cfg(feature = "net")]
 			Package::Repository(repository) => repository.get_path(),
 		}
 	}
@@ -224,13 +225,16 @@ impl PackageTrait for LocalPackage {
 }
 
 /// Remote package
+#[cfg(feature = "net")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RemotePackage {
 	/// The URL to the package zip file
 	pub url: String,
 }
 
+#[cfg(feature = "net")]
 fn get_package_dir(path: &PathBuf) -> Result<PathBuf> {
+	use std::fs::read_dir;
 	let path = if path.is_dir() {
 		let mut entries = read_dir(&path)?;
 		if let Some(Ok(entry)) = entries.next() {
@@ -253,9 +257,11 @@ fn get_package_dir(path: &PathBuf) -> Result<PathBuf> {
 	Ok(path)
 }
 
+#[cfg(feature = "net")]
 impl PackageTrait for RemotePackage {
 	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
+		use crate::utils::net::download_and_unzip_file;
 		let url = Url::parse(&self.url)?;
 		let path = download_and_unzip_file(&url)?;
 		// If path contains a single directory, return that directory instead
@@ -265,6 +271,7 @@ impl PackageTrait for RemotePackage {
 }
 
 /// Repository package
+#[cfg(feature = "net")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RepositoryPackage {
 	/// Package name
@@ -274,9 +281,12 @@ pub struct RepositoryPackage {
 	pub repository: String,
 }
 
+#[cfg(feature = "net")]
 impl PackageTrait for RepositoryPackage {
 	/// Returns the path to the package (downloads it if necessary)
 	fn get_path(&self) -> Result<PathBuf> {
+		use crate::utils::net::{download_and_unzip_file, download_file_to_cache_full_path};
+		use std::collections::HashMap;
 		debug!(
 			"Downloading package {} from repository {}",
 			&self.name, &self.repository

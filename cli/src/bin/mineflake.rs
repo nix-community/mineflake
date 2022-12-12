@@ -1,3 +1,6 @@
+#[cfg(not(feature = "cli"))]
+compile_error!("For compiling binary, you need to enable `cli` feature");
+
 #[macro_use]
 extern crate log;
 
@@ -44,7 +47,6 @@ enum Commands {
 		config: PathBuf,
 	},
 }
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	mineflake::utils::initialize_logger();
 
