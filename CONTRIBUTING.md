@@ -34,8 +34,12 @@ the format of other entries.
 
 ## Formatting
 
-We use [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) to format the code.
-Before submitting a pull request, please run `nixpkgs-fmt .` in root folder.
+We use [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) and rustfmt to
+format the code. Before submitting a pull request, please run `nixpkgs-fmt .` and
+if you changed rust code run `cd cli/ && cargo fmt && cd ..` in root folder.
+
+You can also use editorconfig plugin for your editor to automatically change basic
+code formatting.
 
 Some files are sorted alphabetically. Please keep this order when adding new entries.
 
@@ -65,21 +69,11 @@ If you want to add a plugin to the project, you can do it in two ways:
 - Build plugin from source. This is the best way to package a plugin if it is available in
   source form.
 
-After you have packaged a plugin, you need to add its config files to package meta.
+After you have packaged a plugin, you need to add its config files to the package.
 After that, you can add the plugin to `default.nix` file in `pkgs/` folder.
 Please ensure that all keys are sorted alphabetically, and plugin have its own folder.
 
-Create a pull request with your changes with name in format `init: <plugin name> <version>`
-or `update: <plugin name> <version>`.
-
-## Adding new generators
-
-Add new generator file to `modules/` folder, use name of generator as plugin name.
-Import generator in `modules/mineflake.nix` and add its options and generator function
-to the desired sections.
-
-Create a pull request with your changes with name in format
-`generator: <plugin name> <version>`.
+Create a pull request with your changes with name in format `init/update: <plugin name> <version>`.
 
 ## Adding new features
 

@@ -7,63 +7,42 @@
 
 NixOS flake for easy declarative creation of minecraft server containers.
 
-## Example configuration
+## Examples
+
+### Docker container with a Paper and AuthMe
 
 ```nix
-minecraft = {
-  enable = true;
+{ pkgs, ... }:
 
-  default.hostAddress = "192.168.100.1";
+with pkgs; mineflake.buildMineflakeContainer {
+  package = mineflake.paper;
+  command = "${jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
+  plugins = with mineflake; [ authme ];
+  configs = [
+    (mineflake.mkMfConfig "raw" "eula.txt" "eula=true")
+  ];
+}
+```
 
-  servers = {
-    proxy = {
-      useDefault = false;
-      hostAddress = "192.168.100.1";
-      localAddress = "192.168.100.2";
-      bungeecord = {
-        enable = true;
-        online_mode = false;
-        listeners = [
-          {
-            host = "0.0.0.0:25565";
-            priorities = [ "lobby" ];
-          }
-        ];
-        servers = {
-          lobby.address = "192.168.100.3";
-          main.address = "192.168.100.4";
-        };
-      };
-      plugins = with pkgs.mineflake; [ cleanmotd authmebungee ];
-      configs = {
-        "plugins/AuthMeBungee/config.yml".data.authServers = [ "lobby" ];
-        "plugins/CleanMotD/config.yml".data.motd.motds = [ "Cool server!" ];
-      };
-      package = pkgs.mineflake.waterfall;
-    };
+## Installation
 
-    lobby = {
-      localAddress = "192.168.100.3";
-      properties.enable = true;
-      properties.online-mode = false;
-      configs = {
-        "plugins/AuthMe/config.yml".data.Hooks = {
-          sendPlayerTo = "main";
-          bungeecord = true;
-          multiverse = false;
-        };
-      };
-      plugins = with pkgs.mineflake; [ authme essentialsx ];
-    };
+Install Nix:
 
-    main = {
-      localAddress = "192.168.100.4";
-      properties.enable = true;
-      properties.online-mode = false;
-      plugins = with pkgs.mineflake; [ coreprotect essentialsx ];
-    };
-  };
-};
+```sh
+bash <(curl -L https://nixos.org/nix/install)
+```
+
+Install Cachix and add the mineflake cache to speed up builds (optional):
+
+```sh
+nix-env -iA cachix -f https://cachix.org/api/v1/install
+cachix use nix-community
+```
+
+Initialize the flake:
+
+```sh
+nix flake init --template github:nix-community/mineflake
 ```
 
 ## Contributing
@@ -81,10 +60,17 @@ link to the original project, the author will be immensely pleased.
 In addition, this project uses the following third-party software:
 
 - [nixpkgs](https://github.com/NixOS/nixpkgs) - Licensed under the
-  [MIT License](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+  [MIT](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+  Used as a package repository.
+- [rust-overlay](https://github.com/oxalica/rust-overlay) - Licensed under the
+  [MIT](https://github.com/oxalica/rust-overlay/blob/master/LICENSE).
+  Used to set up the Rust toolchain in developer environment.
+- [naersk](https://github.com/nix-community/naersk) - Licensed under the
+  [MIT](https://github.com/nix-community/naersk/blob/master/LICENSE).
+  Used to build Mineflake CLI.
 
 ## Contributors
 
 If you contribute to this project, please add your name to the list below.
 
-- [cofob](https://t.me/cofob) - Author and maintainer
+- [cofob](https://github.com/cofob) - Author and maintainer
