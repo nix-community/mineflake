@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 with pkgs; rec {
+  # CLI
+  mineflake = (callPackage ../cli { }).offline;
+  mineflake-online = (callPackage ../cli { }).default;
+
+  # Build utils
   buildMineflakeConfig =
     { type ? "spigot"
     , package
@@ -63,22 +68,13 @@ with pkgs; rec {
     '';
   } // attrs);
 
+
+
   # Servers
   paper = paper_1-19-2;
   paper_1-19-2 = callPackage ./servers/paper_1.19.2 { };
 
+
   # Plugins
   authme = callPackage ./plugins/authme { };
-
-  docker = buildMineflakeContainer {
-    package = paper;
-    command = "${jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
-    plugins = [ authme ];
-    configs = [
-      (mkMfConfig "raw" "eula.txt" "eula=true")
-    ];
-  };
-
-  mineflake = (callPackage ../cli { }).default;
-  mineflake-offline = (callPackage ../cli { }).offline;
 }
