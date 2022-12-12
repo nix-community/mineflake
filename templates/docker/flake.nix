@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    inputs.mineflake = {
+    mineflake = {
       url = "github:nix-community/mineflake";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
@@ -21,7 +21,7 @@
       in
       {
         packages = rec {
-          docker = ./docker.nix { inherit pkgs; };
+          docker = pkgs.callPackage ./docker.nix { };
           default = docker;
         };
       });

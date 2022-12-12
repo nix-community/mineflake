@@ -28,7 +28,9 @@
             To use it, run:
 
               $ nix build .
+
               $ docker load < result
+
               $ docker run --rm -it -p 25565:25565 mineflake
 
             Then, edit the docker.nix file to your liking.
