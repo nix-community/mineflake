@@ -72,17 +72,12 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 				let mut new_content = if dest_path.is_file() {
 					// Load the existing file
 					// If errors occur, use an empty object
-					let read_res = std::fs::read_to_string(&dest_path);
-					if let Ok(read) = read_res {
-						let obj_res = serde_json::from_str(&read);
-						if let Ok(obj) = obj_res {
+					if let Ok(read) = std::fs::read_to_string(&dest_path) {
+						if let Ok(obj) = serde_json::from_str(&read) {
 							obj
-						} else {
-							serde_json::Value::Object(serde_json::Map::new())
 						}
-					} else {
-						serde_json::Value::Object(serde_json::Map::new())
 					}
+					serde_json::Value::Object(serde_json::Map::new())
 				} else {
 					serde_json::Value::Object(serde_json::Map::new())
 				};
