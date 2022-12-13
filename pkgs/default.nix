@@ -77,4 +77,5 @@ with pkgs; rec {
 
   # Plugins
   authme = callPackage ./plugins/authme { };
+  luckperms = callPackage ./plugins/luckperms { };
 }
