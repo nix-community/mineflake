@@ -2,9 +2,9 @@ name: Cache derivations & Update repo
 
 on:
   push:
-    # branches:
-    #   - main
-    #   - dev
+    branches:
+      - main
+      - dev
 
 jobs:
   cache:
@@ -31,11 +31,13 @@ jobs:
           cat result/buildInputs
 
       - name: Get current short git commit
+        if: github.ref == 'refs/heads/main'
         id: current_commit
         run: |
           echo "REV=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Generate repo.json
+        if: github.ref == 'refs/heads/main'
         run: |
           nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
           mv .github/repo_pinner/repo.json repo-new.json
@@ -48,14 +50,17 @@ jobs:
           WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
 
       - name: Commit files
+        continue-on-error: true
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add repo.json
-          git commit -a -m "update: ${REV}"
+          git commit -a -m "update: ${{ env.REV }}"
 
       - name: Push changes
-        # if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        if: github.ref == 'refs/heads/main'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
