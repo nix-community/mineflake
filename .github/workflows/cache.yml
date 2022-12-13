@@ -30,6 +30,11 @@ jobs:
         run: |
           cat result/buildInputs
 
+      - name: Get current short git commit
+        id: current_commit
+        run: |
+          echo "REV=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Generate repo.json
         run: |
           nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
@@ -46,7 +51,8 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -a -m "Update repo.json"
+          git add repo.json
+          git commit -a -m "update: ${REV}"
 
       - name: Push changes
         # if: github.ref == 'refs/heads/main'
