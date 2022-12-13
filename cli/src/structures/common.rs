@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 #[cfg(feature = "net")]
 use reqwest::Url;
+#[cfg(not(feature = "net"))]
+use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
@@ -197,9 +199,13 @@ pub enum Package {
 	/// Remote package
 	#[cfg(feature = "net")]
 	Remote(RemotePackage),
+	#[cfg(not(feature = "net"))]
+	Remote(NetPackageStub),
 	/// Remote package from repository
 	#[cfg(feature = "net")]
 	Repository(RepositoryPackage),
+	#[cfg(not(feature = "net"))]
+	Repository(NetPackageStub),
 }
 
 impl Package {
@@ -207,10 +213,18 @@ impl Package {
 	pub fn get_path(&self) -> Result<PathBuf> {
 		match self {
 			Package::Local(path) => path.get_path(),
-			#[cfg(feature = "net")]
 			Package::Remote(remote) => remote.get_path(),
-			#[cfg(feature = "net")]
 			Package::Repository(repository) => repository.get_path(),
+		}
+	}
+
+	/// Moves the package to the cache directory
+	#[cfg(feature = "net")]
+	pub fn move_to_cache(&self) -> Result<PathBuf> {
+		match self {
+			Package::Local(local) => local.move_to_cache(),
+			Package::Remote(remote) => remote.move_to_cache(),
+			Package::Repository(repository) => repository.move_to_cache(),
 		}
 	}
 
@@ -235,6 +249,9 @@ impl Package {
 pub trait PackageTrait {
 	/// Returns the path to the package
 	fn get_path(&self) -> Result<PathBuf>;
+	/// Moves the package to the cache directory
+	#[cfg(feature = "net")]
+	fn move_to_cache(&self) -> Result<PathBuf>;
 }
 
 /// Local package
@@ -249,10 +266,47 @@ pub struct LocalPackage {
 impl PackageTrait for LocalPackage {
 	/// Returns the path to the package
 	///
-	/// # Errors
-	/// There is no error, so you can unwrap the result
+	/// If package exists in the cache, returns the path to the cache
 	fn get_path(&self) -> Result<PathBuf> {
-		Ok(self.path.clone())
+		#[cfg(feature = "net")]
+		{
+			use crate::utils::net::{get_cache_dir, split_hash};
+			let path = self.path.clone();
+			let hash_str = sha256::digest(path.to_str().unwrap());
+			let hash = split_hash(&hash_str);
+			let cache_dir = get_cache_dir();
+			let cache_path = cache_dir.join(hash);
+			if cache_path.exists() {
+				debug!("Package {:?} found in cache, using it", &path);
+				return Ok(cache_path);
+			}
+			if path.exists() {
+				return Ok(path);
+			}
+			Err(anyhow!("Package path {:?} not found", &path))
+		}
+		#[cfg(not(feature = "net"))]
+		{
+			Ok(self.path.clone())
+		}
+	}
+
+	#[cfg(feature = "net")]
+	fn move_to_cache(&self) -> Result<PathBuf> {
+		use crate::utils::net::{get_cache_dir, split_hash};
+		let path = self.get_path()?;
+		let hash_str = sha256::digest(path.to_str().unwrap());
+		debug!("Moving {:?} to cache", &path);
+		let hash = split_hash(&hash_str);
+		let cache_dir = get_cache_dir();
+		let cache_path = cache_dir.join(hash);
+		if !cache_path.exists() {
+			debug!("Moving {:?} to cache", &path);
+			std::fs::create_dir_all(&cache_path.parent().unwrap())?;
+			// Copy the directory
+			copy_dir::copy_dir(&path, &cache_path)?;
+		}
+		Ok(cache_path)
 	}
 }
 
@@ -300,6 +354,10 @@ impl PackageTrait for RemotePackage {
 		// If path contains a single directory, return that directory instead
 		let path = get_package_dir(&path)?;
 		Ok(path)
+	}
+
+	fn move_to_cache(&self) -> Result<PathBuf> {
+		self.get_path()
 	}
 }
 
@@ -349,6 +407,24 @@ impl PackageTrait for RepositoryPackage {
 		// If path contains a single directory, return that directory instead
 		let path = get_package_dir(&path)?;
 		Ok(path)
+	}
+
+	fn move_to_cache(&self) -> Result<PathBuf> {
+		self.get_path()
+	}
+}
+
+#[cfg(not(feature = "net"))]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct NetPackageStub {
+	#[serde(flatten)]
+	data: HashMap<String, String>,
+}
+
+#[cfg(not(feature = "net"))]
+impl PackageTrait for NetPackageStub {
+	fn get_path(&self) -> Result<PathBuf> {
+		Err(anyhow!("To use remote packages, enable the 'net' feature"))
 	}
 }
 

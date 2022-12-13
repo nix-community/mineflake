@@ -89,12 +89,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				}
 			}
 		}
+		#[cfg(feature = "net")]
 		Some(Commands::Vendor { config }) => {
 			let config = ServerConfig::from(config.clone());
+			let path = config.package.move_to_cache()?;
+			info!("Vendoring {:?}", path);
 			for plugin in &config.plugins {
-				let path = plugin.get_path()?;
+				let path = plugin.move_to_cache()?;
 				info!("Vendoring {:?}", path);
 			}
+		}
+		#[cfg(not(feature = "net"))]
+		Some(Commands::Vendor { config: _ }) => {
+			return Err("Vendoring is not supported without `net` feature.".into());
 		}
 		None => {
 			return Err("No subcommand was used. Use --help for more information.".into());
