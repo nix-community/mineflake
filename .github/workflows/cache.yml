@@ -36,7 +36,7 @@ jobs:
           mv .github/repo_pinner/repo.json repo-new.json
           git fetch
           git checkout origin/repo
-          git pull
+          git pull origin repo
           rm repo.json
           mv repo-new.json repo.json
         env:
