@@ -120,9 +120,9 @@ pub fn remove_with_parent(path: &PathBuf) {
 	debug!("Removing file {:?}", &path);
 	let _ = std::fs::remove_file(&path);
 	// Delete parent directory if it is empty
-	let parent = path.clone();
+	let mut parent = path.clone();
 	loop {
-		let parent = match parent.parent() {
+		parent = match parent.parent() {
 			Some(parent) => parent.to_path_buf(),
 			None => break,
 		};
@@ -132,7 +132,7 @@ pub fn remove_with_parent(path: &PathBuf) {
 		};
 		if read_dir.count() == 0 {
 			debug!("Removing empty directory {:?}", parent);
-			let _ = std::fs::remove_dir(parent);
+			let _ = std::fs::remove_dir(parent.clone());
 		} else {
 			break;
 		}
