@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::{
 	env::vars,
-	fs::{copy, create_dir_all, File},
+	fs::{self, copy, create_dir_all, set_permissions, File},
 	io::Write,
 	path::PathBuf,
 };
@@ -63,7 +63,10 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 		create_dir_all(parent)?;
 		match file {
 			LinkTypes::Copy(mapping) => {
-				copy(&mapping.0, dest_path)?;
+				copy(&mapping.0, &dest_path)?;
+				let mut perms = fs::metadata(&dest_path)?.permissions();
+				perms.set_readonly(false);
+				set_permissions(&dest_path, perms)?;
 			}
 			LinkTypes::Raw(content, _) => {
 				write_file(&dest_path, content)?;
