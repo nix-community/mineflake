@@ -2,9 +2,9 @@ use std::path::PathBuf;
 
 #[cfg(feature = "net")]
 use reqwest::Url;
+use serde::{Deserialize, Serialize};
 #[cfg(not(feature = "net"))]
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 
 use super::spigot::SpigotConfig;
 use crate::utils::{linker::LinkTypes, load_config};
