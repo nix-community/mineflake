@@ -48,7 +48,7 @@ jobs:
       - name: Test crate
         run: |
           cd cli
-          cargo test --all-features
+          cargo test
           cargo test --no-default-features --features "cli"
-          cargo test --no-default-features --features "cli,net"
           cargo b --target x86_64-pc-windows-gnu
+          cargo b --target x86_64-pc-windows-gnu --no-default-features --features "cli"
