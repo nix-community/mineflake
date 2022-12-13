@@ -15,16 +15,21 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Lint
-        run: |
-          nix-shell -p nixpkgs-fmt --run "nixpkgs-fmt --check ."
-
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
           target: x86_64-pc-windows-gnu
+
+      - name: Check Rust formatting
+        run: |
+          cd cli
+          cargo fmt --all -- --check
+
+      - name: Check Nix formatting
+        run: |
+          nix-shell -p nixpkgs-fmt --run "nixpkgs-fmt --check ."
 
       - name: Install mingw
         run: |
@@ -34,11 +39,6 @@ jobs:
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: cli
-
-      - name: Check formatting
-        run: |
-          cd cli
-          cargo fmt --all -- --check
 
       - name: Check packages
         run: |
