@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
 
 jobs:
   cache:
@@ -29,3 +28,22 @@ jobs:
       - name: Print store paths
         run: |
           cat result/buildInputs
+
+      - name: Create repo.json
+        run: |
+          nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
+          mv .github/repo_pinner/repo.json repo-new.json
+          git checkout repo
+          git fetch
+          git pull
+          rm repo.json
+          mv repo-new.json repo.json
+        env:
+          WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
+
+      - name: Push repo
+        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          add: "repo.json"
+          default_author: github_actions
+          message: "Update repo.json"

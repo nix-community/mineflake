@@ -2,9 +2,9 @@ name: Pin IPFS
 
 on:
   push:
-    # branches:
-    #   - main
-    #   - dev
+    branches:
+      - main
+      - dev
 
 jobs:
   pin:
@@ -24,22 +24,3 @@ jobs:
           CLUSTER_ADDRESS: ${{ secrets.CLUSTER_PY_ADDRESS }}
           CLUSTER_USERNAME: ${{ secrets.CLUSTER_USERNAME }}
           CLUSTER_SECRET: ${{ secrets.CLUSTER_SECRET }}
-
-      - name: Create repo.json
-        run: |
-          nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs"
-          mv .github/repo_pinner/repo.json repo-new.json
-          git checkout repo
-          git fetch
-          git pull
-          rm repo.json
-          mv repo-new.json repo.json
-        env:
-          WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
-
-      - name: Push repo
-        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
-        with:
-          add: "repo.json"
-          default_author: github_actions
-          message: "Update repo.json"
