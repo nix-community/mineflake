@@ -31,9 +31,7 @@ async function main() {
     // create a zip file
     console.log(`Creating zip file...`);
     const output = fs.createWriteStream(`${name}.zip`);
-    const archive = archiver("zip", {
-      zlib: { level: 9 }, // Sets the compression level.
-    });
+    const archive = archiver("zip");
 
     // zip config[name] folder
     archive.directory(config[name], false);
