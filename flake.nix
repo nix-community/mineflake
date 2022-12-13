@@ -52,6 +52,7 @@
         packages =
           let
             buildInputs = builtins.filter (p: p ? outPath) (builtins.attrValues overlay);
+            namedInputs = builtins.listToAttrs (builtins.map (p: { name = p; value = builtins.getAttr p overlay; }) (builtins.filter (p: (builtins.getAttr p overlay) ? outPath) (builtins.attrNames overlay)));
           in
           (overlay // {
             # This is a hack to get the buildInputs of the overlay
@@ -60,7 +61,7 @@
               name = "all";
               src = ./.;
               buildInputs = buildInputs;
-              installPhase = "mkdir -p $out; echo '${toString buildInputs}' > $out/buildInputs";
+              installPhase = "mkdir -p $out; cp ${pkgs.writeText "packages" (builtins.toJSON namedInputs)} $out/buildInputs";
             };
           });
 
