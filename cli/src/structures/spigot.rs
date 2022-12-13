@@ -13,20 +13,11 @@ use crate::{
 
 use super::common::{FileMapping, Generator, Server, ServerConfig, ServerState};
 
-fn default_weight() -> u32 {
-	0
-}
-
 /// The configuration for a LuckPerms group
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LuckPermsGroupConfig {
 	/// The name of the group
 	pub name: String,
-	/// The weight of the group (default: 0)
-	///
-	/// Higher weight means higher priority.
-	#[serde(default = "default_weight")]
-	pub weight: u32,
 	/// Group permissions
 	pub permissions: Vec<String>,
 }
@@ -35,15 +26,12 @@ impl Generator for LuckPermsGroupConfig {
 	fn generate(&self, _config: &ServerConfig) -> anyhow::Result<Vec<LinkTypes>> {
 		let mut files: Vec<LinkTypes> = Vec::new();
 
-		let mut path = PathBuf::from("plugins");
-		path.push("LuckPerms");
-		path.push("groups");
-		path.push(format!("{}.json", self.name));
+		let name = self.name.clone();
+		let path = PathBuf::from(format!("plugins/LuckPerms/json-storage/groups/{name}.json"));
 		let content = serde_json::to_string_pretty(&serde_json::json!(
 			{
 				"name": self.name,
-				"weight": self.weight,
-				"permissions": self.permissions
+				"permissions": self.permissions.iter().map(|p| serde_json::json!({ "permission": p, "value": true })).collect::<Vec<serde_json::Value>>()
 			}
 		))?;
 		files.push(LinkTypes::Raw(content, path));
@@ -130,11 +118,30 @@ impl Server for SpigotConfig {
 		let mut files = self.prepare_packages(config, directory)?;
 
 		// Generators
+		// eula.txt
+		files.push(LinkTypes::Raw(
+			"eula=true".to_string(),
+			PathBuf::from("eula.txt"),
+		));
+
 		// LuckPerms
 		if let Some(permissions) = &self.permissions {
 			for permission in permissions {
 				files.extend(permission.generate(config)?);
 			}
+			files.push(LinkTypes::MergeYAML(
+				serde_yaml::to_value(serde_json::json!(
+					{
+						"split-storage": {
+							"enabled": true,
+							"methods": {
+								"group": "json",
+							}
+						},
+					}
+				))?,
+				PathBuf::from("plugins/LuckPerms/config.yml"),
+			))
 		}
 
 		// Configs
