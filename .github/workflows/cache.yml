@@ -1,4 +1,4 @@
-name: Cache derivations
+name: Cache derivations & Update repo
 
 on:
   push:
@@ -30,7 +30,8 @@ jobs:
         run: |
           cat result/buildInputs
 
-      - name: Create repo.json
+      - name: Generate repo.json
+        ignore_errors: true
         run: |
           nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
           mv .github/repo_pinner/repo.json repo-new.json
@@ -42,8 +43,8 @@ jobs:
         env:
           WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
 
-      - name: Push repo
-        if: github.ref == 'refs/heads/main'
+      - name: Push repo.json
+        # if: github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v9
         with:
           add: "repo.json"
