@@ -27,7 +27,7 @@ jobs:
 
       - name: Create repo.json
         run: |
-          nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.js"
+          nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs"
           mv .github/repo_pinner/repo.json repo-new.json
           git checkout repo
           git fetch
