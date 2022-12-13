@@ -31,7 +31,6 @@ jobs:
           cat result/buildInputs
 
       - name: Generate repo.json
-        ignore_errors: true
         run: |
           nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
           mv .github/repo_pinner/repo.json repo-new.json
