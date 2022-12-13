@@ -4,6 +4,7 @@ on:
   push:
     # branches:
     #   - main
+    #   - dev
 
 jobs:
   cache:
@@ -33,8 +34,8 @@ jobs:
         run: |
           nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
           mv .github/repo_pinner/repo.json repo-new.json
-          git checkout repo
           git fetch
+          git checkout origin/repo
           git pull
           rm repo.json
           mv repo-new.json repo.json
@@ -42,6 +43,7 @@ jobs:
           WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
 
       - name: Push repo
+        if: github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v9
         with:
           add: "repo.json"
