@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ pkgs
+, ipfsGateway ? "https://w3s.link/ipfs/"
+, ...
+}:
 
 with pkgs; (rec {
   # CLI
@@ -70,7 +73,7 @@ with pkgs; (rec {
 
   buildZipMfPackage = { url, sha256, ... }: fetchzip { inherit url sha256; };
 
-  ipfsUrl = path: "https://w3s.link/ipfs/${path}";
+  ipfsUrl = path: "${ipfsGateway}${path}";
 }
 // (callPackage ./servers { })
 // (callPackage ./plugins { }))

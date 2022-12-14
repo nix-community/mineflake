@@ -8,11 +8,22 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     {
-      overlays.default = final: prev: {
-        mineflake = import ./pkgs {
-          pkgs = prev;
-          lib = prev.lib;
+      overlays = rec {
+        mineflake = final: prev: {
+          mineflake = import ./pkgs {
+            pkgs = prev;
+            lib = prev.lib;
+          };
         };
+
+        mineflakeWithCustomAttrs = attrs: final: prev: {
+          mineflake = import ./pkgs ({
+            pkgs = prev;
+            lib = prev.lib;
+          } // attrs);
+        };
+
+        default = mineflake;
       };
 
       templates = rec {
