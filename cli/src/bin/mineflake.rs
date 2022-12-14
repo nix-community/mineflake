@@ -26,7 +26,7 @@ enum Commands {
 		/// Configuration to apply.
 		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
 		config: PathBuf,
-		/// Configuration to apply.
+		/// Whether to run server after applying configuration.
 		#[clap(default_value = "false", long = "run", short = 'r')]
 		run: bool,
 		/// Directory to apply configuration. If not specified, the current directory will be used.
