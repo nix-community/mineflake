@@ -10,6 +10,12 @@ copyright: Copyright &copy; 2022 Egor Ternovoy
 
 nav:
   - Mineflake: index.md
+  - Configuration:
+    - Overview: configuration/overview.md
+    - Generators: configuration/generators.md
+  - Packaging:
+    - Overview: packaging/overview.md
+    - Manifest: packaging/manifest.md
 
 theme:
   name: material
@@ -69,6 +75,7 @@ markdown_extensions:
 plugins:
   - social
   - search
+  # - glightbox
   - git-revision-date-localized:
       enable_creation_date: true
 
