@@ -43,8 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd docs
-          apt-get update
-          apt-get install -y libcairo2-dev
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev
           pip install -r requirements.txt
 
       - name: Build docs
