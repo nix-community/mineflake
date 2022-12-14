@@ -16,6 +16,9 @@ nav:
   - Packaging:
     - Overview: packaging/overview.md
     - Manifest: packaging/manifest.md
+  - Usage:
+    - Docker: usage/docker.md
+    - systemd: usage/systemd.md
 
 theme:
   name: material
