@@ -6,6 +6,10 @@ on:
       - main
       - dev
 
+concurrency:
+  group: "cache"
+  cancel-in-progress: true
+
 jobs:
   cache:
     runs-on: ubuntu-latest
