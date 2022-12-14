@@ -40,7 +40,14 @@ enum Commands {
 		/// Directory to apply configuration. If not specified, the current directory will be used.
 		directory: Option<PathBuf>,
 	},
-	/// Vendor remote plugins.
+	/// Vendor packages.
+	///
+	///	Packages will be downloaded or moved to cache directory (you can override it with `MINEFLAKE_CACHE` environment variable).
+	///
+	/// This is useful for CI/CD, when you want to cache plugins and don't want to download them every time.
+	/// Or if you want to use remote packages with Nix and fixed-output derivations.
+	///
+	/// This command is only available with `net` feature.
 	Vendor {
 		/// Configuration to take plugins from.
 		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
