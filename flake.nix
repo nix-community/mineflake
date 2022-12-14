@@ -1,17 +1,89 @@
 {
   description = "Minecraft server in Nix";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, flake-utils }:
     {
-      nixosModules.default = import ./modules/mineflake.nix;
-
       overlays.default = final: prev: {
         mineflake = import ./pkgs {
           pkgs = prev;
           lib = prev.lib;
         };
       };
-    };
+
+      templates = rec {
+        docker = {
+          path = ./templates/docker;
+          description = "An example of a mineflake docker container";
+          welcomeText = ''
+            This is an example of a mineflake docker container.
+
+            You can use it to deploy your own minecraft server
+            on any machine that supports Docker.
+
+            To use it, run:
+
+              $ nix build .
+
+              $ docker load < result
+
+              $ docker run --rm -it -p 25565:25565 mineflake
+
+            Then, edit the docker.nix file to your liking.
+          '';
+        };
+        default = docker;
+      };
+    } // flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlays.default ];
+        };
+        overlay = (self.overlays.default pkgs pkgs).mineflake;
+      in
+      {
+        devShells.default = import ./shell.nix { inherit pkgs; };
+
+        packages =
+          let
+            buildInputs = builtins.filter (p: p ? outPath) (builtins.attrValues overlay);
+            namedInputs =
+              builtins.listToAttrs
+                (builtins.map
+                  (p:
+                    {
+                      name = p;
+                      value = builtins.getAttr p overlay;
+                    })
+                  (builtins.filter
+                    (p: (builtins.getAttr p overlay) ? outPath)
+                    (builtins.attrNames overlay)
+                  )
+                );
+          in
+          (overlay // {
+            # This is a hack to get the buildInputs of the overlay
+            # Used for caching on cachix
+            default = pkgs.stdenv.mkDerivation {
+              name = "all";
+              src = ./.;
+              buildInputs = buildInputs;
+              installPhase = "mkdir -p $out; cp ${pkgs.writeText "packages" (builtins.toJSON namedInputs)} $out/buildInputs";
+            };
+          });
+
+        apps = rec {
+          mineflake = {
+            type = "app";
+            program = "${overlay.mineflake}/bin/mineflake";
+          };
+          default = mineflake;
+        };
+      }
+    );
 }

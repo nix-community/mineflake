@@ -4,66 +4,46 @@
 [![matrix](https://img.shields.io/static/v1?label=Matrix&message=%23mineflake:matrix.org&color=GREEN)](https://matrix.to/#/#mineflake:matrix.org)
 [![read the options](https://img.shields.io/static/v1?label=Read%20The&message=Options&color=8A2BE2)](https://nix-community.github.io/mineflake/)
 [![wakatime](https://wakatime.com/badge/user/ebd31081-494e-4581-b228-7619d0fe1080/project/c81c6e21-8431-4002-839f-b7e8da67c3ae.svg)](https://wakatime.com/@ebd31081-494e-4581-b228-7619d0fe1080/projects/vewdumcbno)
+[![Cache derivations](https://github.com/nix-community/mineflake/actions/workflows/build.yml/badge.svg)](https://github.com/nix-community/mineflake/actions/workflows/build.yml)
 
 NixOS flake for easy declarative creation of minecraft server containers.
 
-## Example configuration
+## Examples
+
+### Docker container with a Paper and AuthMe
 
 ```nix
-minecraft = {
-  enable = true;
+{ pkgs, ... }:
 
-  default.hostAddress = "192.168.100.1";
+with pkgs; mineflake.buildMineflakeContainer {
+  package = mineflake.paper;
+  command = "${jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
+  plugins = with mineflake; [ authme ];
+  configs = [
+    (mineflake.mkMfConfig "raw" "eula.txt" "eula=true")
+  ];
+}
+```
 
-  servers = {
-    proxy = {
-      useDefault = false;
-      hostAddress = "192.168.100.1";
-      localAddress = "192.168.100.2";
-      bungeecord = {
-        enable = true;
-        online_mode = false;
-        listeners = [
-          {
-            host = "0.0.0.0:25565";
-            priorities = [ "lobby" ];
-          }
-        ];
-        servers = {
-          lobby.address = "192.168.100.3";
-          main.address = "192.168.100.4";
-        };
-      };
-      plugins = with pkgs.mineflake; [ cleanmotd authmebungee ];
-      configs = {
-        "plugins/AuthMeBungee/config.yml".data.authServers = [ "lobby" ];
-        "plugins/CleanMotD/config.yml".data.motd.motds = [ "Cool server!" ];
-      };
-      package = pkgs.mineflake.waterfall;
-    };
+## Installation
 
-    lobby = {
-      localAddress = "192.168.100.3";
-      properties.enable = true;
-      properties.online-mode = false;
-      configs = {
-        "plugins/AuthMe/config.yml".data.Hooks = {
-          sendPlayerTo = "main";
-          bungeecord = true;
-          multiverse = false;
-        };
-      };
-      plugins = with pkgs.mineflake; [ authme essentialsx ];
-    };
+Install Nix:
 
-    main = {
-      localAddress = "192.168.100.4";
-      properties.enable = true;
-      properties.online-mode = false;
-      plugins = with pkgs.mineflake; [ coreprotect essentialsx ];
-    };
-  };
-};
+```sh
+bash <(curl -L https://nixos.org/nix/install)
+```
+
+Install Cachix and add the mineflake cache to speed up builds (optional):
+
+```sh
+nix-env -iA cachix -f https://cachix.org/api/v1/install
+cachix use nix-community
+```
+
+Initialize the flake:
+
+```sh
+nix flake init --template github:nix-community/mineflake
 ```
 
 ## Contributing
@@ -81,10 +61,33 @@ link to the original project, the author will be immensely pleased.
 In addition, this project uses the following third-party software:
 
 - [nixpkgs](https://github.com/NixOS/nixpkgs) - Licensed under the
-  [MIT License](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+  [MIT](https://github.com/NixOS/nixpkgs/blob/master/COPYING).
+  Used as a package repository.
+- [rust-overlay](https://github.com/oxalica/rust-overlay) - Licensed under the
+  [MIT](https://github.com/oxalica/rust-overlay/blob/master/LICENSE).
+  Used to set up the Rust toolchain in developer environment.
+- [naersk](https://github.com/nix-community/naersk) - Licensed under the
+  [MIT](https://github.com/nix-community/naersk/blob/master/LICENSE).
+  Used to build Mineflake CLI.
+- [flake-utils](https://github.com/numtide/flake-utils) - Licensed under the
+  [MIT](https://github.com/numtide/flake-utils/blob/master/LICENSE).
+  Simplifies the creation of flake outputs.
 
 ## Contributors
 
 If you contribute to this project, please add your name to the list below.
 
-- [cofob](https://t.me/cofob) - Author and maintainer
+- [cofob](https://github.com/cofob) - Author and maintainer
+
+## Sponsors and sponsorship
+
+If you want to support this project author directly, you can donate with cryptocurrency:
+
+- Tron: `TH2DAzhpe82TmwnhdtgDsyExTT1BBgpkyD`
+- Monero: `8B33vTVddZFitR33QY3bWe2tq4Q7o1ajdAz4wx831kr9e13fXTC14ur6caPYXm5fnijjsZ1aXvGvMFx2B1YgowWHJbfgcxQ`
+- Bitcoin: `bc1qcqqh02ctvq5z2v5ksv9rc0fza4gpr3pqy3uhdf`
+- Ethereum: `0xB2c854EBC480FB7cE9Be5f0dcD63F897ca49961b`
+
+Please notify the author about your donation by sending a message to the telegram
+[@cofob](https://t.me/cofob) or by email [cofob@riseup.net](mailto:cofob@riseup.net)
+and your name will be added to the list of sponsors.
