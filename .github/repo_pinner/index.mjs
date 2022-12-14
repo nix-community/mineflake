@@ -29,11 +29,10 @@ async function main() {
 
   // get all pinned files
   console.log("Getting all pinned files...");
-  let files = await client.list();
+  let files = client.list();
   for await (let file of files) {
     uploaded[file.name] = file.cid;
   }
-  console.log(`Found ${uploaded.length} files!`);
 
   // initialize repo
   let repo = {};
@@ -42,26 +41,42 @@ async function main() {
   for (let name in config) {
     console.log(`Processing ${name}...`);
 
+    // check if package.yml exists
+    if (!fs.existsSync(`${config[name]}/package.yml`)) {
+      console.log(`package.yml does not exist! Skipping...`);
+      await exec_command(`rm -rf ${name}`);
+      continue;
+    }
+
     // create a zip file
     console.log(`Creating zip file...`);
     await exec_command(`rm -f ${name}.zip`);
     await exec_command(`rm -rf ${name}`);
     await exec_command(`cp -r ${config[name]} ${name}`);
     await exec_command(`chmod -R +w ${name}`);
-    await exec_command(`zip -9 -r ${name}.zip ${name}`);
-    await exec_command(`rm -rf ${name}`);
 
-    // get zip file sha256 hash
     const _hash = crypto
       .createHash("sha256")
-      .update(fs.readFileSync(`${name}.zip`))
+      .update(fs.readFileSync(`${name}/package.yml`))
       .digest("hex");
-    const full = `${name}-${_hash}.zip`;
+    const full = `${_hash}.zip`;
 
     // check if zip file already exists
     if (uploaded[full]) {
       console.log(`Zip file already exists! Skipping...`);
+      await exec_command(`rm -rf ${name}`);
     } else {
+      // set all timestamps to 2000-01-01 00:00:00
+      await exec_command(
+        `
+      find ${name} -print | while read filename; do
+        touch -a -m -t 200001010000.00 "$filename"
+      done
+    `
+      );
+      await exec_command(`zip -9 -r ${name}.zip ${name}`);
+      await exec_command(`rm -rf ${name}`);
+
       // upload zip file to web3.storage
       console.log(`Uploading zip file...`);
       const cid = await client.put(
@@ -74,13 +89,13 @@ async function main() {
         { type: "application/zip", name: full }
       );
       uploaded[full] = cid;
+
+      // delete zip file
+      fs.unlinkSync(`${name}.zip`);
     }
 
     // add cid to repo
     repo[name] = `https://w3s.link/ipfs/${uploaded[full]}/archive.zip`;
-
-    // delete zip file
-    fs.unlinkSync(`${name}.zip`);
 
     console.log(`Done processing ${name}! CID: ${uploaded[full]}`);
   }
