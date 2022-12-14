@@ -2,9 +2,23 @@
 import { Web3Storage } from "web3.storage";
 import fs from "fs";
 import crypto from "crypto";
-import archiver from "archiver";
+import child_process from "child_process";
 
 let uploaded = {};
+
+async function exec_command(command) {
+  return new Promise((resolve, reject) => {
+    const child = child_process.exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
+  });
+}
 
 async function main() {
   // load json file located at first CLI argument
@@ -30,16 +44,12 @@ async function main() {
 
     // create a zip file
     console.log(`Creating zip file...`);
-    const output = fs.createWriteStream(`${name}.zip`);
-    const archive = archiver("zip");
-
-    // zip config[name] folder
-    archive.directory(config[name], false);
-
-    // save zip file
-    archive.pipe(output);
-    await archive.finalize();
-    output.close();
+    await exec_command(`rm -f ${name}.zip`);
+    await exec_command(`rm -rf ${name}`);
+    await exec_command(`cp -r ${config[name]} ${name}`);
+    await exec_command(`chmod -R +w ${name}`);
+    await exec_command(`zip -9 -r ${name}.zip ${name}`);
+    await exec_command(`rm -rf ${name}`);
 
     // get zip file sha256 hash
     const _hash = crypto
