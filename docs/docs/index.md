@@ -15,44 +15,54 @@ Mineflake is a tool for creating and managing Minecraft servers declaratively. I
 
 ## Quick start
 
-Mineflake can be used with Nix or without it. To use Mineflake without Nix, you need to install Rust and Cargo. To do so, run:
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-cargo install mineflake
-```
-
-If you want to use Mineflake with Nix, you need to install Nix. To do so, run:
-
-```bash
-bash <(curl -L https://nixos.org/nix/install)
-```
-
-???+ info "Which method I should use?"
-
-    If you are familiar with Nix, you should use Nix. If you are not, you should use Cargo.
-
-    With Nix you get more control. Both methods have same package set and same features.
-
-??? note "Note about NixOS"
-
-    If you are using NixOS, you don't need to install Nix. It is already installed.
 
 ### Installation
 
-To debug Mineflake confirurations it is recommended to install CLI. To do so, run:
+Mineflake can be used with Nix or without it. To use Mineflake without Nix, you need to install Rust and Cargo. To do so, run:
 
 === "With Nix"
 
+
+    If you want to use Mineflake with Nix, you need to install Nix. To do so, run:
+
     ``` bash
-    nix run github:nix-community/mineflake
+    bash <(curl -L https://nixos.org/nix/install) # (1)
+    nix run github:nix-community/mineflake --help # (2)
     ```
+
+    1. This command installs Nix. If you want to install it manually, you can find more information on [Nix website](https://nixos.org/download.html).
+
+    2. This doesn't install Mineflake to your system, it just runs it. So if you want to execute
+    `mineflake apply` command, you need to run `nix run github:nix-community/mineflake apply` instead
+
+    ??? warning "Note about usage with Nix"
+
+        Mineflake uses flake feature of Nix, so you need to enable flakes support.
+        Wiki page about [Flakes](https://nixos.wiki/wiki/Flakes) has more information about it.
 
 === "With Cargo"
 
     ``` bash
-    cargo install mineflake
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # (1)
+    cargo install mineflake # (2)
+    mineflake --help # (3)
     ```
+
+    1. This command installs Rust and Cargo. If you want to install it manually, you can find more information
+    on [Rust website](https://www.rust-lang.org/tools/install).
+
+    2. This command installs Mineflake CLI to your system. It's usually located in `~/.cargo/bin` directory.
+
+    ??? warning "If last command fails"
+
+        You need to add `~/.cargo/bin` to your `PATH` environment variable.
+
+!!! info "Which method I should use?"
+
+    If you are familiar with Nix, you should use Nix. If you are not, you should use Cargo.
+
+    With Nix you get more control and simplier package management.
+    Both methods have same package set and same features.
 
 ### Example configuration
 
