@@ -76,4 +76,4 @@ with pkgs; (rec {
   ipfsUrl = path: "${ipfsGateway}${path}";
 }
 // (callPackage ./servers { })
-// (callPackage ./plugins { }))
+  // (callPackage ./plugins { }))
