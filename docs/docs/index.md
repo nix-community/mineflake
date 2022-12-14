@@ -36,6 +36,20 @@ Mineflake can be used with Nix or without it. To use Mineflake without Nix, you 
     2. This doesn't install Mineflake to your system, it just runs it. So if you want to execute
     `mineflake apply` command, you need to run `nix run github:nix-community/mineflake apply` instead.
 
+    ???+ tip "Faster builds (optional)"
+
+        You can install Cachix to your system to significantly speed up builds:
+
+        ``` bash
+        nix-env -iA cachix -f https://cachix.org/api/v1/install
+        ```
+
+        And activate cache for Mineflake:
+
+        ``` bash
+        cachix use nix-community
+        ```
+
     ??? warning "Note about usage with Nix"
 
         Mineflake uses flake feature of Nix (hence the name), so you need to enable flakes support.
