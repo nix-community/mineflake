@@ -4,11 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    mineflake = {
-      url = "github:nix-community/mineflake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
+    mineflake.url = "github:nix-community/mineflake";
   };
 
   outputs = { self, nixpkgs, flake-utils, mineflake }:
