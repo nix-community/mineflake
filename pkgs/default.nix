@@ -68,6 +68,10 @@ with pkgs; rec {
     '';
   } // attrs);
 
+  buildZipMfPackage = { url, sha256, ... }: fetchzip { inherit url sha256; };
+
+  ipfsUrl = path: "https://w3s.link/ipfs/${path}";
+
 
 
   # Servers
