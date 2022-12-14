@@ -1,0 +1,6 @@
+mkdocs
+mkdocs-material
+mkdocs-git-revision-date-localized-plugin
+pillow
+cairosvg
+mike

@@ -1,0 +1,79 @@
+site_name: Mineflake
+
+site_description: Mineflake is a declarative Minecraft server manager.
+
+repo_url: https://github.com/nix-community/mineflake
+edit_uri: edit/main/docs/
+site_url: "https://mineflake.cofob.ru/"
+
+copyright: Copyright &copy; 2022 Egor Ternovoy
+
+nav:
+  - Mineflake: index.md
+
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+
+extra:
+  analytics:
+    provider: google
+    property: G-3WTVV6VRXW
+  version:
+    provider: mike
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - social
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+extra_css:
+  - https://fastapi.tiangolo.com/css/termynal.css
+  - https://fastapi.tiangolo.com/css/custom.css
+extra_javascript:
+  - https://fastapi.tiangolo.com/js/termynal.js
+  - https://fastapi.tiangolo.com/js/custom.js

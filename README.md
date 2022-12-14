@@ -1,8 +1,7 @@
-# mineflake
+# Mineflake
 
 [![license MIT](https://img.shields.io/static/v1?label=License&message=MIT&color=FE7D37)](https://github.com/nix-community/mineflake/blob/main/LICENSE)
 [![matrix](https://img.shields.io/static/v1?label=Matrix&message=%23mineflake:matrix.org&color=GREEN)](https://matrix.to/#/#mineflake:matrix.org)
-[![read the options](https://img.shields.io/static/v1?label=Read%20The&message=Options&color=8A2BE2)](https://nix-community.github.io/mineflake/)
 [![wakatime](https://wakatime.com/badge/user/ebd31081-494e-4581-b228-7619d0fe1080/project/c81c6e21-8431-4002-839f-b7e8da67c3ae.svg)](https://wakatime.com/@ebd31081-494e-4581-b228-7619d0fe1080/projects/vewdumcbno)
 [![Cache derivations](https://github.com/nix-community/mineflake/actions/workflows/build.yml/badge.svg)](https://github.com/nix-community/mineflake/actions/workflows/build.yml)
 
