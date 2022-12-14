@@ -18,6 +18,7 @@ nav:
     - Manifest: packaging/manifest.md
   - Usage:
     - Docker: usage/docker.md
+    - NixOS: usage/nixos.md
     - systemd: usage/systemd.md
 
 theme:
