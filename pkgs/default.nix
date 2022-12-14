@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-with pkgs; rec {
+with pkgs; (rec {
   # CLI
   mineflake = (callPackage ../cli { }).offline;
   mineflake-online = (callPackage ../cli { }).default;
@@ -71,15 +71,6 @@ with pkgs; rec {
   buildZipMfPackage = { url, sha256, ... }: fetchzip { inherit url sha256; };
 
   ipfsUrl = path: "https://w3s.link/ipfs/${path}";
-
-
-
-  # Servers
-  paper = paper_1-19-2;
-  paper_1-19-2 = callPackage ./servers/paper_1.19.2 { };
-
-
-  # Plugins
-  authme = callPackage ./plugins/authme { };
-  luckperms = callPackage ./plugins/luckperms { };
 }
+// (callPackage ./servers { })
+// (callPackage ./plugins { }))
