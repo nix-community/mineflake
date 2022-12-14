@@ -220,9 +220,6 @@ To run a simple paper server, you need to create a file named `mineflake.yml` wi
 
     ``` json linenums="1" title="mineflake.json"
     {
-        "defaults": {
-            "repo": "https://raw.githubusercontent.com/nix-community/mineflake/8f442611468fc60cd07003447d6c7625e60a50e4/repo.json"
-        },
         "type": "spigot",
         "command": "java -Xms1G -Xmx1G -jar {} nogui",
         "package": {
