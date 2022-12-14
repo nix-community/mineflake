@@ -1,53 +1,85 @@
 { pkgs, ... }:
 
-with pkgs; {
-  # MUST BE SORTED! (you can use "Sort Lines" vs code plugin with "Natural" sorting)
+with pkgs; rec {
+  # CLI
+  mineflake = (callPackage ../cli { }).offline;
+  mineflake-online = (callPackage ../cli { }).default;
 
-  # Utils
-  lazymc = callPackage ./other/lazymc { };
-  utils = callPackage ./other/utils { };
+  # Build utils
+  buildMineflakeConfig =
+    { type ? "spigot"
+    , package
+    , plugins ? [ ]
+    , command ? ""
+    , configs ? [ ]
+    , ...
+    }@attrs: writeText "mineflake.json" (builtins.toJSON (attrs // {
+      type = type;
+      package = mkMfPackage package;
+      plugins = map (p: mkMfPackage p) plugins;
+      command = command;
+      configs = configs;
+    }));
+
+
+  buildMineflakeBin = config: writeScriptBin "mineflake" ''
+    #!${pkgs.runtimeShell}
+    ${mineflake}/bin/mineflake apply -r -c "${buildMineflakeConfig config}"
+  '';
+
+  buildMineflakeContainer = config: pkgs.dockerTools.buildImage {
+    name = "mineflake";
+    tag = "latest";
+    copyToRoot = (buildMineflakeBin config);
+    config = {
+      Cmd = [ "/bin/mineflake" ];
+      WorkingDir = "/data";
+    };
+  };
+
+  buildMineflakeLayeredContainer = config: pkgs.dockerTools.buildLayeredImage {
+    name = "mineflake";
+    tag = "latest";
+    contents = [ (buildMineflakeBin config) ];
+    config = {
+      Cmd = [ "/bin/mineflake" ];
+      WorkingDir = "/data";
+    };
+  };
+
+  mkMfPackage = package: {
+    type = "local";
+    path = package;
+  };
+
+  mkMfConfig = type: path: content: {
+    type = type;
+    path = path;
+    content = content;
+  };
+
+  # Generates manifest.yml for a package
+  buildMineflakeManifest = name: version: writeText "mineflake-manifest.yml" (builtins.toJSON { inherit name version; });
+
+  buildMineflakePackage = { pname, version, ... }@attrs: stdenv.mkDerivation ({
+    phases = [ "buildPhase" "installPhase" "manifestPhase" ];
+    manifestPhase = ''
+      cp ${buildMineflakeManifest pname version} $out/package.yml
+    '';
+  } // attrs);
+
+  buildZipMfPackage = { url, sha256, ... }: fetchzip { inherit url sha256; };
+
+  ipfsUrl = path: "https://w3s.link/ipfs/${path}";
+
+
 
   # Servers
-  bungeecord = callPackage ./servers/bungeecord { };
-  paper = callPackage ./servers/paper_1.18.2 { };
-  paper_1_18_2 = callPackage ./servers/paper_1.18.2 { };
-  paper_1_19_2 = callPackage ./servers/paper_1.19.2 { };
-  waterfall = callPackage ./servers/waterfall { };
+  paper = paper_1-19-2;
+  paper_1-19-2 = callPackage ./servers/paper_1.19.2 { };
+
 
   # Plugins
-  advancedban = callPackage ./plugins/advancedban { };
   authme = callPackage ./plugins/authme { };
-  authmebungee = callPackage ./plugins/authmebungee { };
-  blockrename = callPackage ./plugins/blockrename { };
-  chatty = callPackage ./plugins/chatty { };
-  clans = callPackage ./plugins/clans { };
-  cleanmotd = callPackage ./plugins/cleanmotd { };
-  coreprotect = callPackage ./plugins/coreprotect { };
-  discordsrv = callPackage ./plugins/discordsrv { };
-  elyby = callPackage ./plugins/elyby { };
-  essentialsx = callPackage ./plugins/essentialsx { };
-  essentialsx-antibuild = callPackage ./plugins/essentialsx/antibuild.nix { };
-  essentialsx-chat = callPackage ./plugins/essentialsx/chat.nix { };
-  essentialsx-discord = callPackage ./plugins/essentialsx/discord.nix { };
-  essentialsx-geo = callPackage ./plugins/essentialsx/geo.nix { };
-  essentialsx-protect = callPackage ./plugins/essentialsx/protect.nix { };
-  essentialsx-spawn = callPackage ./plugins/essentialsx/spawn.nix { };
-  essentialsx-xmpp = callPackage ./plugins/essentialsx/xmpp.nix { };
-  illegalstack = callPackage ./plugins/illegalstack { };
-  inventoryrollbackplus = callPackage ./plugins/inventoryrollbackplus { };
-  itemcontrol = callPackage ./plugins/itemcontrol { };
-  lightchatbubbles = callPackage ./plugins/lightchatbubbles { };
   luckperms = callPackage ./plugins/luckperms { };
-  negativity = callPackage ./plugins/negativity { };
-  placeholderapi = callPackage ./plugins/placeholderapi { };
-  plasmovoice = callPackage ./plugins/plasmovoice { };
-  playtime = callPackage ./plugins/playtime { };
-  protocollib = callPackage ./plugins/protocollib { };
-  redlib = callPackage ./plugins/redlib { };
-  shutdown = callPackage ./plugins/shutdown { };
-  skinsrestorer = callPackage ./plugins/skinsrestorer { };
-  tablist = callPackage ./plugins/tablist { };
-  tablistbungee = callPackage ./plugins/tablistbungee { };
-  tabtps = callPackage ./plugins/tabtps { };
-  vault = callPackage ./plugins/vault { };
 }

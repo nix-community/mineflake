@@ -12,11 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: cachix/install-nix-action@v18
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Pin IPFS
+      - name: Pin IPFS CIDs
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/pin_all.py"
         env:

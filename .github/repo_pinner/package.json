@@ -1,0 +1,14 @@
+{
+  "name": "repo_pinner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "web3.storage": "^4.4.0"
+  }
+}

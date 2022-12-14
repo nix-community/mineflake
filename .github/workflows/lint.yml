@@ -1,10 +1,7 @@
-name: Lint
+name: Test & lint
 
 on:
   push:
-    branches:
-      - main
-      - dev
   pull_request:
 
 jobs:
@@ -13,10 +10,45 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: cachix/install-nix-action@v18
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Lint
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: x86_64-pc-windows-gnu
+
+      - name: Check Rust formatting
+        run: |
+          cd cli
+          cargo fmt --all -- --check
+
+      - name: Check Nix formatting
         run: |
           nix-shell -p nixpkgs-fmt --run "nixpkgs-fmt --check ."
+
+      - name: Install mingw
+        run: |
+          sudo apt-get install -y mingw-w64
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
+
+      - name: Check packages
+        run: |
+          cd cli
+          cargo check
+
+      - name: Test crate
+        run: |
+          cd cli
+          cargo test
+          cargo test --no-default-features --features "cli"
+          cargo b --target x86_64-pc-windows-gnu
+          cargo b --target x86_64-pc-windows-gnu --no-default-features --features "cli"

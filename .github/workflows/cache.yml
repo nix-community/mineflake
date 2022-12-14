@@ -1,0 +1,71 @@
+name: Cache derivations & Update repo
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+concurrency:
+  group: "cache"
+  cancel-in-progress: true
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - uses: cachix/cachix-action@v12
+        with:
+          name: nix-community
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build derivations
+        run: |
+          nix build .
+
+      - name: Print store paths
+        run: |
+          cat result/buildInputs
+
+      - name: Get current short git commit
+        if: github.ref == 'refs/heads/main'
+        id: current_commit
+        run: |
+          echo "REV=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Generate repo.json
+        if: github.ref == 'refs/heads/main'
+        run: |
+          nix-shell -p nodejs --run "cd .github/repo_pinner && npm install && node index.mjs ../../result/buildInputs"
+          mv .github/repo_pinner/repo.json repo-new.json
+          git fetch
+          git checkout origin/repo
+          git pull origin repo
+          rm repo.json
+          mv repo-new.json repo.json
+        env:
+          WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
+
+      - name: Commit files
+        continue-on-error: true
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add repo.json
+          git commit -a -m "update: ${{ env.REV }}"
+
+      - name: Push changes
+        continue-on-error: true
+        if: github.ref == 'refs/heads/main'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "refs/heads/repo"

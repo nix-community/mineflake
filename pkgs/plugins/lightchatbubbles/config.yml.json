@@ -1,9 +1,0 @@
-{
-  "maxBubbleHeight": 3,
-  "maxBubbleWidth": 15,
-  "bubblesInterval": 5,
-  "readSpeed": 800,
-  "handicapChars": 10,
-  "disableChatWindow": false,
-  "chatFormat": "EL"
-}
