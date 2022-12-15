@@ -18,7 +18,7 @@ Systemd is a system and service manager for Linux. It is used by many Linux dist
       Group = "minecraft-example-server";
       ExecStart = pkgs.mineflake.buildMineflakeBin {
         type = "spigot";
-        command = "${pkgs.jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
+        command = "${pkgs.jre_headless}/bin/java -Xms1G -Xmx1G -jar {} nogui";
         package = pkgs.mineflake.paper;
       };
       WorkingDirectory = "/var/lib/minecraft-example-server";

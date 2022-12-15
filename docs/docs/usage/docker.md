@@ -13,7 +13,7 @@ You can simply use `buildMineflakeContainer` function:
 
 mineflake.buildMineflakeContainer {
     type = "spigot";
-    command = "java -Xms1G -Xmx1G -jar {} nogui";
+    command = "${jre_headless}/bin/java -Xms1G -Xmx1G -jar {} nogui";
     package = mineflake.paper;
 }
 ```
@@ -25,7 +25,7 @@ Or if you want better layer caching, you can use `buildMineflakeLayeredContainer
 
 mineflake.buildMineflakeLayeredContainer {
     type = "spigot";
-    command = "java -Xms1G -Xmx1G -jar {} nogui";
+    command = "${jre_headless}/bin/java -Xms1G -Xmx1G -jar {} nogui";
     package = mineflake.paper;
 }
 ```

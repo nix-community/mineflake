@@ -136,7 +136,7 @@ Example of same config for Nix version:
 
 mineflake.buildMineflakeBin {
     type = "spigot";
-    command = "${jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
+    command = "${jre_headless}/bin/java -Xms1G -Xmx1G -jar {} nogui";
     package = mineflake.paper; # (1)
     plugins = with mineflake; [
         luckperms # (2)
@@ -198,7 +198,7 @@ To run a simple paper server, you need to create a file named `mineflake.yml` wi
 
     mineflake.buildMineflakeBin {
         type = "spigot";
-        command = "${jdk}/bin/java -Xms1G -Xmx1G -jar {} nogui";
+        command = "c -Xms1G -Xmx1G -jar {} nogui";
         package = mineflake.paper;
         plugins = with mineflake; [
             luckperms
