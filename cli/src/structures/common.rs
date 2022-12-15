@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(not(feature = "net"))]
 use std::collections::HashMap;
 
-use super::spigot::SpigotConfig;
+use super::{bungee::BungeeConfig, spigot::SpigotConfig};
 use crate::utils::{linker::LinkTypes, load_config};
 use anyhow::Result;
 use std::fs::read_to_string;
@@ -153,6 +153,42 @@ pub enum FileConfigEnum {
 	MergeJson(MergeJsonFileConfig),
 	/// Merge YAML files
 	MergeYaml(MergeYamlFileConfig),
+}
+
+impl FileConfigEnum {
+	/// Processes the file config and inserts the result into the files vector
+	pub fn process(&self, files: &mut Vec<LinkTypes>, config: &FileConfig) -> Result<()> {
+		match self {
+			Self::Raw(raw) => {
+				files.push(LinkTypes::Raw(raw.content.clone(), config.path.clone()));
+			}
+			Self::Json(json) => {
+				files.push(LinkTypes::Raw(
+					serde_json::to_string(&json.content)?,
+					config.path.clone(),
+				));
+			}
+			Self::Yaml(yaml) => {
+				files.push(LinkTypes::Raw(
+					serde_yaml::to_string(&yaml.content)?,
+					config.path.clone(),
+				));
+			}
+			Self::MergeJson(json) => {
+				files.push(LinkTypes::MergeJSON(
+					json.content.clone(),
+					config.path.clone(),
+				));
+			}
+			Self::MergeYaml(yaml) => {
+				files.push(LinkTypes::MergeYAML(
+					yaml.content.clone(),
+					config.path.clone(),
+				));
+			}
+		}
+		Ok(())
+	}
 }
 
 /// Raw file content
@@ -456,6 +492,28 @@ impl PackageManifest {
 pub enum ServerSpecificConfig {
 	/// Bukkit-based server (Spigot, Paper, etc.)
 	Spigot(SpigotConfig),
+	/// Bungee-based server (Bungeecord, Waterfall, etc.)
+	Bungee(BungeeConfig),
+}
+
+impl ServerSpecificConfig {
+	/// Get server
+	pub fn get_server(&self) -> &dyn Server {
+		match self {
+			ServerSpecificConfig::Spigot(server) => server,
+			ServerSpecificConfig::Bungee(server) => server,
+		}
+	}
+
+	/// Run server
+	pub fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()> {
+		self.get_server().run_server(config, directory)
+	}
+
+	/// Prepare server directory
+	pub fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()> {
+		self.get_server().prepare_directory(config, directory)
+	}
 }
 
 /// Server trait

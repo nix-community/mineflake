@@ -12,7 +12,7 @@ Each package is simply a `package.yml` file, server type required files, and fil
 
 You can read more about package manifest in [manifest](manifest.md) page.
 
-Example package file structure of AuthMe for `spigot` server type:
+Example package file structure of AuthMe for `spigot`/`bungee` server type:
 
 ``` text
 .

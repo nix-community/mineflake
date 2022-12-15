@@ -7,10 +7,7 @@ extern crate log;
 use std::{env::current_dir, path::PathBuf};
 
 use clap::{Parser, Subcommand};
-use mineflake::{
-	self,
-	structures::common::{Server, ServerConfig, ServerSpecificConfig},
-};
+use mineflake::{self, structures::common::ServerConfig};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -75,13 +72,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				Some(dir) => dir.clone(),
 				None => current_dir()?,
 			};
-			match &config.server {
-				ServerSpecificConfig::Spigot(spigot) => {
-					spigot.prepare_directory(&config, &directory)?;
-					if *run {
-						spigot.run_server(&config, &directory)?;
-					}
-				}
+
+			config.server.prepare_directory(&config, &directory)?;
+			if *run {
+				config.server.run_server(&config, &directory)?;
 			}
 		}
 		Some(Commands::Run { config, directory }) => {
@@ -90,11 +84,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				Some(dir) => dir.clone(),
 				None => current_dir()?,
 			};
-			match &config.server {
-				ServerSpecificConfig::Spigot(spigot) => {
-					spigot.run_server(&config, &directory)?;
-				}
-			}
+
+			config.server.run_server(&config, &directory)?;
 		}
 		#[cfg(feature = "net")]
 		Some(Commands::Vendor { config }) => {

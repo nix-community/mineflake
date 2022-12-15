@@ -82,6 +82,11 @@ For example, `spigot` type has `permissions` config option, but others doesn't.
 
 Different types require different packages (e.g. `spigot` requires `package.jar` in the package).
 
+Currently supported types:
+
+- `spigot` - Spigot-based server (e.g. Paper, Purpur)
+- `bungee` - Bungeecord-based server (e.g. Waterfall)
+
 ## Command
 
 ``` yaml linenums="1" hl_lines="6" title="mineflake.yml"
