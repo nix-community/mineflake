@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
 
 concurrency:
   group: "cache"
@@ -51,22 +50,12 @@ jobs:
         env:
           WEB3STORAGE_TOKEN: ${{ secrets.WEB3STORAGE_TOKEN }}
 
-      - name: Rename repo.json
-        if: github.ref == 'refs/heads/dev'
-        run: |
-          cp repo.json repo-latest.json
-          git add repo-latest.json
-
-      - name: Add repo.json
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git add repo.json
-
       - name: Commit files
         continue-on-error: true
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add repo.json
           git commit -m "update: ${{ env.REV }}"
 
       - name: Push changes
