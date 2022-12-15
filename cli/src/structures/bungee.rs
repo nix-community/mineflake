@@ -12,7 +12,11 @@ use super::common::{FileMapping, Server, ServerConfig, ServerState};
 
 /// The configuration for a Bungee server
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct BungeeConfig;
+pub struct BungeeConfig {
+	/// This option needs to yaml anchors to work properly
+	/// Remove it later.
+	some_option: Option<String>
+}
 
 impl BungeeConfig {
 	fn get_server_path(&self, config: &ServerConfig) -> anyhow::Result<PathBuf> {
