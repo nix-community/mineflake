@@ -15,6 +15,10 @@ new versions as soon as we feel it is necessary.
 
 ## Unreleased
 
+## 0.2.1 - 15 Dec 2022
+
+- Fix yaml anchors parsiong in bungee config
+
 ## 0.2 - 15 Dec 2022
 
 - **Repository moved to nix-community GitHub organization**
