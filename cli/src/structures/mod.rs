@@ -1,3 +1,4 @@
+pub mod bungee;
 pub mod common;
 pub mod spigot;
 
