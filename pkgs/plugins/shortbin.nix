@@ -15,4 +15,9 @@ rec {
     url = mineflake.ipfsUrl "bafybeifpo743ap7pltrs3skl6lt7q7j4s4pwzb3yzkvyzyzmuafnofrsdq/coreprotect.zip";
     sha256 = "0nxndav03304xsaryk89krqxpsmp21xbpdvrl2myvqbpq22h0g6w";
   };
+
+  discordsrv = mineflake.buildZipMfPackage {
+    url = mineflake.ipfsUrl "bafybeihyuufgoatuvfeatkcvy25jnyle55qtyu3rw3zddu2uco53ps4wsi/discordsrv.zip";
+    sha256 = "1sfl0zwid3b3yfy2jjrrwxin7pg8w871g44f3xs3iw0gwkq9b5kf";
+  };
 }
