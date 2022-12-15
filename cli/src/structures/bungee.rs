@@ -15,7 +15,7 @@ use super::common::{FileMapping, Server, ServerConfig, ServerState};
 pub struct BungeeConfig {
 	/// This option needs to yaml anchors to work properly
 	/// Remove it later.
-	some_option: Option<String>
+	some_option: Option<String>,
 }
 
 impl BungeeConfig {
