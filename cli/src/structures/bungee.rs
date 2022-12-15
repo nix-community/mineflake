@@ -8,43 +8,13 @@ use crate::utils::{
 	linker::{diff_states, link_files, remove_with_parent, LinkTypes},
 };
 
-use super::common::{FileMapping, Generator, Server, ServerConfig, ServerState};
+use super::common::{FileMapping, Server, ServerConfig, ServerState};
 
-/// The configuration for a LuckPerms group
+/// The configuration for a Bungee server
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct LuckPermsGroupConfig {
-	/// The name of the group
-	pub name: String,
-	/// Group permissions
-	pub permissions: Vec<String>,
-}
+pub struct BungeeConfig;
 
-impl Generator for LuckPermsGroupConfig {
-	fn generate(&self, _config: &ServerConfig) -> anyhow::Result<Vec<LinkTypes>> {
-		let mut files: Vec<LinkTypes> = Vec::new();
-
-		let name = self.name.clone();
-		let path = PathBuf::from(format!("plugins/LuckPerms/json-storage/groups/{name}.json"));
-		let content = serde_json::to_string_pretty(&serde_json::json!(
-			{
-				"name": self.name,
-				"permissions": self.permissions.iter().map(|p| serde_json::json!({ "permission": p, "value": true })).collect::<Vec<serde_json::Value>>()
-			}
-		))?;
-		files.push(LinkTypes::Raw(content, path));
-
-		Ok(files)
-	}
-}
-
-/// The configuration for a Spigot server
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct SpigotConfig {
-	/// LuckPerms generator configuration
-	pub permissions: Option<Vec<LuckPermsGroupConfig>>,
-}
-
-impl SpigotConfig {
+impl BungeeConfig {
 	fn get_server_path(&self, config: &ServerConfig) -> anyhow::Result<PathBuf> {
 		let path = PathBuf::from(format!(
 			"{}.jar",
@@ -108,38 +78,11 @@ impl SpigotConfig {
 	}
 }
 
-impl Server for SpigotConfig {
+impl Server for BungeeConfig {
 	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
 		let prev_state = ServerState::from(directory.clone().join(".state.json"));
 
 		let mut files = self.prepare_packages(config, directory)?;
-
-		// Generators
-		// eula.txt
-		files.push(LinkTypes::Raw(
-			"eula=true".to_string(),
-			PathBuf::from("eula.txt"),
-		));
-
-		// LuckPerms
-		if let Some(permissions) = &self.permissions {
-			for permission in permissions {
-				files.extend(permission.generate(config)?);
-			}
-			files.push(LinkTypes::MergeYAML(
-				serde_yaml::to_value(serde_json::json!(
-					{
-						"split-storage": {
-							"enabled": true,
-							"methods": {
-								"group": "json",
-							}
-						},
-					}
-				))?,
-				PathBuf::from("plugins/LuckPerms/config.yml"),
-			))
-		}
 
 		// Configs
 		if let Some(configs) = &config.configs {
