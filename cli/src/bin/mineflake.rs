@@ -49,6 +49,10 @@ enum Commands {
 		/// Configuration to take plugins from.
 		#[clap(default_value = "mineflake.yml", long = "config", short = 'c')]
 		config: PathBuf,
+		/// Thread count to use for processing.
+		/// If not specified, the number of logical CPU cores will be used.
+		#[clap(long = "threads", short = 't')]
+		threads: Option<usize>,
 	},
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -88,17 +92,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			config.server.run_server(&config, &directory)?;
 		}
 		#[cfg(feature = "net")]
-		Some(Commands::Vendor { config }) => {
+		Some(Commands::Vendor { config, threads }) => {
+			let threads = match threads {
+				Some(threads) => *threads,
+				None => num_cpus::get(),
+			};
+			debug!("Using {} threads for downloading packages.", threads);
 			let config = ServerConfig::from(config.clone());
-			let path = config.package.move_to_cache()?;
-			info!("Vendoring {:?}", path);
-			for plugin in &config.plugins {
-				let path = plugin.move_to_cache()?;
-				info!("Vendoring {:?}", path);
-			}
+			config.download_packages(threads)?;
 		}
 		#[cfg(not(feature = "net"))]
-		Some(Commands::Vendor { config: _ }) => {
+		Some(Commands::Vendor {
+			config: _,
+			threads: _,
+		}) => {
 			return Err("Vendoring is not supported without `net` feature.".into());
 		}
 		None => {

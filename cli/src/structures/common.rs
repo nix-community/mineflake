@@ -125,6 +125,54 @@ impl ServerConfig {
 		}
 		Ok(out)
 	}
+
+	/// Downloads all packages
+	///
+	/// For each package it spawns a new thread and downloads the package in parallel.
+	///
+	/// # Panics
+	///
+	/// Panics if:
+	/// - The package fails to download
+	/// - The package fails to move to the cache
+	/// - Cannot join a thread
+	#[cfg(feature = "net")]
+	pub fn download_packages(&self, max_threads: usize) -> Result<()> {
+		use std::thread::JoinHandle;
+
+		fn spawn_thread(package: &Package) -> Result<JoinHandle<()>> {
+			let package = package.clone();
+			debug!("Spawning thread for package: {:?}", package);
+			let thread = std::thread::spawn(move || {
+				info!("Downloading package: {:?}", package);
+				package.move_to_cache().expect("Failed to download package");
+			});
+			Ok(thread)
+		}
+
+		let mut threads = Vec::new();
+
+		threads.push(spawn_thread(&self.package)?);
+
+		for plugin in &self.plugins {
+			if threads.len() >= max_threads {
+				debug!("Max threads reached, joining threads");
+				for thread in threads {
+					thread.join().expect("Failed to join thread");
+				}
+				// Reset threads
+				threads = Vec::new();
+			}
+
+			threads.push(spawn_thread(plugin)?);
+		}
+
+		for thread in threads {
+			thread.join().expect("Failed to join thread");
+		}
+
+		Ok(())
+	}
 }
 
 /// Configuration file config
@@ -245,23 +293,24 @@ pub enum Package {
 }
 
 impl Package {
+	/// Get package
+	pub fn get_package(&self) -> &dyn PackageTrait {
+		match self {
+			Package::Local(local) => local,
+			Package::Remote(remote) => remote,
+			Package::Repository(repository) => repository,
+		}
+	}
+
 	/// Returns the path to the package (downloads it if necessary)
 	pub fn get_path(&self) -> Result<PathBuf> {
-		match self {
-			Package::Local(path) => path.get_path(),
-			Package::Remote(remote) => remote.get_path(),
-			Package::Repository(repository) => repository.get_path(),
-		}
+		self.get_package().get_path()
 	}
 
 	/// Moves the package to the cache directory
 	#[cfg(feature = "net")]
 	pub fn move_to_cache(&self) -> Result<PathBuf> {
-		match self {
-			Package::Local(local) => local.move_to_cache(),
-			Package::Remote(remote) => remote.move_to_cache(),
-			Package::Repository(repository) => repository.move_to_cache(),
-		}
+		self.get_package().move_to_cache()
 	}
 
 	/// Returns the package manifest

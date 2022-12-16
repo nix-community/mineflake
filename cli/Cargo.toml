@@ -29,6 +29,7 @@ reqwest = { version = "^0.11", features = ["blocking", "json", "default-tls"], d
 sha256 = { version = "^1", optional = true }
 zip = { version = "^0.6", optional = true }
 copy_dir = { version = "^0.1", optional = true }
+num_cpus = { version = "^1.14", optional = true }
 
 # Logging
 log = "^0.4"
@@ -40,7 +41,7 @@ anyhow = "^1"
 [features]
 default = ["cli", "net"]
 cli = ["clap", "pretty_env_logger"]
-net = ["url", "reqwest", "sha256", "zip", "copy_dir"]
+net = ["url", "reqwest", "sha256", "zip", "copy_dir", "num_cpus"]
 
 [profile.release]
 overflow-checks = true
