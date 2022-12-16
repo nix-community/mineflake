@@ -16,6 +16,7 @@ new versions as soon as we feel it is necessary.
 ## Unreleased
 
 - Parallel package vendoring (#13)
+- Split common module into separate files (#14)
 
 ## 0.2.1 - 15 Dec 2022
 
