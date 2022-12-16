@@ -18,6 +18,7 @@ new versions as soon as we feel it is necessary.
 - Parallel package vendoring ([#13](https://github.com/nix-community/mineflake/pull/13))
 - Split common module into separate files ([#14](https://github.com/nix-community/mineflake/pull/14))
 - Fix CHANGELOG.md links to PRs ([#15](https://github.com/nix-community/mineflake/pull/15))
+- Run CI/CD checks only on changed files ([#16](https://github.com/nix-community/mineflake/pull/16))
 
 ## 0.2.1 - 15 Dec 2022
 
