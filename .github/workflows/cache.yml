@@ -7,6 +7,8 @@ on:
     paths:
       - "pkgs/**"
       - "cli/**"
+      - "**.nix"
+      - "flake.lock"
       - ".github/workflows/cache.yml"
 
 concurrency:

@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "**.nix"
+      - "pkgs/**"
       - ".github/workflows/pin.yml"
 
 jobs:
