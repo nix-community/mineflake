@@ -708,6 +708,7 @@ dependencies = [
  "clap",
  "copy_dir",
  "log",
+ "num_cpus",
  "pretty_env_logger",
  "reqwest",
  "serde",
