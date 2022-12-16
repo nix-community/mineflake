@@ -15,6 +15,8 @@ new versions as soon as we feel it is necessary.
 
 ## Unreleased
 
+- Parallel package vendoring (#13)
+
 ## 0.2.1 - 15 Dec 2022
 
 - Fix yaml anchors parsiong in bungee config
