@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "pkgs/**"
+      - "cli/**"
+      - ".github/workflows/cache.yml"
 
 concurrency:
   group: "cache"
