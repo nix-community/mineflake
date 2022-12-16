@@ -19,6 +19,7 @@ new versions as soon as we feel it is necessary.
 - Split common module into separate files ([#14](https://github.com/nix-community/mineflake/pull/14))
 - Fix CHANGELOG.md links to PRs ([#15](https://github.com/nix-community/mineflake/pull/15))
 - Run CI/CD checks only on changed files ([#16](https://github.com/nix-community/mineflake/pull/16))
+- Use import-cargo instead of naersk ([#18](https://github.com/nix-community/mineflake/pull/18))
 
 ## 0.2.1 - 15 Dec 2022
 

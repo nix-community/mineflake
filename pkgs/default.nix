@@ -1,12 +1,13 @@
 { pkgs
+, importCargo
 , ipfsGateway ? "https://w3s.link/ipfs/"
 , ...
 }:
 
 with pkgs; (rec {
   # CLI
-  mineflake = (callPackage ../cli { }).offline;
-  mineflake-online = (callPackage ../cli { }).default;
+  mineflake = (callPackage ../cli { inherit importCargo; }).offline;
+  mineflake-online = (callPackage ../cli { inherit importCargo; }).default;
 
   # Build utils
   buildMineflakeConfig =
