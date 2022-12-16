@@ -20,6 +20,4 @@ rec {
     url = mineflake.ipfsUrl "bafybeihyuufgoatuvfeatkcvy25jnyle55qtyu3rw3zddu2uco53ps4wsi/discordsrv.zip";
     sha256 = "1sfl0zwid3b3yfy2jjrrwxin7pg8w871g44f3xs3iw0gwkq9b5kf";
   };
-
-  upd = true;
 }
