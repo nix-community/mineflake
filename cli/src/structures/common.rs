@@ -129,6 +129,13 @@ impl ServerConfig {
 	/// Downloads all packages
 	///
 	/// For each package it spawns a new thread and downloads the package in parallel.
+	///
+	/// # Panics
+	///
+	/// Panics if:
+	/// - The package fails to download
+	/// - The package fails to move to the cache
+	/// - Cannot join a thread
 	#[cfg(feature = "net")]
 	pub fn download_packages(&self, max_threads: usize) -> Result<()> {
 		use std::thread::JoinHandle;
