@@ -1,24 +1,47 @@
-{ callPackage, fetchFromGitHub, rustPlatform, lib, openssl, pkg-config, ... }:
+{ pkgs, stdenv, importCargo, rustc, cargo, openssl, pkg-config, ... }:
 
-let
-  naersk = callPackage
-    (fetchFromGitHub {
-      owner = "nix-community";
-      repo = "naersk";
-      rev = "6944160c19cb591eb85bbf9b2f2768a935623ed3";
-      sha256 = "sha256-9o2OGQqu4xyLZP9K6kNe1pTHnyPz0Wr3raGYnr9AIgY=";
-    })
-    { };
-in
 {
-  default = naersk.buildPackage rec {
+  default = stdenv.mkDerivation {
+    name = "mineflake";
     src = ./.;
-    buildInputs = [ pkg-config ];
-    nativeBuildInputs = [ openssl.dev ];
+
+    nativeBuildInputs = [
+      (importCargo { lockFile = ./Cargo.lock; inherit pkgs; }).cargoHome
+
+      # Build-time dependencies
+      rustc
+      cargo
+      openssl.dev
+      pkg-config
+    ];
+
+    buildPhase = ''
+      cargo build --release --offline
+    '';
+
+    installPhase = ''
+      install -Dm775 ./target/release/mineflake $out/bin/mineflake
+    '';
   };
 
-  offline = naersk.buildPackage rec {
+  offline = stdenv.mkDerivation {
+    name = "mineflake-offline";
     src = ./.;
-    cargoBuildOptions = f: f ++ [ "--no-default-features" "--features" "cli" ];
+
+    nativeBuildInputs = [
+      (importCargo { lockFile = ./Cargo.lock; inherit pkgs; }).cargoHome
+
+      # Build-time dependencies
+      rustc
+      cargo
+    ];
+
+    buildPhase = ''
+      cargo build --release --no-default-features --features cli --offline
+    '';
+
+    installPhase = ''
+      install -Dm775 ./target/release/mineflake $out/bin/mineflake
+    '';
   };
 }

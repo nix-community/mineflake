@@ -69,8 +69,7 @@ In addition, this project uses the following third-party software:
 - [rust-overlay](https://github.com/oxalica/rust-overlay) - Licensed under the
   [MIT](https://github.com/oxalica/rust-overlay/blob/master/LICENSE).
   Used to set up the Rust toolchain in developer environment.
-- [naersk](https://github.com/nix-community/naersk) - Licensed under the
-  [MIT](https://github.com/nix-community/naersk/blob/master/LICENSE).
+- [import-cargo](https://github.com/edolstra/import-cargo) - No license.
   Used to build Mineflake CLI.
 - [flake-utils](https://github.com/numtide/flake-utils) - Licensed under the
   [MIT](https://github.com/numtide/flake-utils/blob/master/LICENSE).
