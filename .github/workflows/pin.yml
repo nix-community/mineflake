@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "**.nix"
+      - "pkgs/**"
+      - ".github/workflows/pin.yml"
 
 jobs:
   pin:

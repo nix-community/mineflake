@@ -2,7 +2,17 @@ name: Test & lint
 
 on:
   push:
+    paths:
+      - "cli/**"
+      - "**.nix"
+      - "pkgs/**"
+      - ".github/workflows/lint.yml"
   pull_request:
+    paths:
+      - "cli/**"
+      - "**.nix"
+      - "pkgs/**"
+      - ".github/workflows/lint.yml"
 
 jobs:
   lint:
