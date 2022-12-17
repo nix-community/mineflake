@@ -20,6 +20,7 @@ new versions as soon as we feel it is necessary.
 - Fix CHANGELOG.md links to PRs ([#15](https://github.com/nix-community/mineflake/pull/15))
 - Run CI/CD checks only on changed files ([#16](https://github.com/nix-community/mineflake/pull/16))
 - Use import-cargo instead of naersk ([#18](https://github.com/nix-community/mineflake/pull/18))
+- Add Spiget/Spigot repository support ([#19](https://github.com/nix-community/mineflake/pull/19))
 
 ## 0.2.1 - 15 Dec 2022
 
