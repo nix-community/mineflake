@@ -24,6 +24,11 @@ pub enum Package {
 	Repository(RepositoryPackage),
 	#[cfg(not(feature = "net"))]
 	Repository(NetPackageStub),
+	/// Spigot package
+	#[cfg(feature = "net")]
+	Spigot(SpigotPackage),
+	#[cfg(not(feature = "net"))]
+	Spigot(NetPackageStub),
 }
 
 impl Package {
@@ -33,6 +38,7 @@ impl Package {
 			Package::Local(local) => local,
 			Package::Remote(remote) => remote,
 			Package::Repository(repository) => repository,
+			Package::Spigot(spigot) => spigot,
 		}
 	}
 
@@ -226,6 +232,152 @@ impl PackageTrait for RepositoryPackage {
 		// If path contains a single directory, return that directory instead
 		let path = get_package_dir(&path)?;
 		Ok(path)
+	}
+
+	fn move_to_cache(&self) -> Result<PathBuf> {
+		self.get_path()
+	}
+}
+
+/// Spigot package.
+///
+/// Spigot packages are downloaded from the spigotmc.org repository via spiget API.
+#[cfg(feature = "net")]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct SpigotPackage {
+	/// Package name (optional)
+	pub name: Option<String>,
+	/// Package resource ID
+	pub id: u64,
+	/// Package version (optional)
+	pub version: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct SpigetResource {
+	/// Resource ID
+	id: u64,
+	/// Resource name
+	name: String,
+	/// Package versions
+	versions: Vec<SpigetVersion>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct SpigetVersion {
+	/// Version ID
+	id: u64,
+	/// Version UUID
+	uuid: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct SpigetVersionInfo {
+	/// Version ID
+	id: u64,
+	/// Version name
+	name: String,
+}
+
+#[cfg(feature = "net")]
+impl PackageTrait for SpigotPackage {
+	fn get_path(&self) -> Result<PathBuf> {
+		use crate::utils::net::{download_file, get_cache_dir, split_hash};
+		use reqwest::blocking::Client;
+		use std::fs::{create_dir_all, write};
+
+		debug!(
+			"Downloading package {}-{:?} from spigotmc.org",
+			&self.id, &self.version
+		);
+
+		// Get hash and cache dir
+		let full_name = match &self.version {
+			Some(version) => format!("spigot-{}-{}", &self.id, version),
+			None => format!("spigot-{}", &self.id),
+		};
+		let hash = sha256::digest(full_name);
+		let spl_hash = split_hash(&hash);
+		let cache_dir = get_cache_dir();
+		let package_path = cache_dir.join(spl_hash);
+
+		debug!("Package path: {:?}", package_path);
+
+		// Check if package is already downloaded
+		if package_path.exists() {
+			debug!("Package already downloaded");
+			return Ok(package_path);
+		}
+
+		let client = Client::new();
+
+		let info_url = format!("https://api.spiget.org/v2/resources/{}", &self.id);
+		debug!("Requesting package info from {}", &info_url);
+
+		// Request resource info
+		let info: SpigetResource = client.get(&info_url).send()?.error_for_status()?.json()?;
+
+		// Find download URL
+		let download_url: String = match &self.version {
+			Some(version_name) => {
+				let mut ret: Option<String> = None;
+				for version in &info.versions {
+					let version_info: SpigetVersionInfo = client
+						.get(&format!(
+							"https://api.spiget.org/v2/resources/{}/versions/{}",
+							&self.id, version.id
+						))
+						.send()?
+						.error_for_status()?
+						.json()?;
+					if &version_info.name == version_name {
+						ret = Some(format!(
+							"https://api.spiget.org/v2/resources/{}/versions/{}/download",
+							&self.id, version.id
+						));
+						break;
+					}
+				}
+				match ret {
+					Some(url) => url,
+					None => {
+						return Err(anyhow!(
+							"Version {} not found for package {}",
+							&self.version.as_ref().unwrap(),
+							&self.id
+						));
+					}
+				}
+			}
+			None => format!("https://api.spiget.org/v2/resources/{}/download", &self.id),
+		};
+
+		debug!("Downloading package {} from {}", &self.id, &download_url);
+
+		let download_url = url::Url::parse(&download_url)?;
+
+		// Create package dir
+		create_dir_all(&package_path)?;
+
+		// Download package
+		download_file(&download_url, &package_path.join("package.jar"))?;
+
+		// Create manifest
+		let manifest = PackageManifest {
+			name: info.name,
+			version: match &self.version {
+				Some(version) => Some(version.to_string()),
+				None => None,
+			},
+		};
+		let manifest_path = package_path.join("package.yml");
+		let manifest_content = serde_yaml::to_string(&manifest)?;
+		write(&manifest_path, manifest_content)?;
+
+		debug!("Package downloaded to {:?}", &package_path);
+
+		// Return package path
+		Ok(package_path)
 	}
 
 	fn move_to_cache(&self) -> Result<PathBuf> {
