@@ -177,6 +177,77 @@ Repository is a json file with a list of packages. Package zip url is downloaded
 
 Repository and it's packages are cached for better performance.
 
+### Spigot
+
+Mineflake supports downloading packages from SpigotMC.
+
+``` yaml linenums="1"
+package:
+  type: spigot
+  id: 8631
+```
+
+Package is downloaded from SpigotMC by it's id.
+
+You can optionally specify a version:
+
+``` yaml linenums="1"
+package:
+  type: spigot
+  id: 8631
+  version: "21.3"
+```
+
+For better readability, you can add `name` parameter:
+
+``` yaml linenums="1"
+package:
+  type: spigot
+  id: 8631
+  name: CoreProtect
+```
+
+??? warning "Spigot packages doesn't include configs"
+
+    Spigot packages doesn't include configs, so you need to add them manually.
+
+    For example, this config will be impure, because Spigot CoreProtect package doesn't include `config.yml`:
+
+    ``` yaml hl_lines="7"
+    plugins:
+    - type: spigot
+      id: 8631
+      name: CoreProtect
+
+    configs:
+    - type: mergeyaml
+      path: plugins/CoreProtect/config.yml
+      content:
+        mysql:
+          enabled: true
+    ```
+
+    To make it pure, you need to add `config.yml` to the package:
+
+    ``` yaml hl_lines="7"
+    plugins:
+    - type: spigot
+      id: 8631
+      name: CoreProtect
+
+    configs:
+    - type: yaml
+      path: plugins/CoreProtect/config.yml
+      content:
+        mysql:
+          enabled: true
+    ```
+
+??? warning "Reproducibility in Nix"
+
+    To use Nix to download packages from SpigotMC, you need always specify `version` parameter.
+    If you don't, Mineflake will download the latest version of the package, which can be different from the one you want, and resulting hash will be different.
+
 ## Plugins
 
 ``` yaml linenums="1" hl_lines="12-15" title="mineflake.yml"
