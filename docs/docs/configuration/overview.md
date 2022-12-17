@@ -189,6 +189,18 @@ package:
 
 Package is downloaded from SpigotMC by it's id.
 
+??? note "How to find Spigot resource id"
+
+    You can find Spigot resource id in the url:
+
+    ``` url
+    https://www.spigotmc.org/resources/coreprotect.8631/
+    ```
+
+    In this case, resource id is `8631`.
+
+    ![Spigot resource id](https://w3s.link/ipfs/bafkreihfqyvyrdbwwbkeueww22e5nmcig2hr7k3kaf3iqiwpyjmqvmh2eu)
+
 You can optionally specify a version:
 
 ``` yaml linenums="1"
