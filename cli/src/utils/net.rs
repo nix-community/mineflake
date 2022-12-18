@@ -77,7 +77,7 @@ pub fn download_file_to_cache(url: &url::Url, extension: &str) -> Result<String>
 	path.push(hash_path);
 	path.set_extension(extension);
 	if !path.exists() {
-		download_file(&url, &path)?;
+		download_file(url, &path)?;
 	} else {
 		debug!("File already exists in cache");
 	}
@@ -87,7 +87,7 @@ pub fn download_file_to_cache(url: &url::Url, extension: &str) -> Result<String>
 /// Get sha256 hash of URL and download it to cache directory $CACHE_DIR/$HA/SH.$EXTENSION
 /// and return the full path to the file.
 pub fn download_file_to_cache_full_path(url: &url::Url, extension: &str) -> Result<PathBuf> {
-	let hash = download_file_to_cache(&url, &extension)?;
+	let hash = download_file_to_cache(url, extension)?;
 	let hash_path = split_hash(&hash);
 	let mut path = get_cache_dir();
 	path.push(hash_path);
@@ -98,11 +98,11 @@ pub fn download_file_to_cache_full_path(url: &url::Url, extension: &str) -> Resu
 /// Unzip a $CACHE_DIR/$HA/SH.zip file to $CACHE_DIR/$HA/SH
 pub fn unzip_file_from_cache(hash: &str) -> Result<PathBuf> {
 	let cache = get_cache_dir();
-	let hash_path = split_hash(&hash);
+	let hash_path = split_hash(hash);
 	let mut zip_path = cache.clone();
 	zip_path.push(&hash_path);
 	zip_path.set_extension("zip");
-	let mut dir_path = cache.clone();
+	let mut dir_path = cache;
 	dir_path.push(&hash_path);
 	if dir_path.exists() {
 		return Ok(dir_path);
@@ -120,8 +120,8 @@ pub fn unzip_file_from_cache(hash: &str) -> Result<PathBuf> {
 
 /// Download a file from a URL to a local path, and unzip it.
 pub fn download_and_unzip_file(url: &url::Url) -> Result<PathBuf> {
-	let hash = download_file_to_cache(&url, "zip")?;
-	Ok(unzip_file_from_cache(&hash)?)
+	let hash = download_file_to_cache(url, "zip")?;
+	unzip_file_from_cache(&hash)
 }
 
 #[cfg(test)]

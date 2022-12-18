@@ -21,6 +21,7 @@ new versions as soon as we feel it is necessary.
 - Run CI/CD checks only on changed files ([#16](https://github.com/nix-community/mineflake/pull/16))
 - Use import-cargo instead of naersk ([#18](https://github.com/nix-community/mineflake/pull/18))
 - Add Spiget/Spigot repository support ([#19](https://github.com/nix-community/mineflake/pull/19))
+- Refactor code to use `clippy` ([#21](https://github.com/nix-community/mineflake/pull/21)) *Not fully compatible with previous versions*
 
 ## 0.2.1 - 15 Dec 2022
 

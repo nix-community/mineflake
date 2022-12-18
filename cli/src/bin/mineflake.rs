@@ -39,7 +39,7 @@ enum Commands {
 	},
 	/// Vendor packages.
 	///
-	///	Packages will be downloaded or moved to cache directory (you can override it with `MINEFLAKE_CACHE` environment variable).
+	/// Packages will be downloaded or moved to cache directory (you can override it with `MINEFLAKE_CACHE` environment variable).
 	///
 	/// This is useful for CI/CD, when you want to cache plugins and don't want to download them every time.
 	/// Or if you want to use remote packages with Nix and fixed-output derivations.
@@ -58,7 +58,7 @@ enum Commands {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	mineflake::utils::initialize_logger();
 
-	const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+	const VERSION: &str = env!("CARGO_PKG_VERSION");
 	debug!("Running mineflake v{}", VERSION);
 
 	let cli = Cli::parse();

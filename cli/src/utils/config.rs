@@ -25,7 +25,7 @@ pub fn load_config(config_data: &str) -> Result<ServerConfig> {
 }
 
 /// Find collisions in file mappings.
-pub fn find_collisions(files: &Vec<FileMapping>) -> Result<()> {
+pub fn find_collisions(files: &[FileMapping]) -> Result<()> {
 	for (i, mapping1) in files.iter().enumerate() {
 		for (j, mapping2) in files.iter().enumerate() {
 			if i == j {
@@ -81,7 +81,7 @@ mod tests {
 			FileMapping(PathBuf::from("c"), PathBuf::from("d")),
 			FileMapping(PathBuf::from("e"), PathBuf::from("f")),
 		];
-		assert_eq!(find_collisions(&files).is_ok(), true);
+		assert!(find_collisions(&files).is_ok());
 	}
 
 	#[test]
@@ -92,7 +92,7 @@ mod tests {
 			FileMapping(PathBuf::from("e"), PathBuf::from("f")),
 			FileMapping(PathBuf::from("g"), PathBuf::from("d")),
 		];
-		assert_eq!(find_collisions(&files).is_ok(), false);
+		assert!(find_collisions(&files).is_err());
 	}
 
 	#[test]
@@ -104,7 +104,7 @@ mod tests {
 				PathBuf::from("d"),
 			),
 		];
-		assert_eq!(check_configs_purity(&configs).is_ok(), true);
+		assert!(check_configs_purity(&configs).is_ok());
 	}
 
 	#[test]
@@ -116,6 +116,6 @@ mod tests {
 				PathBuf::from("e"),
 			),
 		];
-		assert_eq!(check_configs_purity(&configs).is_ok(), false);
+		assert!(check_configs_purity(&configs).is_err());
 	}
 }

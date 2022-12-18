@@ -3,7 +3,7 @@ use std::{
 	env::vars,
 	fs::{self, copy, create_dir_all, set_permissions, File},
 	io::Write,
-	path::PathBuf,
+	path::{Path, PathBuf},
 };
 
 use crate::{
@@ -44,7 +44,7 @@ impl LinkTypes {
 
 /// Write a file to the given path, replacing {{VAR}} with the value of the environment variable VAR
 fn write_file(path: &PathBuf, content: &str) -> Result<()> {
-	let mut file = File::create(&path)?;
+	let mut file = File::create(path)?;
 	let mut content = content.to_string();
 	for var in vars() {
 		// {{VAR}}
@@ -55,7 +55,7 @@ fn write_file(path: &PathBuf, content: &str) -> Result<()> {
 }
 
 /// Link files to the given directory
-pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
+pub fn link_files(directory: &Path, files: &Vec<LinkTypes>) -> Result<()> {
 	for file in files {
 		debug!("Linking {:?}", file);
 		let dest_path = directory.join(file.get_path());
@@ -74,7 +74,7 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 			LinkTypes::MergeJSON(content, _) => {
 				let mut new_content = serde_json::from_str(&std::fs::read_to_string(&dest_path)?)
 					.expect("Failed to parse JSON file");
-				merge_json(&mut new_content, &content);
+				merge_json(&mut new_content, content);
 				write_file(&dest_path, &serde_json::to_string(&new_content)?)?;
 			}
 			LinkTypes::MergeYAML(content, _) => {
@@ -85,7 +85,7 @@ pub fn link_files(directory: &PathBuf, files: &Vec<LinkTypes>) -> Result<()> {
 					.expect("Failed to parse YAML file"),
 				)?;
 				let content = &serde_json::to_value(content)?;
-				merge_json(&mut new_content, &content);
+				merge_json(&mut new_content, content);
 				write_file(&dest_path, &serde_yaml::to_string(&new_content)?)?;
 			}
 		}
@@ -121,7 +121,7 @@ pub fn diff_states(curr_state: &ServerState, prev_state: &ServerState) -> Vec<Pa
 /// so use with caution.
 pub fn remove_with_parent(path: &PathBuf) {
 	debug!("Removing file {:?}", &path);
-	let _ = std::fs::remove_file(&path);
+	let _ = std::fs::remove_file(path);
 	// Delete parent directory if it is empty
 	let mut parent = path.clone();
 	loop {
