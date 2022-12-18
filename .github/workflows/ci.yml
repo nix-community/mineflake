@@ -82,59 +82,50 @@ jobs:
           path: cli/target/release/mineflake.exe
 
   linux:
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - x86_64-unknown-linux-musl
-          - i686-unknown-linux-gnu
-          - arm-unknown-linux-gnueabihf
-    name: ${{ matrix.target }}
+    name: linux
     runs-on: ubuntu-latest
     env:
-      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
-      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_AR: arm-linux-gnueabihf-ar
-      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_RUNNER: qemu-arm -L /usr/arm-linux-gnueabihf
+      OPENSSL_DIR: /usr/lib/ssl
     steps:
       - uses: actions/checkout@v2
       - uses: sfackler/actions/rustup@master
       - run: echo "::set-output name=version::$(rustc --version)"
         id: rust-version
-      - run: rustup target add ${{ matrix.target }}
-      - name: Install packages
-        run: |
-          case "${{ matrix.target }}" in
-          "x86_64-unknown-linux-gnu")
-            exit 0
-            ;;
-          "i686-unknown-linux-gnu")
-            # install i686 openssl
-            packages="gcc-multilib g++-multilib libssl-dev:i386"
-            ;;
-          "arm-unknown-linux-gnueabihf")
-            # install armhf openssl
-            packages="gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu-user qemu-user-static libssl-dev:armhf"
-            ;;
-          "x86_64-unknown-linux-musl")
-            # install musl
-            packages="musl musl-dev musl-tools libssl-dev:amd64"
-            ;;
-          esac
-          sudo apt-get update
-          sudo apt-get install -y pkg-config libssl-dev openssl $packages
+      - run: rustup target add x86_64-unknown-linux-gnu
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: cli
-          key: "linux-${{ matrix.target }}"
+          key: "linux"
       - run: |
           cd cli
-          cargo test --target ${{ matrix.target }}
-          cargo test --target ${{ matrix.target }} --no-default-features --features cli
+          cargo test --target x86_64-unknown-linux-gnu
+          cargo test --target x86_64-unknown-linux-gnu --no-default-features --features cli
       - run: |
           cd cli
-          cargo build --target ${{ matrix.target }} --release
+          cargo build --target x86_64-unknown-linux-gnu --release
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.target }}
-          path: cli/target/${{ matrix.target }}/release/mineflake
+          name: linux
+          path: cli/target/x86_64-unknown-linux-gnu/release/mineflake
+
+  nix:
+    strategy:
+      fail-fast: false
+      matrix:
+        derivation: [mineflake, mineflake-online]
+    name: nix-${{ matrix.derivation }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v12
+        with:
+          name: nix-community
+      - run: nix build .#${{ matrix.derivation }}
+      - run: cp result/bin/mineflake mineflake
+      - uses: actions/upload-artifact@v2
+        with:
+          name: nix-${{ matrix.derivation }}
+          path: mineflake
