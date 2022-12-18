@@ -109,11 +109,7 @@ jobs:
           path: cli/target/x86_64-unknown-linux-gnu/release/mineflake
 
   nix:
-    strategy:
-      fail-fast: false
-      matrix:
-        derivation: [mineflake, mineflake-online]
-    name: nix-${{ matrix.derivation }}
+    name: nix
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -123,9 +119,4 @@ jobs:
       - uses: cachix/cachix-action@v12
         with:
           name: nix-community
-      - run: nix build .#${{ matrix.derivation }}
-      - run: cp result/bin/mineflake mineflake
-      - uses: actions/upload-artifact@v2
-        with:
-          name: nix-${{ matrix.derivation }}
-          path: mineflake
+      - run: nix build .
