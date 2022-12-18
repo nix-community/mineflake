@@ -32,7 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: sfackler/actions/rustup@master
-      - uses: sfackler/actions/rustfmt@master
+      - run: |
+          cd cli
+          cargo fmt --all -- --check
 
   clippy:
     name: clippy
@@ -59,7 +61,6 @@ jobs:
       - run: echo "::set-output name=version::$(rustc --version)"
         id: rust-version
       - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-      - run: vcpkg install openssl:x64-windows-static-md
       - uses: actions/cache@v1
         with:
           path: ~/.cargo
@@ -118,7 +119,7 @@ jobs:
             ;;
           esac
           sudo apt-get update
-          sudo apt-get install -y libssl-dev $packages
+          sudo apt-get install -y pkg-config libssl-dev $packages
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: cli
