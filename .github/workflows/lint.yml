@@ -65,16 +65,23 @@ jobs:
 
       - name: Install musl
         run: |
-          sudo apt-get install -y musl musl-tools
+          sudo apt-get install -y musl musl-tools musl-dev libssl-dev
           rustup target add x86_64-unknown-linux-musl
 
-      - name: Build static binary
+      - name: Build binaries
         run: |
           cd cli
           cargo b --target x86_64-unknown-linux-musl --release
+          cargo b --target x86_64-pc-windows-gnu --release
 
-      - name: Upload static binary
+      - name: Create directory with binaries
+        run: |
+          mkdir -p binaries
+          cp cli/target/x86_64-pc-windows-gnu/release/mineflake.exe binaries/mineflake.exe
+          cp cli/target/x86_64-unknown-linux-musl/release/mineflake binaries/mineflake
+
+      - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
-          name: static-binary
-          path: cli/target/x86_64-unknown-linux-musl/release/mineflake
+          name: binaries
+          path: binaries
