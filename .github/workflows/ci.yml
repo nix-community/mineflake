@@ -109,13 +109,16 @@ jobs:
             exit 0
             ;;
           "i686-unknown-linux-gnu")
-            packages="gcc-multilib g++-multilib"
+            # install i686 openssl
+            packages="gcc-multilib g++-multilib libssl-dev:i386"
             ;;
           "arm-unknown-linux-gnueabihf")
-            packages="gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu-user"
+            # install armhf openssl
+            packages="gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu-user qemu-user-static libssl-dev:armhf"
             ;;
           "x86_64-unknown-linux-musl")
-            packages="musl musl-dev musl-tools"
+            # install musl
+            packages="musl musl-dev musl-tools libssl-dev:amd64"
             ;;
           esac
           sudo apt-get update
