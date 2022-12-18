@@ -63,22 +63,17 @@ jobs:
           cargo b --target x86_64-pc-windows-gnu
           cargo b --target x86_64-pc-windows-gnu --no-default-features --features "cli"
 
-      - name: Install musl
-        run: |
-          sudo apt-get install -y musl musl-tools musl-dev libssl-dev
-          rustup target add x86_64-unknown-linux-musl
-
       - name: Build binaries
         run: |
           cd cli
-          cargo b --target x86_64-unknown-linux-musl --release
+          cargo b --release
           cargo b --target x86_64-pc-windows-gnu --release
 
       - name: Create directory with binaries
         run: |
           mkdir -p binaries
           cp cli/target/x86_64-pc-windows-gnu/release/mineflake.exe binaries/mineflake.exe
-          cp cli/target/x86_64-unknown-linux-musl/release/mineflake binaries/mineflake
+          cp cli/target/release/mineflake binaries/mineflake
 
       - name: Upload binaries
         uses: actions/upload-artifact@v2
