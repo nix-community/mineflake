@@ -127,7 +127,7 @@ impl PackageTrait for LocalPackage {
 		let cache_path = cache_dir.join(hash);
 		if !cache_path.exists() {
 			debug!("Moving {:?} to cache", &path);
-			std::fs::create_dir_all(&cache_path.parent().unwrap())?;
+			std::fs::create_dir_all(cache_path.parent().unwrap())?;
 			// Copy the directory
 			copy_dir::copy_dir(&path, &cache_path)?;
 		}
@@ -150,7 +150,7 @@ pub struct RemotePackage {
 fn get_package_dir(path: &PathBuf) -> Result<PathBuf> {
 	use std::fs::read_dir;
 	let path = if path.is_dir() {
-		let mut entries = read_dir(&path)?;
+		let mut entries = read_dir(path)?;
 		if let Some(Ok(entry)) = entries.next() {
 			if entries.next().is_none() {
 				let entry_path = entry.path();
@@ -210,7 +210,7 @@ impl PackageTrait for RepositoryPackage {
 			&self.name, &self.repository
 		);
 		let path = download_file_to_cache_full_path(&self.repository, "json")?;
-		let content = read_to_string(&path)?;
+		let content = read_to_string(path)?;
 		// Parse repository index
 		let repo: HashMap<String, String> = serde_json::from_str(&content)?;
 		debug!("Repository index: {:?}", &repo);
@@ -365,14 +365,11 @@ impl PackageTrait for SpigotPackage {
 		// Create manifest
 		let manifest = PackageManifest {
 			name: info.name,
-			version: match &self.version {
-				Some(version) => Some(version.to_string()),
-				None => None,
-			},
+			version: self.version.as_ref().map(|version| version.to_string()),
 		};
 		let manifest_path = package_path.join("package.yml");
 		let manifest_content = serde_yaml::to_string(&manifest)?;
-		write(&manifest_path, manifest_content)?;
+		write(manifest_path, manifest_content)?;
 
 		debug!("Package downloaded to {:?}", &package_path);
 

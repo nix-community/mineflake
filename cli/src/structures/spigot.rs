@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use std::process::Command;
 
 use serde::{Deserialize, Serialize};
@@ -56,7 +56,7 @@ impl SpigotConfig {
 	fn prepare_packages(
 		&self,
 		config: &ServerConfig,
-		_directory: &PathBuf,
+		_directory: &Path,
 	) -> anyhow::Result<Vec<LinkTypes>> {
 		let ignore_patterns: Vec<PathBuf> =
 			vec![PathBuf::from("package.yml"), PathBuf::from("package.jar")];
@@ -109,8 +109,8 @@ impl SpigotConfig {
 }
 
 impl Server for SpigotConfig {
-	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
-		let prev_state = ServerState::from(directory.clone().join(".state.json"));
+	fn prepare_directory(&self, config: &ServerConfig, directory: &Path) -> anyhow::Result<()> {
+		let prev_state = ServerState::from(directory.to_path_buf().join(".state.json"));
 
 		let mut files = self.prepare_packages(config, directory)?;
 
@@ -161,7 +161,7 @@ impl Server for SpigotConfig {
 		for path in &diff {
 			remove_with_parent(&directory.join(path));
 		}
-		if diff.len() > 0 {
+		if !diff.is_empty() {
 			info!("Removed {} diffed files", diff.len());
 		}
 
@@ -174,13 +174,13 @@ impl Server for SpigotConfig {
 		Ok(())
 	}
 
-	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> anyhow::Result<()> {
+	fn run_server(&self, config: &ServerConfig, directory: &Path) -> anyhow::Result<()> {
 		if let Some(command) = &config.command {
 			let server_path = self.get_server_path(config)?;
 			let command = command.replace("{}", server_path.to_str().unwrap());
 			debug!("Running command: {}", command);
-			let spl: Vec<&str> = command.split(" ").collect();
-			let mut process = Command::new(&spl[0])
+			let spl: Vec<&str> = command.split(' ').collect();
+			let mut process = Command::new(spl[0])
 				.current_dir(directory)
 				.args(&spl[1..])
 				.spawn()?;

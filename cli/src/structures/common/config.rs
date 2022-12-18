@@ -6,7 +6,7 @@ use crate::utils::load_config;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::fs::read_to_string;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 
 /// The configuration for a server
 ///
@@ -55,8 +55,7 @@ impl From<PathBuf> for ServerConfig {
 	/// Panics if the file doesn't exist or if the config is invalid
 	fn from(value: PathBuf) -> Self {
 		let config_content = read_to_string(value).expect("Failed to read server config");
-		let config = load_config(&config_content).expect("Failed to deserialize server config");
-		config
+		load_config(&config_content).expect("Failed to deserialize server config")
 	}
 }
 
@@ -80,7 +79,7 @@ impl ServerConfig {
 	/// Returns a list of all files in a directory, excluding the directory itself and any files that match the ignore patterns
 	pub fn package_files(
 		directory: &PathBuf,
-		ignore_patterns: &Vec<PathBuf>,
+		ignore_patterns: &[PathBuf],
 	) -> Result<Vec<FileMapping>> {
 		let directory_contents = Self::iterate(directory)?;
 
@@ -144,9 +143,7 @@ impl ServerConfig {
 			Ok(thread)
 		}
 
-		let mut threads = Vec::new();
-
-		threads.push(spawn_thread(&self.package)?);
+		let mut threads = vec![spawn_thread(&self.package)?];
 
 		for plugin in &self.plugins {
 			if threads.len() >= max_threads {
@@ -218,12 +215,12 @@ impl ServerSpecificConfig {
 	}
 
 	/// Run server
-	pub fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()> {
+	pub fn run_server(&self, config: &ServerConfig, directory: &Path) -> Result<()> {
 		self.get_server().run_server(config, directory)
 	}
 
 	/// Prepare server directory
-	pub fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()> {
+	pub fn prepare_directory(&self, config: &ServerConfig, directory: &Path) -> Result<()> {
 		self.get_server().prepare_directory(config, directory)
 	}
 }
@@ -234,7 +231,7 @@ impl ServerSpecificConfig {
 /// This is used to allow the server to be configured and run.
 pub trait Server {
 	/// Prepares the server directory (downloads the server if necessary, and copies the plugins and config files)
-	fn prepare_directory(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
+	fn prepare_directory(&self, config: &ServerConfig, directory: &Path) -> Result<()>;
 	/// Runs the server (blocking, launches the server process)
-	fn run_server(&self, config: &ServerConfig, directory: &PathBuf) -> Result<()>;
+	fn run_server(&self, config: &ServerConfig, directory: &Path) -> Result<()>;
 }
