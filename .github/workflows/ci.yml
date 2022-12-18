@@ -119,7 +119,7 @@ jobs:
             ;;
           esac
           sudo apt-get update
-          sudo apt-get install -y pkg-config libssl-dev $packages
+          sudo apt-get install -y pkg-config libssl-dev openssl $packages
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: cli
