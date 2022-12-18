@@ -323,7 +323,7 @@ impl PackageTrait for SpigotPackage {
 				let mut ret: Option<String> = None;
 				for version in &info.versions {
 					let version_info: SpigetVersionInfo = client
-						.get(&format!(
+						.get(format!(
 							"https://api.spiget.org/v2/resources/{}/versions/{}",
 							&self.id, version.id
 						))
