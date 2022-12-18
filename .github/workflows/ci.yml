@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  RUSTFLAGS: -Dwarnings
+  RUST_BACKTRACE: 1
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read #  to fetch code (actions/checkout)
+
+jobs:
+  nixpkgs-fmt:
+    name: nixpkgs-fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - run: nix-shell -p nixpkgs-fmt --run 'nixpkgs-fmt --check .'
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: sfackler/actions/rustup@master
+      - uses: sfackler/actions/rustfmt@master
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: sfackler/actions/rustup@master
+      - run: echo "::set-output name=version::$(rustc --version)"
+        id: rust-version
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
+          key: "clippy"
+      - run: |
+          cd cli
+          cargo clippy --all --all-targets
+
+  windows:
+    name: windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: sfackler/actions/rustup@master
+      - run: echo "::set-output name=version::$(rustc --version)"
+        id: rust-version
+      - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - run: vcpkg install openssl:x64-windows-static-md
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cargo
+          key: cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
+      - uses: actions/cache@v1
+        with:
+          path: cli/target
+          key: target-${{ github.job }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
+      - run: |
+          cd cli
+          cargo test
+          cargo test --no-default-features --features cli
+      - run: |
+          cd cli
+          cargo build --release
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows
+          path: cli/target/release/mineflake.exe
+
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-unknown-linux-musl
+          - i686-unknown-linux-gnu
+          - arm-unknown-linux-gnueabihf
+    name: ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
+      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_AR: arm-linux-gnueabihf-ar
+      CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_RUNNER: qemu-arm -L /usr/arm-linux-gnueabihf
+    steps:
+      - uses: actions/checkout@v2
+      - uses: sfackler/actions/rustup@master
+      - run: echo "::set-output name=version::$(rustc --version)"
+        id: rust-version
+      - run: rustup target add ${{ matrix.target }}
+      - name: Install packages
+        run: |
+          case "${{ matrix.target }}" in
+          "x86_64-unknown-linux-gnu")
+            exit 0
+            ;;
+          "i686-unknown-linux-gnu")
+            packages="gcc-multilib g++-multilib"
+            ;;
+          "arm-unknown-linux-gnueabihf")
+            packages="gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu-user"
+            ;;
+          "x86_64-unknown-linux-musl")
+            packages="musl musl-dev musl-tools"
+            ;;
+          esac
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev $packages
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: cli
+          key: "linux-${{ matrix.target }}"
+      - run: |
+          cd cli
+          cargo test --target ${{ matrix.target }}
+          cargo test --target ${{ matrix.target }} --no-default-features --features cli
+      - run: |
+          cd cli
+          cargo build --target ${{ matrix.target }} --release
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: cli/target/${{ matrix.target }}/release/mineflake
