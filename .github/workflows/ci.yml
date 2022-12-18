@@ -81,7 +81,7 @@ jobs:
       - run: |
           cd cli
           cargo build --release
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: windows
           path: cli/target/release/mineflake.exe
@@ -109,7 +109,7 @@ jobs:
       - run: |
           cd cli
           cargo build --target x86_64-unknown-linux-gnu --release
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: linux
           path: cli/target/x86_64-unknown-linux-gnu/release/mineflake
