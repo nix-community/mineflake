@@ -92,7 +92,7 @@ mod tests {
 			FileMapping(PathBuf::from("e"), PathBuf::from("f")),
 			FileMapping(PathBuf::from("g"), PathBuf::from("d")),
 		];
-		assert!(find_collisions(&files).is_ok());
+		assert!(find_collisions(&files).is_err());
 	}
 
 	#[test]
@@ -116,6 +116,6 @@ mod tests {
 				PathBuf::from("e"),
 			),
 		];
-		assert!(check_configs_purity(&configs).is_ok());
+		assert!(check_configs_purity(&configs).is_err());
 	}
 }
