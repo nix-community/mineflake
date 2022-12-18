@@ -1,0 +1,31 @@
+rust:
+- **.rs
+- cli/**
+
+cli:
+- cli/**
+
+nix:
+- **.nix
+- pkgs/**
+
+"packaging: servers":
+- pkgs/servers/**
+
+"packaging: plugins":
+- pkgs/plugins/**
+
+packaging:
+- pkgs/plugins/**
+- pkgs/servers/**
+
+documentation:
+- docs/**
+
+github_actions:
+- .github/**
+
+dependencies:
+- flake.lock
+- cli/Cargo.lock
+- cli/Cargo.toml
