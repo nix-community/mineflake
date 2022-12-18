@@ -64,10 +64,16 @@ jobs:
         with:
           path: ~/.cargo
           key: cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-
+            cargo-${{ runner.os }}-
       - uses: actions/cache@v1
         with:
           path: cli/target
           key: target-${{ github.job }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-
+            cargo-${{ runner.os }}-
       - run: |
           cd cli
           cargo test
