@@ -3,7 +3,7 @@ use std::{
 	env::vars,
 	fs::{self, copy, create_dir_all, set_permissions, File},
 	io::Write,
-	path::{PathBuf, Path},
+	path::{Path, PathBuf},
 };
 
 use crate::{

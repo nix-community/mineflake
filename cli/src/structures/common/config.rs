@@ -6,7 +6,7 @@ use crate::utils::load_config;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::fs::read_to_string;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 /// The configuration for a server
 ///
