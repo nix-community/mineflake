@@ -1,31 +1,31 @@
 rust:
-- **.rs
-- cli/**
+- "**.rs"
+- "cli/**"
 
 cli:
-- cli/**
+- "cli/**"
 
 nix:
-- **.nix
-- pkgs/**
+- "**.nix"
+- "pkgs/**"
 
 "packaging: servers":
-- pkgs/servers/**
+- "pkgs/servers/**"
 
 "packaging: plugins":
-- pkgs/plugins/**
+- "pkgs/plugins/**"
 
 packaging:
-- pkgs/plugins/**
-- pkgs/servers/**
+- "pkgs/plugins/**"
+- "pkgs/servers/**"
 
 documentation:
-- docs/**
+- "docs/**"
 
 github_actions:
-- .github/**
+- ".github/**"
 
 dependencies:
-- flake.lock
-- cli/Cargo.lock
-- cli/Cargo.toml
+- "flake.lock"
+- "cli/Cargo.lock"
+- "cli/Cargo.toml"
