@@ -62,3 +62,19 @@ jobs:
           cargo test --no-default-features --features "cli"
           cargo b --target x86_64-pc-windows-gnu
           cargo b --target x86_64-pc-windows-gnu --no-default-features --features "cli"
+
+      - name: Install musl
+        run: |
+          sudo apt-get install -y musl musl-tools
+          rustup target add x86_64-unknown-linux-musl
+
+      - name: Build static binary
+        run: |
+          cd cli
+          cargo b --target x86_64-unknown-linux-musl --release
+
+      - name: Upload static binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-binary
+          path: cli/target/x86_64-unknown-linux-musl/release/mineflake
