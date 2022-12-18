@@ -1,4 +1,4 @@
-name: Cache derivations & Update repo
+name: CI main
 
 on:
   push:
