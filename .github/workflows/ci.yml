@@ -94,7 +94,7 @@ jobs:
       - run: rustup target add x86_64-unknown-linux-gnu
       - run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev pkg-config
+          sudo apt-get install -y libssl-dev pkg-config openssl
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: cli
