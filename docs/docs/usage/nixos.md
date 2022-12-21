@@ -24,7 +24,7 @@ Mineflake based on Nix, so running it on NixOS is easy.
           ];
         };
       };
-    }
+    };
 }
 ```
 
@@ -58,7 +58,7 @@ You can customize overlay settings. For example, you can change default IPFS gat
           ];
         };
       };
-    }
+    };
 }
 ```
 
