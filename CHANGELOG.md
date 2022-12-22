@@ -15,6 +15,8 @@ new versions as soon as we feel it is necessary.
 
 ## Unreleased
 
+- CoreProtect now builds with Nix ([#34](https://github.com/nix-community/mineflake/pull/34))
+
 ## 0.2.2 - 22 Dec 2022
 
 - Parallel package vendoring ([#13](https://github.com/nix-community/mineflake/pull/13))
@@ -23,7 +25,7 @@ new versions as soon as we feel it is necessary.
 - Run CI/CD checks only on changed files ([#16](https://github.com/nix-community/mineflake/pull/16))
 - Use import-cargo instead of naersk ([#18](https://github.com/nix-community/mineflake/pull/18))
 - Add Spiget/Spigot repository support ([#19](https://github.com/nix-community/mineflake/pull/19))
-- Refactor code to use `clippy` ([#21](https://github.com/nix-community/mineflake/pull/21)) *Not fully compatible with previous versions*
+- Refactor code to use `clippy` ([#21](https://github.com/nix-community/mineflake/pull/21)) _Not fully compatible with previous versions_
 - Update `nixpkgs` from `2022-12-08` to `2022-12-20` ([#32](https://github.com/nix-community/mineflake/pull/32))
 
 ## 0.2.1 - 15 Dec 2022
