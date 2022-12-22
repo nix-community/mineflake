@@ -1,10 +1,9 @@
 { fetchgit
+, git
+, lib
+, maven
 , mineflake
 , stdenv
-, maven
-, git
-, curl
-, lib
 }:
 
 let
