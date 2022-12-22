@@ -1,3 +1,5 @@
 { callPackage, ... }:
 
-{ } // (callPackage ./shortbin.nix { })
+{
+  waterfall = callPackage ./waterfall { };
+} // (callPackage ./shortbin.nix { })
