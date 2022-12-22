@@ -15,6 +15,8 @@ new versions as soon as we feel it is necessary.
 
 ## Unreleased
 
+## 0.2.2 - 22 Dec 2022
+
 - Parallel package vendoring ([#13](https://github.com/nix-community/mineflake/pull/13))
 - Split common module into separate files ([#14](https://github.com/nix-community/mineflake/pull/14))
 - Fix CHANGELOG.md links to PRs ([#15](https://github.com/nix-community/mineflake/pull/15))
