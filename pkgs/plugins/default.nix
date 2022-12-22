@@ -1,5 +1,5 @@
 { callPackage, ... }:
 
 {
-  coreprotect = callPackage ./coreprotect {};
+  coreprotect = callPackage ./coreprotect { };
 } // (callPackage ./shortbin.nix { })
