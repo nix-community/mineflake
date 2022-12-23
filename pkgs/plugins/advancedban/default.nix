@@ -45,9 +45,7 @@ in
 stdenv.mkDerivation rec {
   inherit version pname src;
 
-  buildInputs = [
-    maven
-  ];
+  nativeBuildInputs = [ maven ];
 
   buildPhase = ''
     mvn package --offline -Dproject.branch=master -Dmaven.test.skip=true -Dmaven.repo.local=$(cp -dpR ${deps}/.m2 ./ && chmod +w -R .m2 && pwd)/.m2
