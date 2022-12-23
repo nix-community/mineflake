@@ -29,7 +29,7 @@ let
     '';
 
     buildPhase = ''
-      export HOME=/build
+      export HOME=$(mktemp -d)
       git config --global user.email "no-reply@nixos.org"
       git config --global user.name "Nix Build"
       ./scripts/applyPatches.sh
