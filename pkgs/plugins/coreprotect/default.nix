@@ -41,7 +41,7 @@ in
 stdenv.mkDerivation rec {
   inherit version pname src;
 
-  buildInputs = [
+  nativeBuildInputs = [
     maven
   ];
 
