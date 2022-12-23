@@ -13,7 +13,7 @@ let
   src = fetchgit {
     url = "https://github.com/PaperMC/Waterfall.git";
     fetchSubmodules = true;
-    deepClone = true;
+    leaveDotGit = true;
     rev = "079f3a31294551fcedc92bff2943ce749bdb99b5";
     sha256 = "sha256-I4Jkd2y2wZ5rKZB8pFtEI8w+kkcxx77uYeysEEX2IgE=";
   };
