@@ -15,7 +15,7 @@ let
     fetchSubmodules = true;
     leaveDotGit = true;
     rev = "079f3a31294551fcedc92bff2943ce749bdb99b5";
-    sha256 = "sha256-I4Jkd2y2wZ5rKZB8pFtEI8w+kkcxx77uYeysEEX2IgE=";
+    sha256 = "sha256-dUeoLSM6a+xIBGnRdbgS2tc/oToIYwItA+e2FE7H5C8=";
   };
 
   patched-src = stdenv.mkDerivation {
