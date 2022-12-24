@@ -2,6 +2,7 @@
 
 {
   advancedban = callPackage ./advancedban { };
-  coreprotect = callPackage ./coreprotect { };
   cleanmotd = callPackage ./cleanmotd { };
+  coreprotect = callPackage ./coreprotect { };
+  discordsrv = callPackage ./discordsrv { };
 } // (callPackage ./shortbin.nix { })
