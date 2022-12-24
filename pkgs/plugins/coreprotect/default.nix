@@ -10,8 +10,8 @@ let
 
   src = fetchFromGitHub {
     owner = "PlayPro";
-    repo = "CoreProtect";
-    rev = "v21.3";
+    repo = pname;
+    rev = "v${version}";
     sha256 = "sha256-1Q89OT9+hcFUtb3jc0qXQGXyV767E5zsDAfWxdXqwXI=";
   };
 
@@ -41,7 +41,7 @@ in
 stdenv.mkDerivation rec {
   inherit version pname src;
 
-  buildInputs = [
+  nativeBuildInputs = [
     maven
   ];
 
@@ -51,8 +51,8 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     install -D target/${pname}-${version}.jar $out/package.jar
+    install -D ${mineflake.buildMineflakeManifest pname version} $out/package.yml
     install -D ${./config.yml} $out/plugins/CoreProtect/config.yml
     install -D lang/en.yml $out/plugins/CoreProtect/language.yml
-    install -D ${mineflake.buildMineflakeManifest pname version} $out/package.yml
   '';
 }
