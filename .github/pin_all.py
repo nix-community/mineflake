@@ -1,60 +1,45 @@
-from json import loads
-from traceback import print_exc
+# TODO: pin deduplication
+
 import requests
 import re
 import os
 
 
-AUTH = (os.environ["CLUSTER_USERNAME"], os.environ["CLUSTER_SECRET"])
+AUTH = os.environ["CLUSTER_TOKEN"]
 ENDPOINT = os.environ["CLUSTER_ADDRESS"]
 
 
-regex = re.compile(r"https:\/\/static.ipfsqr.ru\/ipfs\/(\w+)", flags=re.IGNORECASE)
-all_pins = requests.get(ENDPOINT + "/allocations", auth=AUTH).text
-pinned_cids = []
+regex = re.compile(r"(Qm[a-zA-Z0-9]{44}|bafy[a-zA-Z0-9]{55})", flags=re.IGNORECASE)
 local_cids = []
-unique_cids = []
 
-def find(dir="."):
-  for item in os.listdir(dir):
-    if item == ".git":
-      continue
-    path = os.path.join(dir, item)
-    if os.path.isdir(path):
-      find(path)
-    elif os.path.isfile(path):
-      try:
-        with open(path, 'r') as file:
-          content = file.read()
-        for match in regex.findall(content):
-          local_cids.append(match)
-      except Exception:
-        print_exc()
+def find(path):
+  with open(path, 'r') as file:
+    content = file.read()
+  for match in regex.findall(content):
+    local_cids.append(match)
 
 
 def pin_cid(cid):
-  requests.post(ENDPOINT + f"/pins/ipfs/{cid}?mode=recursive&name=mineflake&replication-max=3&replication-min=2&shard-size=0&user-allocations=", auth=AUTH)
+  r = requests.post(ENDPOINT + f"/pins", json={
+    "cid": cid,
+    "name": "mineflake auto pin"
+  }, headers={
+    "Authorization": "Bearer " + AUTH,
+  })
+  r.raise_for_status()
   print(f"pinned cid: {cid}")
 
 
-for pin_text in all_pins.split("\n"):
-  if not pin_text:
-    continue
-  pin = loads(pin_text)
-  if pin["name"] == "mineflake":
-    pinned_cids.append(pin["cid"])
+os.system("git diff --name-only HEAD HEAD~1 > changed_files.txt")
+with open("changed_files.txt", 'r') as file:
+  for line in file:
+    print(f"checking file: {line.strip()}")
+    find(line.strip())
+os.remove("changed_files.txt")
 
-
-find()
+local_cids = list(set(local_cids))
+print(f"found {len(local_cids)} cids")
 
 
 for cid in local_cids:
-  if cid not in pinned_cids:
-    unique_cids.append(cid)
-
-
-unique_cids = list(set(unique_cids))
-
-
-for cid in unique_cids:
   pin_cid(cid)
