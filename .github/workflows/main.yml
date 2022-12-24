@@ -60,19 +60,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: "refs/heads/repo"
-
-  pin:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: cachix/install-nix-action@v18
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - name: Pin IPFS CIDs
-        run: |
-          nix-shell -p python3 python3Packages.requests --run "python3 .github/pin_all.py"
-        env:
-          CLUSTER_ADDRESS: ${{ secrets.CLUSTER_PY_ADDRESS }}
-          CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
