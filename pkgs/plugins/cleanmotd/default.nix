@@ -5,14 +5,14 @@
 }:
 
 let
-  version = "21.3";
-  pname = "CoreProtect";
+  version = "0.2.8";
+  pname = "CleanMOTD";
 
   src = fetchFromGitHub {
-    owner = "PlayPro";
+    owner = "2lstudios-mc";
     repo = pname;
-    rev = "v${version}";
-    sha256 = "sha256-1Q89OT9+hcFUtb3jc0qXQGXyV767E5zsDAfWxdXqwXI=";
+    rev = "f694a5c64f133d640a8a421d11a64895c17b4bb9";
+    sha256 = "sha256-QizQlDdJGxIGA9m18vSCZvv5JJ3iBwKP2YmAs1vGy04=";
   };
 
   deps = stdenv.mkDerivation {
@@ -33,7 +33,7 @@ let
 
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
-    outputHash = "sha256-3oC/xOSDFot+Mffnfy0rMQGsUJq/Z+JGrpfqvEFzdkk=";
+    outputHash = "sha256-f8MOFzJ7glpLJ+Zm9BDxjb/88R6eE100CLnCXp25TRU=";
 
     doCheck = false;
   };
@@ -50,9 +50,9 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    install -D target/${pname}-${version}.jar $out/package.jar
+    install -D target/${pname}.jar $out/package.jar
     install -D ${mineflake.buildMineflakeManifest pname version} $out/package.yml
-    install -D ${./config.yml} $out/plugins/CoreProtect/config.yml
-    install -D lang/en.yml $out/plugins/CoreProtect/language.yml
+    install -D src/main/resources/config.yml $out/plugins/CleanMOTD/config.yml
+    install -D src/main/resources/messages.yml $out/plugins/CleanMOTD/messages.yml
   '';
 }
