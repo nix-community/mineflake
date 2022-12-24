@@ -84,5 +84,6 @@ stdenv.mkDerivation rec {
     install -D Waterfall-Proxy/module/reconnect-yaml/target/reconnect_yaml.jar $out/modules/reconnect_yaml.jar
 
     install -D ${./config.yml} $out/config.yml
+    install -D ${./waterfall.yml} $out/waterfall.yml
   '';
 }
