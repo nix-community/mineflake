@@ -73,5 +73,4 @@ jobs:
           nix-shell -p python3 python3Packages.requests --run "python3 .github/pin_all.py"
         env:
           CLUSTER_ADDRESS: ${{ secrets.CLUSTER_PY_ADDRESS }}
-          CLUSTER_USERNAME: ${{ secrets.CLUSTER_USERNAME }}
-          CLUSTER_SECRET: ${{ secrets.CLUSTER_SECRET }}
+          CLUSTER_TOKEN: ${{ secrets.CLUSTER_TOKEN }}
