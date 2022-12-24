@@ -65,6 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: cachix/install-nix-action@v18
         with:
           nix_path: nixpkgs=channel:nixos-unstable
