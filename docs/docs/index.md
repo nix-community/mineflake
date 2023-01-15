@@ -148,7 +148,7 @@ mineflake.buildMineflakeBin {
             rcon.password=123
             rcon.port=25575
         '') # (3)
-    ]:
+    ];
 }
 ```
 
