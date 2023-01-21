@@ -61,7 +61,7 @@ Mineflake can be used with Nix or without it. To use Mineflake without Nix, you 
     the executable. Its name should be `mineflake-linux-X.Y.A` where `X.Y.A` - version. So, the script would be:
 
     ``` bash
-    curl https://github.com/nix-community/mineflake/releases/download/vX.Y.A/mineflake-linux-X.Y.A
+    curl -L https://github.com/nix-community/mineflake/releases/download/vX.Y.A/mineflake-linux-X.Y.A --output mineflake
     chmod +x mineflake
     mv mineflake /usr/bin # second arg can be any path, that is in $PATH enviroment variable
     mineflake --help
