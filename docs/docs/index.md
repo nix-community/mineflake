@@ -63,17 +63,17 @@ Mineflake can be used with Nix or without it. To use Mineflake without Nix, you 
     ``` bash
     curl -L https://github.com/nix-community/mineflake/releases/download/vX.Y.A/mineflake-linux-X.Y.A --output mineflake
     chmod +x mineflake
-    mv mineflake /usr/bin # second arg can be any path, that is in $PATH enviroment variable
+    sudo mv mineflake /usr/local/bin # second arg can be any path, that is in $PATH enviroment variable
     mineflake --help
     ```
 
     ??? warning "If last command fails"
 
-        On most systems, this wouldn't happen, although you need to add `/usr/bin` to your `PATH` environment variable.
+        On most systems, this wouldn't happen, although you need to add `/usr/local/bin` to your `PATH` environment variable.
         Add this to your `.bashrc` or just run the command, and it will be rollbacked after your logout:
 
         ```bash
-        export PATH="$PATH:/usr/bin"
+        export PATH="$PATH:/usr/local/bin"
         ```
 
 === "With Cargo"
