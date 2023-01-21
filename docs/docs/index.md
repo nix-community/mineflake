@@ -55,6 +55,27 @@ Mineflake can be used with Nix or without it. To use Mineflake without Nix, you 
         Mineflake uses flake feature of Nix (hence the name), so you need to enable flakes support.
         Wiki page about [Flakes](https://nixos.wiki/wiki/Flakes) has more information about it.
 
+=== "With Executable"
+
+    Go to [latest release page](https://github.com/nix-community/mineflake/releases/latest) and download
+    the executable. Its name should be `mineflake-linux-X.Y.A` where `X.Y.A` - version. So, the script would be:
+
+    ``` bash
+    curl -L https://github.com/nix-community/mineflake/releases/download/vX.Y.A/mineflake-linux-X.Y.A --output mineflake
+    chmod +x mineflake
+    sudo mv mineflake /usr/local/bin # second arg can be any path, that is in $PATH enviroment variable
+    mineflake --help
+    ```
+
+    ??? warning "If last command fails"
+
+        On most systems, this wouldn't happen, although you need to add `/usr/local/bin` to your `PATH` environment variable.
+        Add this to your `.bashrc` or just run the command, and it will be rollbacked after your logout:
+
+        ```bash
+        export PATH="$PATH:/usr/local/bin"
+        ```
+
 === "With Cargo"
 
     ``` bash
