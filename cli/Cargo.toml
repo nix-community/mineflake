@@ -9,7 +9,7 @@ authors = [
 ]
 license = "MIT"
 repository = "https://github.com/nix-community/mineflake"
-documentation = "https://mineflake.cofob.ru/"
+documentation = "https://mineflake.cofob.dev/"
 readme = "README.md"
 keywords = ["mineflake", "nix", "nixos", "minecraft", "cli"]
 categories = ["command-line-utilities"]

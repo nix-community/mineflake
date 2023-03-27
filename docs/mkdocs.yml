@@ -4,7 +4,7 @@ site_description: Mineflake is a declarative Minecraft server manager.
 
 repo_url: https://github.com/nix-community/mineflake
 edit_uri: edit/main/docs/docs/
-site_url: "https://mineflake.cofob.ru/"
+site_url: "https://mineflake.cofob.dev/"
 
 copyright: Copyright &copy; 2022 Egor Ternovoy
 
