@@ -6,6 +6,9 @@ use std::{
 	path::{Path, PathBuf},
 };
 
+#[cfg(not(target_os = "windows"))]
+use std::os::unix::fs::PermissionsExt;
+
 use crate::{
 	structures::common::{FileMapping, ServerState},
 	utils::merge::merge_json,
@@ -65,6 +68,9 @@ pub fn link_files(directory: &Path, files: &Vec<LinkTypes>) -> Result<()> {
 			LinkTypes::Copy(mapping) => {
 				copy(&mapping.0, &dest_path)?;
 				let mut perms = fs::metadata(&dest_path)?.permissions();
+				#[cfg(not(target_os = "windows"))]
+				perms.set_mode(0o644); // Read and write for owner, read for everyone else
+				#[cfg(target_os = "windows")]
 				perms.set_readonly(false);
 				set_permissions(&dest_path, perms)?;
 			}
