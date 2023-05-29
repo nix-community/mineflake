@@ -33,7 +33,7 @@ num_cpus = { version = "^1.14", optional = true }
 
 # Logging
 log = "^0.4"
-pretty_env_logger = { version = "^0.4", optional = true }
+pretty_env_logger = { version = "^0.5", optional = true }
 
 # Errors
 anyhow = "^1"
