@@ -84,7 +84,7 @@ In addition, this project uses the following third-party software:
 If you contribute to this project, please add your name to the list below.
 
 - [cofob](https://github.com/cofob) - Author and maintainer.
-- [IogaMaster](https://github.com/IogaMaster) - [Logo](https://github.com/nix-community/mineflake/issues/17#issuecomment-1786302619).
+- [IogaMaster](https://github.com/IogaMaster) - Crafted [logo](https://github.com/nix-community/mineflake/issues/17#issuecomment-1786302619).
 
 ## Sponsors and sponsorship
 
