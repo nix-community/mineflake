@@ -1,4 +1,8 @@
-# Mineflake
+<h1 align="center">Mineflake</h1>
+
+<p align="center">
+  <img src="/logo.png" alt="logo" width="256" height="256" />
+</p>
 
 Mineflake is a tool for creating and managing Minecraft servers declaratively. It is written in Rust and uses Nix for package management.
 

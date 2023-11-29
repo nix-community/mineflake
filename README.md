@@ -1,4 +1,8 @@
-# Mineflake
+<h1 align="center">Mineflake</h1>
+
+<p align="center">
+  <img src="./docs/overrides/logo.png" alt="logo" width="256" height="256" />
+</p>
 
 [![Support Ukraine](https://badgen.net/badge/support/UKRAINE/?color=0057B8&labelColor=FFD700)](https://www.gov.uk/government/news/ukraine-what-you-can-do-to-help)
 [![read the docs](https://img.shields.io/static/v1?label=Read%20The&message=Docs&color=8A2BE2)](https://mineflake.cofob.dev)
@@ -79,7 +83,8 @@ In addition, this project uses the following third-party software:
 
 If you contribute to this project, please add your name to the list below.
 
-- [cofob](https://github.com/cofob) - Author and maintainer
+- [cofob](https://github.com/cofob) - Author and maintainer.
+- [IogaMaster](https://github.com/IogaMaster) - Crafted [logo](https://github.com/nix-community/mineflake/issues/17#issuecomment-1786302619).
 
 ## Sponsors and sponsorship
 
