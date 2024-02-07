@@ -60,14 +60,14 @@ jobs:
       - uses: sfackler/actions/rustup@master
       - run: echo "::set-output name=version::$(rustc --version)"
         id: rust-version
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cargo
           key: cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
           restore-keys: |
             cargo-${{ runner.os }}-${{ steps.rust-version.outputs.version }}-
             cargo-${{ runner.os }}-
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: cli/target
           key: target-${{ github.job }}-${{ steps.rust-version.outputs.version }}-${{ hashFiles('cli/Cargo.lock') }}
