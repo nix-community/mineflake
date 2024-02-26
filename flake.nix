@@ -2,7 +2,7 @@
   description = "Minecraft server in Nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     import-cargo.url = github:edolstra/import-cargo;
     flake-utils.url = "github:numtide/flake-utils";
   };
