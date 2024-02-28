@@ -15,7 +15,7 @@ let
     fetchSubmodules = true;
     leaveDotGit = true;
     rev = "079f3a31294551fcedc92bff2943ce749bdb99b5";
-    sha256 = "sha256-I4Jkd2y2wZ5rKZB8pFtEI8w+kkcxx77uYeysEEX2IgE=";
+    sha256 = "sha256-QoYj2TFghgu9XvbDEdhzQY59uC8x1EjBYTFlwsPg6sI=";
   };
 
   patched-src = stdenv.mkDerivation {
@@ -58,7 +58,7 @@ let
 
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
-    outputHash = "sha256-zjyxo8+53CpDgCV+g+IskrD76jOrHi6gCQ9YsFj4jns=";
+    outputHash = "sha256-LvNAi9mZQqFQX2brPr5mWA7dH3/ly0+tSxozYkggzW4=";
 
     doCheck = false;
   };
